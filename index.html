@@ -185,8 +185,7 @@ body{
   font-size:16px;
   text-align:center;
   padding:6px 0;
-  -moz-appearance:textfield;
-  cursor:text;
+  -moz-appearance:textfield
 }
 
 .inputrow input[type=number]::-webkit-outer-spin-button,
@@ -310,24 +309,6 @@ body{
   padding:5px 0
 }
 
-.fixed-tax{
-  background:var(--panel-2);
-  border:1px solid var(--line);
-  border-radius:8px;
-  padding:7px 10px;
-  text-align:center;
-  font-family:var(--mono);
-  font-size:15px;
-  color:var(--white)
-}
-
-.tax-label{
-  font-size:12.5px;
-  color:var(--slate);
-  text-align:center;
-  margin-bottom:4px
-}
-
 .ruler-block{
   margin-bottom:10px;
   min-width:0
@@ -351,7 +332,6 @@ body{
   border:1px solid var(--line);
   border-radius:8px;
   box-shadow:inset 0 2px 5px rgba(0,0,0,.4);
-  overflow:hidden;
   -webkit-mask-image:linear-gradient(
     to right,
     transparent 0,
@@ -483,13 +463,14 @@ body{
   content:'';
   position:absolute;
   inset:0;
-  background:repeating-linear-gradient(
-    180deg,
-    rgba(0,0,0,.05) 0,
-    rgba(0,0,0,.05) 1px,
-    transparent 1px,
-    transparent 3px
-  )
+  background:
+    repeating-linear-gradient(
+      180deg,
+      rgba(0,0,0,.05) 0,
+      rgba(0,0,0,.05) 1px,
+      transparent 1px,
+      transparent 3px
+    )
 }
 
 .ruler-lens .lcd-value{
@@ -575,7 +556,8 @@ body{
   letter-spacing:-.02em;
   line-height:1.05;
   margin:3px 0 0;
-  font-variant-numeric:tabular-nums
+  font-variant-numeric:tabular-nums;
+  text-align:center
 }
 
 .sticker .payment sub{
@@ -613,7 +595,8 @@ body{
 
 .stat .v{
   font-family:var(--mono);
-  font-size:13px
+  font-size:13px;
+  text-align:center
 }
 
 .stat.warn .v{
@@ -766,8 +749,8 @@ footer{
 
 <div class="masthead">
   <div class="brand">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-         stroke="#E8A63A" stroke-width="2"
+    <svg width="24" height="24" viewBox="0 0 24 24"
+         fill="none" stroke="#E8A63A" stroke-width="2"
          stroke-linecap="round" stroke-linejoin="round">
       <circle cx="12" cy="12" r="10"/>
       <line x1="8" y1="16" x2="16" y2="8"/>
@@ -789,10 +772,11 @@ footer{
 
 <div class="toolbar">
   <div class="header-actions">
-    <button class="theme-btn"
-            id="themeBtn"
-            aria-label="Toggle light/dark theme"
-            title="Toggle light/dark theme">☀</button>
+    <button
+      class="theme-btn"
+      id="themeBtn"
+      aria-label="Toggle light/dark theme"
+      title="Toggle light/dark theme">☀</button>
 
     <button class="clear-btn" id="clearBtn">
       Clear
@@ -809,8 +793,7 @@ footer{
 <div class="option a" id="optionCardA">
 
   <div class="option-title">
-    <span class="dot"></span>
-    Option A
+    <span class="dot"></span>Option A
   </div>
 
   <div class="compact-row">
@@ -820,11 +803,12 @@ footer{
 
       <div class="inputrow">
         <span class="prefix">$</span>
-        <input type="number"
-               id="priceA"
-               value="25000"
-               min="0"
-               step="100">
+        <input
+          type="number"
+          id="priceA"
+          value="25000"
+          min="0"
+          step="100">
       </div>
     </div>
 
@@ -833,11 +817,12 @@ footer{
 
       <div class="inputrow">
         <span class="prefix">$</span>
-        <input type="number"
-               id="feesA"
-               value="1307"
-               min="0"
-               step="1">
+        <input
+          type="number"
+          id="feesA"
+          value="1307"
+          min="0"
+          step="1">
       </div>
     </div>
 
@@ -850,11 +835,12 @@ footer{
 
       <div class="inputrow">
         <span class="prefix">$</span>
-        <input type="number"
-               id="tradeA"
-               value="0"
-               min="0"
-               step="100">
+        <input
+          type="number"
+          id="tradeA"
+          value="0"
+          min="0"
+          step="100">
       </div>
     </div>
 
@@ -863,11 +849,12 @@ footer{
 
       <div class="inputrow">
         <span class="prefix">$</span>
-        <input type="number"
-               id="payoffA"
-               value="0"
-               min="0"
-               step="100">
+        <input
+          type="number"
+          id="payoffA"
+          value="0"
+          min="0"
+          step="100">
       </div>
     </div>
 
@@ -909,13 +896,7 @@ footer{
 
   </div>
 
-  <div class="tax-label">
-    Sales Tax Rate
-  </div>
-
-  <div class="fixed-tax">
-    7.00%
-  </div>
+  <!-- SALES TAX RATE BOX REMOVED -->
 
   <div class="term-field">
 
@@ -933,6 +914,7 @@ footer{
       <div class="termbtn" data-term="84">84 mo</div>
 
     </div>
+
   </div>
 
   <div class="sticker">
@@ -958,7 +940,7 @@ footer{
       </div>
 
       <div class="stat">
-        <div class="k">Sales Tax</div>
+        <div class="k">Sales Tax (7%)</div>
         <div class="v" id="taxamtA">$0</div>
       </div>
 
@@ -1003,6 +985,7 @@ footer{
 
 </div>
 
+
 <!-- ================= DIVIDER ================= -->
 
 <div class="divider">
@@ -1011,13 +994,13 @@ footer{
   <div class="line"></div>
 </div>
 
+
 <!-- ================= OPTION B ================= -->
 
 <div class="option b" id="optionCardB">
 
   <div class="option-title">
-    <span class="dot"></span>
-    Option B
+    <span class="dot"></span>Option B
   </div>
 
   <div class="compact-row">
@@ -1027,11 +1010,12 @@ footer{
 
       <div class="inputrow">
         <span class="prefix">$</span>
-        <input type="number"
-               id="priceB"
-               value="25000"
-               min="0"
-               step="100">
+        <input
+          type="number"
+          id="priceB"
+          value="25000"
+          min="0"
+          step="100">
       </div>
     </div>
 
@@ -1040,11 +1024,12 @@ footer{
 
       <div class="inputrow">
         <span class="prefix">$</span>
-        <input type="number"
-               id="feesB"
-               value="1307"
-               min="0"
-               step="1">
+        <input
+          type="number"
+          id="feesB"
+          value="1307"
+          min="0"
+          step="1">
       </div>
     </div>
 
@@ -1057,11 +1042,12 @@ footer{
 
       <div class="inputrow">
         <span class="prefix">$</span>
-        <input type="number"
-               id="tradeB"
-               value="0"
-               min="0"
-               step="100">
+        <input
+          type="number"
+          id="tradeB"
+          value="0"
+          min="0"
+          step="100">
       </div>
     </div>
 
@@ -1070,11 +1056,12 @@ footer{
 
       <div class="inputrow">
         <span class="prefix">$</span>
-        <input type="number"
-               id="payoffB"
-               value="0"
-               min="0"
-               step="100">
+        <input
+          type="number"
+          id="payoffB"
+          value="0"
+          min="0"
+          step="100">
       </div>
     </div>
 
@@ -1120,13 +1107,7 @@ footer{
 
   </div>
 
-  <div class="tax-label">
-    Sales Tax Rate
-  </div>
-
-  <div class="fixed-tax">
-    7.00%
-  </div>
+  <!-- SALES TAX RATE BOX REMOVED -->
 
   <div class="term-field">
 
@@ -1170,12 +1151,12 @@ footer{
       </div>
 
       <div class="stat">
-        <div class="k">Sales Tax</div>
+        <div class="k">Sales Tax (7%)</div>
         <div class="v" id="taxamtB">$0</div>
       </div>
 
       <div class="stat warn">
-        <div class="k">Total of Payments</div>
+        <div class="k">Total Interest</div>
         <div class="v" id="interestB">$0</div>
       </div>
 
@@ -1217,6 +1198,7 @@ footer{
 
 </div>
 
+
 <div class="compare-bar">
 
   <div class="compare-side">
@@ -1241,6 +1223,7 @@ footer{
 </footer>
 
 </div>
+
 
 <script>
 
@@ -1267,6 +1250,7 @@ const DEFAULTS={
     apr:8.9,
     term:60
   },
+
   b:{
     price:25000,
     trade:0,
@@ -1278,6 +1262,7 @@ const DEFAULTS={
   }
 };
 
+
 function loadSaved(){
 
   try{
@@ -1288,7 +1273,7 @@ function loadSaved(){
 
     const p=JSON.parse(raw);
 
-    return {
+    return{
       a:Object.assign({},DEFAULTS.a,p.a||{}),
       b:Object.assign({},DEFAULTS.b,p.b||{})
     };
@@ -1301,9 +1286,12 @@ function loadSaved(){
 
 }
 
+
 const saved=loadSaved();
 
-const state=saved||JSON.parse(JSON.stringify(DEFAULTS));
+const state=saved||
+  JSON.parse(JSON.stringify(DEFAULTS));
+
 
 const rulers={};
 
@@ -1323,17 +1311,13 @@ function buildRuler({
 }){
 
   const track=$(trackId);
-
   const scroll=track.parentElement;
-
   const shell=scroll.parentElement;
 
   const tickWidth=tickPx||8;
-
   const count=Math.round((max-min)/step)+1;
 
   track.innerHTML='';
-
   track.style.position='relative';
 
 
@@ -1357,14 +1341,11 @@ function buildRuler({
       )<step/2;
 
     d.className='tick'+(major?' major':'');
-
     d.style.width=tickWidth+'px';
-
 
     const bar=document.createElement('div');
 
     bar.className='bar';
-
     bar.style.height=major?'20px':'9px';
 
     d.appendChild(bar);
@@ -1378,8 +1359,8 @@ function buildRuler({
 
       num.textContent=
         decimals
-          ? val.toFixed(decimals)
-          : Math.round(val);
+        ?val.toFixed(decimals)
+        :Math.round(val);
 
       d.appendChild(num);
 
@@ -1401,7 +1382,6 @@ function buildRuler({
   const ghostCount=4;
 
   const rightGhosts=[];
-
   const leftGhosts=[];
 
 
@@ -1409,11 +1389,13 @@ function buildRuler({
 
     const isOuter=g===ghostCount;
 
-    const rVal=+(max+g*step).toFixed(decimals);
+    const rVal=
+      +(max+g*step).toFixed(decimals);
 
     const rg=document.createElement('div');
 
-    rg.className='tick ghost'+(isOuter?' major':'');
+    rg.className='tick ghost'+
+      (isOuter?' major':'');
 
     rg.style.cssText=
       'position:absolute;top:0;bottom:0;width:'+
@@ -1424,7 +1406,8 @@ function buildRuler({
 
     rbar.className='bar';
 
-    rbar.style.height=isOuter?'20px':'9px';
+    rbar.style.height=
+      isOuter?'20px':'9px';
 
     rg.appendChild(rbar);
 
@@ -1437,8 +1420,8 @@ function buildRuler({
 
       rnum.textContent=
         decimals
-          ? rVal.toFixed(decimals)
-          : Math.round(rVal);
+        ?rVal.toFixed(decimals)
+        :Math.round(rVal);
 
       rg.appendChild(rnum);
 
@@ -1449,11 +1432,13 @@ function buildRuler({
     rightGhosts.push({el:rg,g});
 
 
-    const lVal=+(min-g*step).toFixed(decimals);
+    const lVal=
+      +(min-g*step).toFixed(decimals);
 
     const lg=document.createElement('div');
 
-    lg.className='tick ghost'+(isOuter?' major':'');
+    lg.className='tick ghost'+
+      (isOuter?' major':'');
 
     lg.style.cssText=
       'position:absolute;top:0;bottom:0;width:'+
@@ -1464,7 +1449,8 @@ function buildRuler({
 
     lbar.className='bar';
 
-    lbar.style.height=isOuter?'20px':'9px';
+    lbar.style.height=
+      isOuter?'20px':'9px';
 
     lg.appendChild(lbar);
 
@@ -1477,8 +1463,8 @@ function buildRuler({
 
       lnum.textContent=
         decimals
-          ? lVal.toFixed(decimals)
-          : Math.round(lVal);
+        ?lVal.toFixed(decimals)
+        :Math.round(lVal);
 
       lg.appendChild(lnum);
 
@@ -1511,11 +1497,9 @@ function buildRuler({
     rightGhosts.forEach(({el,g})=>{
 
       el.style.left=
-        (
-          spacerWidth+
-          count*tickWidth+
-          g*tickWidth
-        )+'px';
+        (spacerWidth+
+        count*tickWidth+
+        g*tickWidth)+'px';
 
     });
 
@@ -1523,10 +1507,8 @@ function buildRuler({
     leftGhosts.forEach(({el,g})=>{
 
       el.style.left=
-        (
-          spacerWidth-
-          g*tickWidth
-        )+'px';
+        (spacerWidth-
+        g*tickWidth)+'px';
 
     });
 
@@ -1551,15 +1533,15 @@ function buildRuler({
 
   function set(val,silent){
 
-    current=
-      Math.min(
-        max,
-        Math.max(min,val)
-      );
+    current=Math.min(
+      max,
+      Math.max(min,val)
+    );
 
     jump(current);
 
-    if(!silent)onChange(current);
+    if(!silent)
+      onChange(current);
 
   }
 
@@ -1567,7 +1549,8 @@ function buildRuler({
   function readValue(){
 
     const trueMax=
-      scroll.scrollWidth-scroll.clientWidth;
+      scroll.scrollWidth-
+      scroll.clientWidth;
 
     if(trueMax<=0)return min;
 
@@ -1623,42 +1606,41 @@ function buildRuler({
 
   if(window.ResizeObserver){
 
-    const ro=new ResizeObserver(()=>{
+    const ro=
+      new ResizeObserver(()=>{
 
-      updateSpacers();
+        updateSpacers();
+        jump(current);
 
-      jump(current);
-
-    });
+      });
 
     ro.observe(shell);
 
   }else{
 
-    window.addEventListener('resize',()=>{
+    window.addEventListener(
+      'resize',
+      ()=>{
 
-      updateSpacers();
+        updateSpacers();
+        jump(current);
 
-      jump(current);
-
-    });
+      }
+    );
 
   }
 
 
   updateSpacers();
 
-  requestAnimationFrame(()=>{
-
-    requestAnimationFrame(()=>{
-
-      updateSpacers();
-
-      set(current,false);
-
-    });
-
-  });
+  requestAnimationFrame(
+    ()=>requestAnimationFrame(
+      ()=>{
+        updateSpacers();
+        set(current,false);
+      }
+    )
+  );
 
 
   rulers[key]={set};
@@ -1672,7 +1654,8 @@ function updateDown(K,v){
 
   state[key].down=v;
 
-  $('down'+K+'-val').textContent=money(v);
+  $('down'+K+'-val').textContent=
+    money(v);
 
   calcAll();
 
@@ -1755,12 +1738,14 @@ function setActiveTerm(key,term){
     );
 
   row.querySelectorAll('.termbtn')
-    .forEach(b=>
+    .forEach(b=>{
+
       b.classList.toggle(
         'active',
         +b.dataset.term===term
-      )
-    );
+      );
+
+    });
 
 }
 
@@ -1768,26 +1753,30 @@ function setActiveTerm(key,term){
 document.querySelectorAll('.termrow')
 .forEach(row=>{
 
-  const key=row.dataset.group.toLowerCase();
+  const key=
+    row.dataset.group.toLowerCase();
 
   row.querySelectorAll('.termbtn')
   .forEach(btn=>{
 
-    btn.addEventListener('click',()=>{
+    btn.addEventListener(
+      'click',
+      ()=>{
 
-      row.querySelectorAll('.termbtn')
-        .forEach(b=>
-          b.classList.remove('active')
-        );
+        row.querySelectorAll('.termbtn')
+          .forEach(b=>
+            b.classList.remove('active')
+          );
 
-      btn.classList.add('active');
+        btn.classList.add('active');
 
-      state[key].term=
-        +btn.dataset.term;
+        state[key].term=
+          +btn.dataset.term;
 
-      calcAll();
+        calcAll();
 
-    });
+      }
+    );
 
   });
 
@@ -1801,25 +1790,33 @@ function calcOption(K){
   const price=
     Math.max(
       0,
-      parseFloat($('price'+K).value)||0
+      parseFloat(
+        $('price'+K).value
+      )||0
     );
 
   const trade=
     Math.max(
       0,
-      parseFloat($('trade'+K).value)||0
+      parseFloat(
+        $('trade'+K).value
+      )||0
     );
 
   const payoff=
     Math.max(
       0,
-      parseFloat($('payoff'+K).value)||0
+      parseFloat(
+        $('payoff'+K).value
+      )||0
     );
 
   const fees=
     Math.max(
       0,
-      parseFloat($('fees'+K).value)||0
+      parseFloat(
+        $('fees'+K).value
+      )||0
     );
 
   const down=
@@ -1835,8 +1832,16 @@ function calcOption(K){
   state[key].fees=fees;
 
 
+  /*
+    FIXED GEORGIA SALES TAX:
+    7%
+  */
+
   const taxableBase=
-    Math.max(0,price-trade)+fees;
+    Math.max(
+      0,
+      price-trade
+    )+fees;
 
   const taxAmt=
     taxableBase*.07;
@@ -1869,13 +1874,15 @@ function calcOption(K){
 
   let payment=
     r===0
-      ? financed/n
-      : financed*
-        (r*Math.pow(1+r,n))/
-        (Math.pow(1+r,n)-1);
+    ?financed/n
+    :
+    financed*
+    (r*Math.pow(1+r,n))/
+    (Math.pow(1+r,n)-1);
 
 
-  if(!isFinite(payment))payment=0;
+  if(!isFinite(payment))
+    payment=0;
 
 
   const totalPaid=
@@ -1906,7 +1913,7 @@ function calcOption(K){
     money(taxAmt);
 
   $('interest'+K).textContent=
-    money(totalPaid);
+    money(totalInterest);
 
   $('total'+K).textContent=
     money(totalPaid);
@@ -1960,7 +1967,8 @@ function buildSchedule(
     let pp=
       payment-interest;
 
-    if(m===n)pp=balance;
+    if(m===n)
+      pp=balance;
 
     balance=
       Math.max(
@@ -1974,11 +1982,11 @@ function buildSchedule(
 
 
     tr.innerHTML=
-      `<td>${m}</td>`+
-      `<td>${moneyC(payment)}</td>`+
-      `<td>${moneyC(pp)}</td>`+
-      `<td>${moneyC(interest)}</td>`+
-      `<td>${moneyC(balance)}</td>`;
+      `<td>${m}</td>
+       <td>${moneyC(payment)}</td>
+       <td>${moneyC(pp)}</td>
+       <td>${moneyC(interest)}</td>
+       <td>${moneyC(balance)}</td>`;
 
 
     frag.appendChild(tr);
@@ -1993,9 +2001,11 @@ function buildSchedule(
 
 function calcAll(){
 
-  const pa=calcOption('A');
+  const pa=
+    calcOption('A');
 
-  const pb=calcOption('B');
+  const pb=
+    calcOption('B');
 
 
   $('cmpA').textContent=
@@ -2020,15 +2030,20 @@ function calcAll(){
     )+'/mo';
 
 
-  const delta=pa-pb;
+  const delta=
+    pa-pb;
 
 
   $('cmpDelta').textContent=
     Math.abs(delta)<.5
-      ? 'Payments are about equal'
-      : delta>0
-        ? `Option B is ${money(delta)}/mo lower`
-        : `Option A is ${money(-delta)}/mo lower`;
+    ?
+    'Payments are about equal'
+    :
+    delta>0
+    ?
+    `Option B is ${money(delta)}/mo lower`
+    :
+    `Option A is ${money(-delta)}/mo lower`;
 
 
   try{
@@ -2043,52 +2058,13 @@ function calcAll(){
 }
 
 
-/* ============================================================
-   CLICK-TO-SELECT INPUTS
-   Clicking any editable number field selects its entire
-   current value so typing immediately replaces it.
-   ============================================================ */
+/*
+  ENTERABLE DATA WINDOWS
 
-[
-  'priceA',
-  'feesA',
-  'tradeA',
-  'payoffA',
-  'priceB',
-  'feesB',
-  'tradeB',
-  'payoffB'
-].forEach(id=>{
-
-  const input=$(id);
-
-  input.addEventListener('focus',function(){
-
-    /*
-      Small timeout allows the browser to finish placing
-      the cursor before selecting the existing number.
-    */
-    setTimeout(()=>{
-
-      try{
-        this.select();
-      }catch(e){}
-
-    },0);
-
-  });
-
-
-  input.addEventListener('click',function(){
-
-    try{
-      this.select();
-    }catch(e){}
-
-  });
-
-});
-
+  Clicking into the number automatically
+  selects the existing value so the user
+  can immediately type the replacement.
+*/
 
 [
   'priceA',
@@ -2101,7 +2077,34 @@ function calcAll(){
   'feesB'
 ].forEach(id=>{
 
-  $(id).addEventListener(
+  const input=$(id);
+
+  input.addEventListener(
+    'focus',
+    function(){
+
+      setTimeout(
+        ()=>{
+          this.select();
+        },
+        0
+      );
+
+    }
+  );
+
+
+  input.addEventListener(
+    'click',
+    function(){
+
+      this.select();
+
+    }
+  );
+
+
+  input.addEventListener(
     'input',
     ()=>{
       calcAll();
@@ -2111,21 +2114,25 @@ function calcAll(){
 });
 
 
-[['scheduleToggleA','scheduleA'],
- ['scheduleToggleB','scheduleB']]
-.forEach(([tId,sId])=>{
+[
+  ['scheduleToggleA','scheduleA'],
+  ['scheduleToggleB','scheduleB']
+].forEach(([tId,sId])=>{
 
-  $(tId).addEventListener('click',()=>{
+  $(tId).addEventListener(
+    'click',
+    ()=>{
 
-    const open=
-      $(sId).classList.toggle('open');
+      const open=
+        $(sId).classList.toggle('open');
 
-    $(tId).classList.toggle(
-      'open',
-      open
-    );
+      $(tId).classList.toggle(
+        'open',
+        open
+      );
 
-  });
+    }
+  );
 
 });
 
