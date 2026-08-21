@@ -244,13 +244,9 @@ footer{margin-top:15px;font-size:11px;color:var(--slate);text-align:center}
 </header>
 
 <div class="shared">
-  <div class="field">
+  <div class="field" style="grid-column: 1 / -1; max-width: 50%; margin: 0 auto; width: 100%;">
     <label>Vehicle Price</label>
     <div class="inputrow"><span class="prefix">$</span><input type="number" id="priceShared" value="25000" min="0" step="100"></div>
-  </div>
-  <div class="field">
-    <label>Trade Value</label>
-    <div class="inputrow"><span class="prefix">$</span><input type="number" id="tradeShared" value="0" min="0" step="100"></div>
   </div>
 </div>
 
@@ -270,13 +266,13 @@ footer{margin-top:15px;font-size:11px;color:var(--slate);text-align:center}
   </div>
 
   <div class="compact-row">
-    <div class="field down-field">
-      <label>Down Payment</label>
-      <div class="inputrow"><span class="prefix">$</span><input type="number" id="downA" value="0" min="0" step="100"></div>
-    </div>
     <div class="field">
       <label>Fees</label>
       <div class="inputrow"><span class="prefix">$</span><input type="number" id="feesA" value="1307" min="0" step="1"></div>
+    </div>
+    <div class="field down-field">
+      <label>Down Payment</label>
+      <div class="inputrow"><span class="prefix">$</span><input type="number" id="downA" value="0" min="0" step="100"></div>
     </div>
   </div>
 
@@ -332,13 +328,13 @@ footer{margin-top:15px;font-size:11px;color:var(--slate);text-align:center}
   </div>
 
   <div class="compact-row">
-    <div class="field down-field">
-      <label>Down Payment</label>
-      <div class="inputrow"><span class="prefix">$</span><input type="number" id="downB" value="0" min="0" step="100"></div>
-    </div>
     <div class="field">
       <label>Fees</label>
       <div class="inputrow"><span class="prefix">$</span><input type="number" id="feesB" value="1307" min="0" step="1"></div>
+    </div>
+    <div class="field down-field">
+      <label>Down Payment</label>
+      <div class="inputrow"><span class="prefix">$</span><input type="number" id="downB" value="0" min="0" step="100"></div>
     </div>
   </div>
 
@@ -571,15 +567,10 @@ function calcAll(){
   try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(e){}
 }
 
-['priceShared','tradeShared'].forEach(id=>{
-  $(id).addEventListener('input',()=>{
-    if(id==='tradeShared'){
-      $('tradeA').value=$('tradeShared').value;
-      $('tradeB').value=$('tradeShared').value;
-    }
-    calcAll();
-  });
+$('priceShared').addEventListener('input',()=>{
+  calcAll();
 });
+
 ['tradeA','tradeB','payoffA','payoffB','feesA','feesB','downA','downB'].forEach(id=>{
   $(id).addEventListener('input',()=>{
     const K=id.slice(-1);
@@ -602,7 +593,6 @@ function calcAll(){
 
 function applyStateToDOM(){
   $('priceShared').value=state.price;
-  $('tradeShared').value=state.trade;
   ['A','B'].forEach(K=>{
     const s=state[K.toLowerCase()];
     $('trade'+K).value=s.trade;
