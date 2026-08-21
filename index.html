@@ -140,7 +140,7 @@ body{
   scrollbar-width:none
 }
 .ruler-scroll::-webkit-scrollbar{display:none}
-.ruler-track{display:flex;align-items:flex-end;height:100%;padding-left:calc(50% - 4px);padding-right:calc(50% - 4px)}
+.ruler-track{display:flex;align-items:flex-end;height:100%}
 .tick{
   flex:0 0 auto;width:8px;height:100%;display:flex;flex-direction:column;
   align-items:center;justify-content:flex-end;position:relative
@@ -265,7 +265,7 @@ footer{margin-top:15px;font-size:11px;color:var(--slate);text-align:center}
 <div class="shared" style="display:none;"></div>
 
 <div class="split-grid">
-<div class="option a">
+<div class="option a" id="optionCardA">
   <div class="option-title"><span class="dot"></span>Option A</div>
 
   <div class="compact-row">
@@ -327,7 +327,7 @@ footer{margin-top:15px;font-size:11px;color:var(--slate);text-align:center}
 
 <div class="divider"><div class="line"></div><div class="badge">VS</div><div class="line"></div></div>
 
-<div class="option b">
+<div class="option b" id="optionCardB">
   <div class="option-title"><span class="dot"></span>Option B</div>
 
   <div class="compact-row">
@@ -423,9 +423,16 @@ const state=saved||JSON.parse(JSON.stringify(DEFAULTS));
 const rulers={};
 
 function buildRuler({key,trackId,min,max,step,majorStep,decimals,initial,tickPx,format,onChange}){
-  const track=$(trackId), scroll=track.parentElement;
+  const track=$(trackId), scroll=track.parentElement, shell=scroll.parentElement;
   const tickWidth=tickPx||8,count=Math.round((max-min)/step)+1;
-  const frag=document.createDocumentFragment();
+
+  track.innerHTML='';
+  track.style.position='relative';
+
+  const startSpacer=document.createElement('div');
+  startSpacer.style.cssText='flex:0 0 auto;align-self:stretch';
+  track.appendChild(startSpacer);
+
   for(let i=0;i<count;i++){
     const val=+(min+i*step).toFixed(decimals);
     const d=document.createElement('div');
@@ -439,46 +446,59 @@ function buildRuler({key,trackId,min,max,step,majorStep,decimals,initial,tickPx,
       num.textContent=decimals?val.toFixed(decimals):Math.round(val);
       d.appendChild(num);
     }
-    frag.appendChild(d);
+    track.appendChild(d);
   }
-  track.innerHTML='';track.appendChild(frag);
-  track.style.position='relative';
-  track.style.paddingLeft='calc(50% - '+(tickWidth/2)+'px)';
-  track.style.paddingRight='calc(50% - '+(tickWidth/2)+'px)';
 
-  // Decorative ticks drawn into the existing padding zones (not part of the scrollable
-  // range) so the ruler visually continues past the true min/max instead of dead-ending.
+  const endSpacer=document.createElement('div');
+  endSpacer.style.cssText='flex:0 0 auto;align-self:stretch';
+  track.appendChild(endSpacer);
+
+  // Decorative ticks drawn into the spacer zones (not counted toward count, purely visual)
+  // so the ruler continues past true min/max instead of dead-ending. Repositioned by
+  // updateSpacers() whenever the measured spacer width changes.
   const ghostCount=4;
+  const rightGhosts=[],leftGhosts=[];
   for(let g=1;g<=ghostCount;g++){
     const isOuter=g===ghostCount;
     const rVal=+(max+g*step).toFixed(decimals);
-    const rightGhost=document.createElement('div');
-    rightGhost.className='tick ghost'+(isOuter?' major':'');
-    rightGhost.style.cssText='position:absolute;top:0;bottom:0;left:calc(50% - '+(tickWidth/2)+'px + '+(count*tickWidth+g*tickWidth)+'px);width:'+tickWidth+'px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end';
-    const rbar=document.createElement('div');rbar.className='bar';rbar.style.height=(isOuter?'20px':'9px');
-    rightGhost.appendChild(rbar);
+    const rg=document.createElement('div');
+    rg.className='tick ghost'+(isOuter?' major':'');
+    rg.style.cssText='position:absolute;top:0;bottom:0;width:'+tickWidth+'px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end';
+    const rbar=document.createElement('div');rbar.className='bar';rbar.style.height=isOuter?'20px':'9px';
+    rg.appendChild(rbar);
     if(isOuter){
       const rnum=document.createElement('div');rnum.className='num';
       rnum.textContent=decimals?rVal.toFixed(decimals):Math.round(rVal);
-      rightGhost.appendChild(rnum);
+      rg.appendChild(rnum);
     }
-    track.appendChild(rightGhost);
+    track.appendChild(rg);
+    rightGhosts.push({el:rg,g});
 
     const lVal=+(min-g*step).toFixed(decimals);
-    const leftGhost=document.createElement('div');
-    leftGhost.className='tick ghost'+(isOuter?' major':'');
-    leftGhost.style.cssText='position:absolute;top:0;bottom:0;left:calc(50% - '+(tickWidth/2)+'px - '+(g*tickWidth)+'px);width:'+tickWidth+'px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end';
-    const lbar=document.createElement('div');lbar.className='bar';lbar.style.height=(isOuter?'20px':'9px');
-    leftGhost.appendChild(lbar);
+    const lg=document.createElement('div');
+    lg.className='tick ghost'+(isOuter?' major':'');
+    lg.style.cssText='position:absolute;top:0;bottom:0;width:'+tickWidth+'px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end';
+    const lbar=document.createElement('div');lbar.className='bar';lbar.style.height=isOuter?'20px':'9px';
+    lg.appendChild(lbar);
     if(isOuter && lVal>=0){
       const lnum=document.createElement('div');lnum.className='num';
       lnum.textContent=decimals?lVal.toFixed(decimals):Math.round(lVal);
-      leftGhost.appendChild(lnum);
+      lg.appendChild(lnum);
     }
-    track.appendChild(leftGhost);
+    track.appendChild(lg);
+    leftGhosts.push({el:lg,g});
   }
 
   let current=initial;
+
+  function updateSpacers(){
+    const w=shell.clientWidth;
+    const spacerWidth=Math.max(0, w/2-tickWidth/2);
+    startSpacer.style.width=spacerWidth+'px';
+    endSpacer.style.width=spacerWidth+'px';
+    rightGhosts.forEach(({el,g})=>{ el.style.left=(spacerWidth+count*tickWidth+g*tickWidth)+'px'; });
+    leftGhosts.forEach(({el,g})=>{ el.style.left=(spacerWidth-g*tickWidth)+'px'; });
+  }
 
   function pos(val){return Math.round((val-min)/step)*tickWidth}
   function jump(val){
@@ -507,7 +527,16 @@ function buildRuler({key,trackId,min,max,step,majorStep,decimals,initial,tickPx,
       onChange(current);
     });
   },{passive:true});
-  requestAnimationFrame(()=>requestAnimationFrame(()=>set(current,false)));
+
+  if(window.ResizeObserver){
+    const ro=new ResizeObserver(()=>{ updateSpacers(); jump(current); });
+    ro.observe(shell);
+  } else {
+    window.addEventListener('resize',()=>{ updateSpacers(); jump(current); });
+  }
+
+  updateSpacers();
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{ updateSpacers(); set(current,false); }));
   rulers[key]={set};
 }
 
