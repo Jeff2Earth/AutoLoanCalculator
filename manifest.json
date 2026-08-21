@@ -1,0 +1,15 @@
+{
+  "name": "Auto Loan Calculator",
+  "short_name": "Loan Calc",
+  "description": "Estimate monthly payments, interest, and amortization for an auto loan.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0F1216",
+  "theme_color": "#0F1216",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
