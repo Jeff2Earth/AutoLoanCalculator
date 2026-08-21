@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Auto Loan Calculator</title>
+
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
@@ -22,17 +23,45 @@
 
 <style>
 :root{
-  --ink:#0F1216;--panel:#171B21;--panel-2:#1E232B;--line:#2A313B;
-  --amber:#E8A63A;--blue:#4FA8D8;--slate:#8B95A5;--white:#F3F5F7;
-  --green:#5FAE7E;--on-accent:#14171C;--table-head:#242A33;
-  --paper:#F4EFE4;--paper-b:#E7EFF5;
+  --ink:#0F1216;
+  --panel:#171B21;
+  --panel-2:#1E232B;
+  --line:#2A313B;
+  --amber:#E8A63A;
+  --blue:#4FA8D8;
+  --slate:#8B95A5;
+  --white:#F3F5F7;
+  --green:#5FAE7E;
+  --on-accent:#14171C;
+  --table-head:#242A33;
+  --paper:#F4EFE4;
+  --paper-b:#E7EFF5;
+
+  /* LIGHT RULER COLORS */
+  --ruler-bg-top:#D9DDE1;
+  --ruler-bg-bottom:#BEC4CA;
+  --ruler-mark:#20242A;
+  --ruler-major:#080A0D;
+  --ruler-number:#111317;
+
   --mono:'JetBrains Mono','SF Mono',Consolas,monospace;
   --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 }
 
 html.light{
-  --ink:#EEF0F3;--panel:#FFF;--panel-2:#F3F4F6;--line:#DBE0E6;
-  --white:#14171C;--slate:#5B6472;--table-head:#E8EAED;
+  --ink:#EEF0F3;
+  --panel:#FFF;
+  --panel-2:#F3F4F6;
+  --line:#DBE0E6;
+  --white:#14171C;
+  --slate:#5B6472;
+  --table-head:#E8EAED;
+
+  --ruler-bg-top:#E2E5E8;
+  --ruler-bg-bottom:#C9CED3;
+  --ruler-mark:#171A1E;
+  --ruler-major:#050607;
+  --ruler-number:#080A0D;
 }
 
 *{
@@ -261,8 +290,13 @@ body{
   min-width:0
 }
 
-.option.a{--accent:var(--amber)}
-.option.b{--accent:var(--blue)}
+.option.a{
+  --accent:var(--amber)
+}
+
+.option.b{
+  --accent:var(--blue)
+}
 
 .option-title{
   display:flex;
@@ -309,6 +343,29 @@ body{
   padding:5px 0
 }
 
+/* FIXED 7% TAX DISPLAY */
+.fixed-tax{
+  background:var(--panel-2);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:7px 10px;
+  text-align:center;
+  font-family:var(--mono);
+  font-size:15px;
+  color:var(--white)
+}
+
+.tax-label{
+  font-size:12.5px;
+  color:var(--slate);
+  text-align:center;
+  margin-bottom:4px
+}
+
+/* =========================================
+   LIGHTER RULERS
+   ========================================= */
+
 .ruler-block{
   margin-bottom:10px;
   min-width:0
@@ -328,24 +385,27 @@ body{
   position:relative;
   height:47px;
   min-width:0;
-  background:linear-gradient(180deg,#232a33,#151920);
-  border:1px solid var(--line);
-  border-radius:8px;
-  box-shadow:inset 0 2px 5px rgba(0,0,0,.4);
-  -webkit-mask-image:linear-gradient(
-    to right,
-    transparent 0,
-    black 14%,
-    black 86%,
-    transparent 100%
+
+  /* LIGHTER RULER */
+  background:linear-gradient(
+    180deg,
+    var(--ruler-bg-top) 0%,
+    var(--ruler-bg-bottom) 100%
   );
-  mask-image:linear-gradient(
-    to right,
-    transparent 0,
-    black 14%,
-    black 86%,
-    transparent 100%
-  )
+
+  border:1px solid #7D848C;
+  border-radius:8px;
+
+  box-shadow:
+    inset 0 2px 4px rgba(255,255,255,.55),
+    inset 0 -3px 5px rgba(0,0,0,.18),
+    0 1px 2px rgba(0,0,0,.15);
+
+  overflow:hidden;
+
+  /* REMOVED WHITE SIDE FADE */
+  -webkit-mask-image:none;
+  mask-image:none;
 }
 
 .ruler-scroll{
@@ -380,13 +440,18 @@ body{
 
 .tick .bar{
   width:1.5px;
-  background:#48505C;
+
+  /* BLACK MARKS */
+  background:var(--ruler-mark);
+
   border-radius:1px
 }
 
 .tick.major .bar{
   width:2px;
-  background:#9AA4B2
+
+  /* DARKER MAJOR MARKS */
+  background:var(--ruler-major)
 }
 
 .tick.ghost .bar{
@@ -398,11 +463,18 @@ body{
   top:1px;
   left:50%;
   transform:translateX(-50%);
+
+  /* BLACK NUMBERS */
   font-size:9px;
   font-family:var(--mono);
-  color:var(--slate);
+  color:var(--ruler-number);
+
   white-space:nowrap
 }
+
+/* =========================================
+   OLD SCHOOL APPLE STYLE CENTER WINDOW
+   ========================================= */
 
 .ruler-lens{
   position:absolute;
@@ -412,6 +484,7 @@ body{
   width:82px;
   height:43px;
   border-radius:4px;
+
   background:
     radial-gradient(
       160% 220% at 50% -20%,
@@ -429,7 +502,9 @@ body{
       #F1E9D0 45%,
       #DACC9E 100%
     );
+
   border:1px solid #A99C79;
+
   box-shadow:
     inset 0 3px 3px rgba(255,255,255,.95),
     inset 0 -7px 11px rgba(105,90,50,.4),
@@ -437,6 +512,7 @@ body{
     inset -7px 0 10px -5px rgba(105,90,50,.35),
     0 2px 4px rgba(0,0,0,.35),
     0 0 0 3px rgba(15,18,22,.55);
+
   display:flex;
   align-items:center;
   justify-content:center;
@@ -463,14 +539,13 @@ body{
   content:'';
   position:absolute;
   inset:0;
-  background:
-    repeating-linear-gradient(
-      180deg,
-      rgba(0,0,0,.05) 0,
-      rgba(0,0,0,.05) 1px,
-      transparent 1px,
-      transparent 3px
-    )
+  background:repeating-linear-gradient(
+    180deg,
+    rgba(0,0,0,.05) 0,
+    rgba(0,0,0,.05) 1px,
+    transparent 1px,
+    transparent 3px
+  )
 }
 
 .ruler-lens .lcd-value{
@@ -556,8 +631,7 @@ body{
   letter-spacing:-.02em;
   line-height:1.05;
   margin:3px 0 0;
-  font-variant-numeric:tabular-nums;
-  text-align:center
+  font-variant-numeric:tabular-nums
 }
 
 .sticker .payment sub{
@@ -595,8 +669,7 @@ body{
 
 .stat .v{
   font-family:var(--mono);
-  font-size:13px;
-  text-align:center
+  font-size:13px
 }
 
 .stat.warn .v{
@@ -749,15 +822,13 @@ footer{
 
 <div class="masthead">
   <div class="brand">
-    <svg width="24" height="24" viewBox="0 0 24 24"
-         fill="none" stroke="#E8A63A" stroke-width="2"
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+         stroke="#E8A63A" stroke-width="2"
          stroke-linecap="round" stroke-linejoin="round">
       <circle cx="12" cy="12" r="10"/>
       <line x1="8" y1="16" x2="16" y2="8"/>
-      <circle cx="8.5" cy="8.5" r="0.6"
-              fill="#E8A63A" stroke="none"/>
-      <circle cx="15.5" cy="15.5" r="0.6"
-              fill="#E8A63A" stroke="none"/>
+      <circle cx="8.5" cy="8.5" r="0.6" fill="#E8A63A" stroke="none"/>
+      <circle cx="15.5" cy="15.5" r="0.6" fill="#E8A63A" stroke="none"/>
     </svg>
 
     <h1>Auto Loan Calculator</h1>
@@ -772,15 +843,12 @@ footer{
 
 <div class="toolbar">
   <div class="header-actions">
-    <button
-      class="theme-btn"
-      id="themeBtn"
-      aria-label="Toggle light/dark theme"
-      title="Toggle light/dark theme">☀</button>
+    <button class="theme-btn"
+            id="themeBtn"
+            aria-label="Toggle light/dark theme"
+            title="Toggle light/dark theme">☀</button>
 
-    <button class="clear-btn" id="clearBtn">
-      Clear
-    </button>
+    <button class="clear-btn" id="clearBtn">Clear</button>
   </div>
 </div>
 
@@ -803,12 +871,11 @@ footer{
 
       <div class="inputrow">
         <span class="prefix">$</span>
-        <input
-          type="number"
-          id="priceA"
-          value="25000"
-          min="0"
-          step="100">
+        <input type="number"
+               id="priceA"
+               value="25000"
+               min="0"
+               step="100">
       </div>
     </div>
 
@@ -817,12 +884,11 @@ footer{
 
       <div class="inputrow">
         <span class="prefix">$</span>
-        <input
-          type="number"
-          id="feesA"
-          value="1307"
-          min="0"
-          step="1">
+        <input type="number"
+               id="feesA"
+               value="1307"
+               min="0"
+               step="1">
       </div>
     </div>
 
@@ -835,12 +901,11 @@ footer{
 
       <div class="inputrow">
         <span class="prefix">$</span>
-        <input
-          type="number"
-          id="tradeA"
-          value="0"
-          min="0"
-          step="100">
+        <input type="number"
+               id="tradeA"
+               value="0"
+               min="0"
+               step="100">
       </div>
     </div>
 
@@ -849,12 +914,11 @@ footer{
 
       <div class="inputrow">
         <span class="prefix">$</span>
-        <input
-          type="number"
-          id="payoffA"
-          value="0"
-          min="0"
-          step="100">
+        <input type="number"
+               id="payoffA"
+               value="0"
+               min="0"
+               step="100">
       </div>
     </div>
 
@@ -867,6 +931,7 @@ footer{
     </div>
 
     <div class="ruler-shell">
+
       <div class="ruler-scroll">
         <div class="ruler-track" id="downA-track"></div>
       </div>
@@ -874,8 +939,8 @@ footer{
       <div class="ruler-lens">
         <span class="lcd-value" id="downA-val">$0</span>
       </div>
-    </div>
 
+    </div>
   </div>
 
   <div class="ruler-block">
@@ -885,6 +950,7 @@ footer{
     </div>
 
     <div class="ruler-shell">
+
       <div class="ruler-scroll">
         <div class="ruler-track" id="aprA-track"></div>
       </div>
@@ -892,17 +958,16 @@ footer{
       <div class="ruler-lens">
         <span class="lcd-value" id="aprA-val">8.90%</span>
       </div>
-    </div>
 
+    </div>
   </div>
 
-  <!-- SALES TAX RATE BOX REMOVED -->
+  <div class="tax-label">Sales Tax (7%)</div>
+  <div class="fixed-tax">7.00%</div>
 
   <div class="term-field">
 
-    <div class="term-label">
-      Loan Term
-    </div>
+    <div class="term-label">Loan Term</div>
 
     <div class="termrow" data-group="A">
 
@@ -914,7 +979,6 @@ footer{
       <div class="termbtn" data-term="84">84 mo</div>
 
     </div>
-
   </div>
 
   <div class="sticker">
@@ -940,7 +1004,7 @@ footer{
       </div>
 
       <div class="stat">
-        <div class="k">Sales Tax (7%)</div>
+        <div class="k">Sales Tax</div>
         <div class="v" id="taxamtA">$0</div>
       </div>
 
@@ -986,12 +1050,14 @@ footer{
 </div>
 
 
-<!-- ================= DIVIDER ================= -->
-
 <div class="divider">
+
   <div class="line"></div>
+
   <div class="badge">VS</div>
+
   <div class="line"></div>
+
 </div>
 
 
@@ -1010,12 +1076,11 @@ footer{
 
       <div class="inputrow">
         <span class="prefix">$</span>
-        <input
-          type="number"
-          id="priceB"
-          value="25000"
-          min="0"
-          step="100">
+        <input type="number"
+               id="priceB"
+               value="25000"
+               min="0"
+               step="100">
       </div>
     </div>
 
@@ -1024,12 +1089,11 @@ footer{
 
       <div class="inputrow">
         <span class="prefix">$</span>
-        <input
-          type="number"
-          id="feesB"
-          value="1307"
-          min="0"
-          step="1">
+        <input type="number"
+               id="feesB"
+               value="1307"
+               min="0"
+               step="1">
       </div>
     </div>
 
@@ -1042,12 +1106,11 @@ footer{
 
       <div class="inputrow">
         <span class="prefix">$</span>
-        <input
-          type="number"
-          id="tradeB"
-          value="0"
-          min="0"
-          step="100">
+        <input type="number"
+               id="tradeB"
+               value="0"
+               min="0"
+               step="100">
       </div>
     </div>
 
@@ -1056,12 +1119,11 @@ footer{
 
       <div class="inputrow">
         <span class="prefix">$</span>
-        <input
-          type="number"
-          id="payoffB"
-          value="0"
-          min="0"
-          step="100">
+        <input type="number"
+               id="payoffB"
+               value="0"
+               min="0"
+               step="100">
       </div>
     </div>
 
@@ -1084,7 +1146,6 @@ footer{
       </div>
 
     </div>
-
   </div>
 
   <div class="ruler-block">
@@ -1104,16 +1165,14 @@ footer{
       </div>
 
     </div>
-
   </div>
 
-  <!-- SALES TAX RATE BOX REMOVED -->
+  <div class="tax-label">Sales Tax (7%)</div>
+  <div class="fixed-tax">7.00%</div>
 
   <div class="term-field">
 
-    <div class="term-label">
-      Loan Term
-    </div>
+    <div class="term-label">Loan Term</div>
 
     <div class="termrow" data-group="B">
 
@@ -1125,7 +1184,6 @@ footer{
       <div class="termbtn" data-term="84">84 mo</div>
 
     </div>
-
   </div>
 
   <div class="sticker">
@@ -1151,7 +1209,7 @@ footer{
       </div>
 
       <div class="stat">
-        <div class="k">Sales Tax (7%)</div>
+        <div class="k">Sales Tax</div>
         <div class="v" id="taxamtB">$0</div>
       </div>
 
@@ -1273,7 +1331,7 @@ function loadSaved(){
 
     const p=JSON.parse(raw);
 
-    return{
+    return {
       a:Object.assign({},DEFAULTS.a,p.a||{}),
       b:Object.assign({},DEFAULTS.b,p.b||{})
     };
@@ -1283,14 +1341,14 @@ function loadSaved(){
     return null;
 
   }
-
 }
 
 
 const saved=loadSaved();
 
-const state=saved||
-  JSON.parse(JSON.stringify(DEFAULTS));
+const state=saved||JSON.parse(
+  JSON.stringify(DEFAULTS)
+);
 
 
 const rulers={};
@@ -1311,13 +1369,18 @@ function buildRuler({
 }){
 
   const track=$(trackId);
+
   const scroll=track.parentElement;
+
   const shell=scroll.parentElement;
 
   const tickWidth=tickPx||8;
+
   const count=Math.round((max-min)/step)+1;
 
+
   track.innerHTML='';
+
   track.style.position='relative';
 
 
@@ -1341,12 +1404,16 @@ function buildRuler({
       )<step/2;
 
     d.className='tick'+(major?' major':'');
+
     d.style.width=tickWidth+'px';
+
 
     const bar=document.createElement('div');
 
     bar.className='bar';
-    bar.style.height=major?'20px':'9px';
+
+    bar.style.height=
+      major?'20px':'9px';
 
     d.appendChild(bar);
 
@@ -1359,12 +1426,13 @@ function buildRuler({
 
       num.textContent=
         decimals
-        ?val.toFixed(decimals)
-        :Math.round(val);
+          ?val.toFixed(decimals)
+          :Math.round(val);
 
       d.appendChild(num);
 
     }
+
 
     track.appendChild(d);
 
@@ -1382,6 +1450,7 @@ function buildRuler({
   const ghostCount=4;
 
   const rightGhosts=[];
+
   const leftGhosts=[];
 
 
@@ -1392,15 +1461,17 @@ function buildRuler({
     const rVal=
       +(max+g*step).toFixed(decimals);
 
+
     const rg=document.createElement('div');
 
-    rg.className='tick ghost'+
-      (isOuter?' major':'');
+    rg.className=
+      'tick ghost'+(isOuter?' major':'');
 
     rg.style.cssText=
       'position:absolute;top:0;bottom:0;width:'+
       tickWidth+
       'px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end';
+
 
     const rbar=document.createElement('div');
 
@@ -1420,30 +1491,36 @@ function buildRuler({
 
       rnum.textContent=
         decimals
-        ?rVal.toFixed(decimals)
-        :Math.round(rVal);
+          ?rVal.toFixed(decimals)
+          :Math.round(rVal);
 
       rg.appendChild(rnum);
 
     }
 
+
     track.appendChild(rg);
 
-    rightGhosts.push({el:rg,g});
+    rightGhosts.push({
+      el:rg,
+      g
+    });
 
 
     const lVal=
       +(min-g*step).toFixed(decimals);
 
+
     const lg=document.createElement('div');
 
-    lg.className='tick ghost'+
-      (isOuter?' major':'');
+    lg.className=
+      'tick ghost'+(isOuter?' major':'');
 
     lg.style.cssText=
       'position:absolute;top:0;bottom:0;width:'+
       tickWidth+
       'px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end';
+
 
     const lbar=document.createElement('div');
 
@@ -1463,16 +1540,20 @@ function buildRuler({
 
       lnum.textContent=
         decimals
-        ?lVal.toFixed(decimals)
-        :Math.round(lVal);
+          ?lVal.toFixed(decimals)
+          :Math.round(lVal);
 
       lg.appendChild(lnum);
 
     }
 
+
     track.appendChild(lg);
 
-    leftGhosts.push({el:lg,g});
+    leftGhosts.push({
+      el:lg,
+      g
+    });
 
   }
 
@@ -1487,6 +1568,7 @@ function buildRuler({
     const spacerWidth=
       Math.max(0,w/2-tickWidth/2);
 
+
     startSpacer.style.width=
       spacerWidth+'px';
 
@@ -1494,23 +1576,23 @@ function buildRuler({
       spacerWidth+'px';
 
 
-    rightGhosts.forEach(({el,g})=>{
+    rightGhosts.forEach(
+      ({el,g})=>{
+        el.style.left=
+          (spacerWidth+
+           count*tickWidth+
+           g*tickWidth)+'px';
+      }
+    );
 
-      el.style.left=
-        (spacerWidth+
-        count*tickWidth+
-        g*tickWidth)+'px';
 
-    });
-
-
-    leftGhosts.forEach(({el,g})=>{
-
-      el.style.left=
-        (spacerWidth-
-        g*tickWidth)+'px';
-
-    });
+    leftGhosts.forEach(
+      ({el,g})=>{
+        el.style.left=
+          (spacerWidth-
+           g*tickWidth)+'px';
+      }
+    );
 
   }
 
@@ -1552,7 +1634,10 @@ function buildRuler({
       scroll.scrollWidth-
       scroll.clientWidth;
 
-    if(trueMax<=0)return min;
+
+    if(trueMax<=0)
+      return min;
+
 
     const proportion=
       Math.min(
@@ -1563,14 +1648,17 @@ function buildRuler({
         )
       );
 
+
     const raw=
       min+
       proportion*(max-min);
+
 
     const snapped=
       Math.round(
         (raw-min)/step
       )*step+min;
+
 
     return +Math.min(
       max,
@@ -1589,15 +1677,18 @@ function buildRuler({
 
       if(raf)return;
 
-      raf=requestAnimationFrame(()=>{
 
-        raf=null;
+      raf=requestAnimationFrame(
+        ()=>{
 
-        current=readValue();
+          raf=null;
 
-        onChange(current);
+          current=readValue();
 
-      });
+          onChange(current);
+
+        }
+      );
 
     },
     {passive:true}
@@ -1606,13 +1697,15 @@ function buildRuler({
 
   if(window.ResizeObserver){
 
-    const ro=
-      new ResizeObserver(()=>{
+    const ro=new ResizeObserver(
+      ()=>{
 
         updateSpacers();
+
         jump(current);
 
-      });
+      }
+    );
 
     ro.observe(shell);
 
@@ -1623,6 +1716,7 @@ function buildRuler({
       ()=>{
 
         updateSpacers();
+
         jump(current);
 
       }
@@ -1633,11 +1727,15 @@ function buildRuler({
 
   updateSpacers();
 
+
   requestAnimationFrame(
     ()=>requestAnimationFrame(
       ()=>{
+
         updateSpacers();
+
         set(current,false);
+
       }
     )
   );
@@ -1694,11 +1792,13 @@ function updateApr(K,v){
 
     decimals:0,
 
-    initial:state[K.toLowerCase()].down,
+    initial:
+      state[K.toLowerCase()].down,
 
     format:money,
 
-    onChange:v=>updateDown(K,v)
+    onChange:v=>
+      updateDown(K,v)
 
   });
 
@@ -1721,9 +1821,11 @@ function updateApr(K,v){
 
     tickPx:16,
 
-    initial:state[K.toLowerCase()].apr,
+    initial:
+      state[K.toLowerCase()].apr,
 
-    onChange:v=>updateApr(K,v)
+    onChange:v=>
+      updateApr(K,v)
 
   });
 
@@ -1732,20 +1834,17 @@ function updateApr(K,v){
 
 function setActiveTerm(key,term){
 
-  const row=
-    document.querySelector(
-      `.termrow[data-group="${key.toUpperCase()}"]`
-    );
+  const row=document.querySelector(
+    `.termrow[data-group="${key.toUpperCase()}"]`
+  );
 
   row.querySelectorAll('.termbtn')
-    .forEach(b=>{
-
-      b.classList.toggle(
+    .forEach(
+      b=>b.classList.toggle(
         'active',
         +b.dataset.term===term
-      );
-
-    });
+      )
+    );
 
 }
 
@@ -1756,29 +1855,33 @@ document.querySelectorAll('.termrow')
   const key=
     row.dataset.group.toLowerCase();
 
+
   row.querySelectorAll('.termbtn')
-  .forEach(btn=>{
+    .forEach(btn=>{
 
-    btn.addEventListener(
-      'click',
-      ()=>{
+      btn.addEventListener(
+        'click',
+        ()=>{
 
-        row.querySelectorAll('.termbtn')
-          .forEach(b=>
-            b.classList.remove('active')
-          );
+          row.querySelectorAll('.termbtn')
+            .forEach(
+              b=>b.classList.remove('active')
+            );
 
-        btn.classList.add('active');
 
-        state[key].term=
-          +btn.dataset.term;
+          btn.classList.add('active');
 
-        calcAll();
 
-      }
-    );
+          state[key].term=
+            +btn.dataset.term;
 
-  });
+
+          calcAll();
+
+        }
+      );
+
+    });
 
 });
 
@@ -1787,61 +1890,57 @@ function calcOption(K){
 
   const key=K.toLowerCase();
 
-  const price=
-    Math.max(
-      0,
-      parseFloat(
-        $('price'+K).value
-      )||0
-    );
 
-  const trade=
-    Math.max(
-      0,
-      parseFloat(
-        $('trade'+K).value
-      )||0
-    );
+  const price=Math.max(
+    0,
+    parseFloat(
+      $('price'+K).value
+    )||0
+  );
 
-  const payoff=
-    Math.max(
-      0,
-      parseFloat(
-        $('payoff'+K).value
-      )||0
-    );
 
-  const fees=
-    Math.max(
-      0,
-      parseFloat(
-        $('fees'+K).value
-      )||0
-    );
+  const trade=Math.max(
+    0,
+    parseFloat(
+      $('trade'+K).value
+    )||0
+  );
 
-  const down=
-    Math.max(
-      0,
-      state[key].down||0
-    );
+
+  const payoff=Math.max(
+    0,
+    parseFloat(
+      $('payoff'+K).value
+    )||0
+  );
+
+
+  const fees=Math.max(
+    0,
+    parseFloat(
+      $('fees'+K).value
+    )||0
+  );
+
+
+  const down=Math.max(
+    0,
+    state[key].down||0
+  );
 
 
   state[key].price=price;
+
   state[key].trade=trade;
+
   state[key].payoff=payoff;
+
   state[key].fees=fees;
 
 
-  /*
-    FIXED GEORGIA SALES TAX:
-    7%
-  */
-
   const taxableBase=
-    Math.max(
-      0,
-      price-trade
-    )+fees;
+    Math.max(0,price-trade)+fees;
+
 
   const taxAmt=
     taxableBase*.07;
@@ -1851,15 +1950,14 @@ function calcOption(K){
     trade-payoff;
 
 
-  const financed=
-    Math.max(
-      0,
-      price+
-      taxAmt+
-      fees-
-      netTrade-
-      down
-    );
+  const financed=Math.max(
+    0,
+    price+
+    taxAmt+
+    fees-
+    netTrade-
+    down
+  );
 
 
   const apr=
@@ -1874,11 +1972,10 @@ function calcOption(K){
 
   let payment=
     r===0
-    ?financed/n
-    :
-    financed*
-    (r*Math.pow(1+r,n))/
-    (Math.pow(1+r,n)-1);
+      ?financed/n
+      :financed*
+       (r*Math.pow(1+r,n))/
+       (Math.pow(1+r,n)-1);
 
 
   if(!isFinite(payment))
@@ -1887,6 +1984,7 @@ function calcOption(K){
 
   const totalPaid=
     payment*n;
+
 
   const totalInterest=
     Math.max(
@@ -1909,11 +2007,14 @@ function calcOption(K){
   $('financed'+K).textContent=
     money(financed);
 
+
   $('taxamt'+K).textContent=
     money(taxAmt);
 
+
   $('interest'+K).textContent=
     money(totalInterest);
+
 
   $('total'+K).textContent=
     money(totalPaid);
@@ -1921,6 +2022,7 @@ function calcOption(K){
 
   $('down'+K+'-val').textContent=
     money(down);
+
 
   $('apr'+K+'-val').textContent=
     state[key].apr.toFixed(2)+'%';
@@ -1953,6 +2055,7 @@ function buildSchedule(
 
   body.innerHTML='';
 
+
   let balance=principal;
 
   const frag=
@@ -1964,11 +2067,14 @@ function buildSchedule(
     const interest=
       balance*r;
 
+
     let pp=
       payment-interest;
 
+
     if(m===n)
       pp=balance;
+
 
     balance=
       Math.max(
@@ -2036,14 +2142,10 @@ function calcAll(){
 
   $('cmpDelta').textContent=
     Math.abs(delta)<.5
-    ?
-    'Payments are about equal'
-    :
-    delta>0
-    ?
-    `Option B is ${money(delta)}/mo lower`
-    :
-    `Option A is ${money(-delta)}/mo lower`;
+      ?'Payments are about equal'
+      :delta>0
+        ?`Option B is ${money(delta)}/mo lower`
+        :`Option A is ${money(-delta)}/mo lower`;
 
 
   try{
@@ -2058,13 +2160,9 @@ function calcAll(){
 }
 
 
-/*
-  ENTERABLE DATA WINDOWS
-
-  Clicking into the number automatically
-  selects the existing value so the user
-  can immediately type the replacement.
-*/
+/* =========================================
+   ENTERABLE FIELD CLICK-TO-CLEAR
+   ========================================= */
 
 [
   'priceA',
@@ -2083,12 +2181,13 @@ function calcAll(){
     'focus',
     function(){
 
-      setTimeout(
-        ()=>{
-          this.select();
-        },
-        0
-      );
+      if(this.dataset.cleared!=='yes'){
+
+        this.select();
+
+        this.dataset.cleared='yes';
+
+      }
 
     }
   );
@@ -2098,7 +2197,23 @@ function calcAll(){
     'click',
     function(){
 
-      this.select();
+      if(this.dataset.cleared!=='yes'){
+
+        this.select();
+
+        this.dataset.cleared='yes';
+
+      }
+
+    }
+  );
+
+
+  input.addEventListener(
+    'blur',
+    function(){
+
+      this.dataset.cleared='no';
 
     }
   );
@@ -2106,18 +2221,19 @@ function calcAll(){
 
   input.addEventListener(
     'input',
-    ()=>{
+    function(){
+
       calcAll();
+
     }
   );
 
 });
 
 
-[
-  ['scheduleToggleA','scheduleA'],
-  ['scheduleToggleB','scheduleB']
-].forEach(([tId,sId])=>{
+[['scheduleToggleA','scheduleA'],
+ ['scheduleToggleB','scheduleB']]
+.forEach(([tId,sId])=>{
 
   $(tId).addEventListener(
     'click',
@@ -2125,6 +2241,7 @@ function calcAll(){
 
       const open=
         $(sId).classList.toggle('open');
+
 
       $(tId).classList.toggle(
         'open',
@@ -2160,6 +2277,7 @@ function applyStateToDOM(){
 
     $('down'+K+'-val').textContent=
       money(s.down);
+
 
     $('apr'+K+'-val').textContent=
       s.apr.toFixed(2)+'%';
@@ -2202,6 +2320,7 @@ $('clearBtn').addEventListener(
         JSON.stringify(DEFAULTS)
       )
     );
+
 
     applyStateToDOM();
 
