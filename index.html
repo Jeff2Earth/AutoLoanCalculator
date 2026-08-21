@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b1220">
+  <title>Auto Loan Calculator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">$</div>
+      <div>
+        <div class="brand-name">Auto Loan Calculator</div>
+        <div class="brand-sub">Vehicle payment & financing estimator</div>
+      </div>
+    </div>
+    <button id="resetBtn" class="ghost-btn" type="button">Reset</button>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <h1>Calculate the deal.</h1>
+        <p>Enter the vehicle, trade, cash down, taxes and financing terms to see the estimated payment instantly.</p>
+      </div>
+    </section>
+
+    <section class="layout">
+      <div class="card inputs-card">
+        <div class="section-title">
+          <span class="step">1</span>
+          <div>
+            <h2>Deal information</h2>
+            <p>Use whole dollars or decimals where needed.</p>
+          </div>
+        </div>
+
+        <div class="field-grid">
+          <label class="field">
+            <span>Vehicle price</span>
+            <div class="input-wrap"><span>$</span><input id="vehiclePrice" inputmode="decimal" value="40000"></div>
+          </label>
+
+          <label class="field">
+            <span>Trade-in value</span>
+            <div class="input-wrap"><span>$</span><input id="tradeValue" inputmode="decimal" value="15000"></div>
+          </label>
+
+          <label class="field">
+            <span>Trade payoff</span>
+            <div class="input-wrap"><span>$</span><input id="tradePayoff" inputmode="decimal" value="12000"></div>
+          </label>
+
+          <label class="field">
+            <span>Cash down</span>
+            <div class="input-wrap"><span>$</span><input id="downPayment" inputmode="decimal" value="3000"></div>
+          </label>
+
+          <label class="field">
+            <span>Sales tax rate</span>
+            <div class="input-wrap"><input id="taxRate" inputmode="decimal" value="7"><span>%</span></div>
+          </label>
+
+          <label class="field">
+            <span>Taxes & fees</span>
+            <div class="input-wrap"><span>$</span><input id="fees" inputmode="decimal" value="1200"></div>
+          </label>
+        </div>
+
+        <div class="toggle-row">
+          <div>
+            <strong>Tax trade-in credit</strong>
+            <small>Subtract the trade value from the taxable vehicle price.</small>
+          </div>
+          <label class="switch">
+            <input id="taxTrade" type="checkbox" checked>
+            <span></span>
+          </label>
+        </div>
+
+        <div class="section-title financing-title">
+          <span class="step">2</span>
+          <div>
+            <h2>Financing</h2>
+            <p>Choose the APR and primary loan term.</p>
+          </div>
+        </div>
+
+        <div class="field-grid">
+          <label class="field">
+            <span>APR</span>
+            <div class="input-wrap"><input id="apr" inputmode="decimal" value="6.99"><span>%</span></div>
+          </label>
+
+          <label class="field">
+            <span>Primary term</span>
+            <select id="term">
+              <option value="36">36 months</option>
+              <option value="48">48 months</option>
+              <option value="60">60 months</option>
+              <option value="72" selected>72 months</option>
+              <option value="75">75 months</option>
+              <option value="84">84 months</option>
+              <option value="96">96 months</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="info-box">
+          <strong>Note:</strong> This is an estimate. Actual lender payments can vary because of lender fees, registration/title charges, taxes, products, and lender-specific rules.
+        </div>
+      </div>
+
+      <div class="card result-card">
+        <div class="result-label">Estimated monthly payment</div>
+        <div id="primaryPayment" class="primary-payment">$0.00</div>
+        <div id="primaryTermLabel" class="term-label">72 months</div>
+
+        <div class="summary-grid">
+          <div><span>Amount financed</span><strong id="amountFinanced">$0.00</strong></div>
+          <div><span>Total interest</span><strong id="totalInterest">$0.00</strong></div>
+          <div><span>Total of payments</span><strong id="totalPayments">$0.00</strong></div>
+          <div><span>Trade equity</span><strong id="tradeEquity">$0.00</strong></div>
+        </div>
+
+        <div class="breakdown">
+          <div class="breakdown-head"><span>Deal breakdown</span><span id="taxableLabel">Taxable amount</span></div>
+          <div class="bar"><div id="taxBar"></div><div id="principalBar"></div></div>
+          <div class="breakdown-row"><span>Estimated tax</span><strong id="estimatedTax">$0.00</strong></div>
+          <div class="breakdown-row"><span>Negative/positive equity</span><strong id="equityResult">$0.00</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card comparison-card">
+      <div class="section-title">
+        <span class="step">3</span>
+        <div>
+          <h2>Payment comparison</h2>
+          <p>See how the payment and interest change by term.</p>
+        </div>
+      </div>
+      <div class="comparison-grid" id="comparisonGrid"></div>
+    </section>
+  </main>
+
+  <footer>
+    Auto Loan Calculator • Version 1
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
