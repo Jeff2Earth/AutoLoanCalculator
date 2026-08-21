@@ -407,7 +407,7 @@
 
       <div class="ruler-block">
         <div class="ruler-label"><span class="name">APR</span></div>
-        <div class="ruler-shell" id="aprA-ruler"><div class="ruler-scroll"><div class="ruler-track" id="aprA-track"></div></div><div class="ruler-lens"><span class="lcd-value" id="aprA-val">9.0%</span></div></div>
+        <div class="ruler-shell" id="aprA-ruler"><div class="ruler-scroll"><div class="ruler-track" id="aprA-track"></div></div><div class="ruler-lens"><span class="lcd-value" id="aprA-val">8.90%</span></div></div>
       </div>
 
       <div class="field">
@@ -469,7 +469,7 @@
 
       <div class="ruler-block">
         <div class="ruler-label"><span class="name">APR</span></div>
-        <div class="ruler-shell" id="aprB-ruler"><div class="ruler-scroll"><div class="ruler-track" id="aprB-track"></div></div><div class="ruler-lens"><span class="lcd-value" id="aprB-val">9.0%</span></div></div>
+        <div class="ruler-shell" id="aprB-ruler"><div class="ruler-scroll"><div class="ruler-track" id="aprB-track"></div></div><div class="ruler-lens"><span class="lcd-value" id="aprB-val">8.90%</span></div></div>
       </div>
 
       <div class="field">
@@ -526,8 +526,8 @@
 
   const DEFAULTS = {
     price: 25000, trade: 0,
-    a: { down: 0, tax: 7.0, apr: 9.0, term: 60 },
-    b: { down: 0, tax: 7.0, apr: 9.0, term: 60 }
+    a: { down: 0, tax: 7.0, apr: 8.9, term: 60 },
+    b: { down: 0, tax: 7.0, apr: 8.9, term: 60 }
   };
 
   function loadSaved(){
@@ -634,20 +634,20 @@
   }
 
   buildRuler({
-    key: 'taxA', trackId: 'taxA-track', min: 0, max: 12, step: 0.1, majorStep: 1, decimals: 1, initial: state.a.tax,
-    onChange: v => { state.a.tax = v; $('taxA-val').textContent = v.toFixed(1) + '%'; calcAll(); }
+    key: 'taxA', trackId: 'taxA-track', min: 0, max: 12, step: 0.25, majorStep: 1, decimals: 2, initial: state.a.tax,
+    onChange: v => { state.a.tax = v; $('taxA-val').textContent = v.toFixed(2) + '%'; calcAll(); }
   });
   buildRuler({
-    key: 'aprA', trackId: 'aprA-track', min: 0, max: 24, step: 0.1, majorStep: 2, decimals: 1, initial: state.a.apr,
-    onChange: v => { state.a.apr = v; $('aprA-val').textContent = v.toFixed(1) + '%'; calcAll(); }
+    key: 'aprA', trackId: 'aprA-track', min: 0, max: 24, step: 0.25, majorStep: 2, decimals: 2, initial: state.a.apr,
+    onChange: v => { state.a.apr = v; $('aprA-val').textContent = v.toFixed(2) + '%'; calcAll(); }
   });
   buildRuler({
-    key: 'taxB', trackId: 'taxB-track', min: 0, max: 12, step: 0.1, majorStep: 1, decimals: 1, initial: state.b.tax,
-    onChange: v => { state.b.tax = v; $('taxB-val').textContent = v.toFixed(1) + '%'; calcAll(); }
+    key: 'taxB', trackId: 'taxB-track', min: 0, max: 12, step: 0.25, majorStep: 1, decimals: 2, initial: state.b.tax,
+    onChange: v => { state.b.tax = v; $('taxB-val').textContent = v.toFixed(2) + '%'; calcAll(); }
   });
   buildRuler({
-    key: 'aprB', trackId: 'aprB-track', min: 0, max: 24, step: 0.1, majorStep: 2, decimals: 1, initial: state.b.apr,
-    onChange: v => { state.b.apr = v; $('aprB-val').textContent = v.toFixed(1) + '%'; calcAll(); }
+    key: 'aprB', trackId: 'aprB-track', min: 0, max: 24, step: 0.25, majorStep: 2, decimals: 2, initial: state.b.apr,
+    onChange: v => { state.b.apr = v; $('aprB-val').textContent = v.toFixed(2) + '%'; calcAll(); }
   });
 
   // ---------- Term buttons ----------
@@ -757,10 +757,10 @@
     $('downB').value = state.b.down;
     setActiveTerm('a', state.a.term);
     setActiveTerm('b', state.b.term);
-    $('taxA-val').textContent = state.a.tax.toFixed(1) + '%';
-    $('aprA-val').textContent = state.a.apr.toFixed(1) + '%';
-    $('taxB-val').textContent = state.b.tax.toFixed(1) + '%';
-    $('aprB-val').textContent = state.b.apr.toFixed(1) + '%';
+    $('taxA-val').textContent = state.a.tax.toFixed(2) + '%';
+    $('aprA-val').textContent = state.a.apr.toFixed(2) + '%';
+    $('taxB-val').textContent = state.b.tax.toFixed(2) + '%';
+    $('aprB-val').textContent = state.b.apr.toFixed(2) + '%';
     if (rulers.taxA) rulers.taxA.set(state.a.tax, true);
     if (rulers.aprA) rulers.aprA.set(state.a.apr, true);
     if (rulers.taxB) rulers.taxB.set(state.b.tax, true);
