@@ -9,6 +9,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0F1216">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap" rel="stylesheet">
 <script>
 (function(){
   try {
@@ -26,6 +27,7 @@
   --paper:#F4EFE4;--paper-b:#E7EFF5;
   --mono:'JetBrains Mono','SF Mono',Consolas,monospace;
   --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --handwriting:'Caveat', cursive;
 }
 html.light{
   --ink:#EEF0F3;--panel:#FFF;--panel-2:#F3F4F6;--line:#DBE0E6;
@@ -43,7 +45,14 @@ header{
   margin-bottom:16px;flex-wrap:wrap;gap:10px
 }
 header h1{font-size:24px;margin:0;color:var(--amber);letter-spacing:-.01em}
-header .byline{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--amber);margin-top:4px}
+header .byline{
+  font-family:var(--handwriting);
+  font-size:24px;
+  font-weight:700;
+  letter-spacing:.02em;
+  color:var(--amber);
+  margin-top:2px;
+}
 .header-actions{display:flex;gap:8px}
 .clear-btn,.theme-btn{
   background:var(--panel);border:1px solid var(--line);color:var(--slate);
@@ -243,12 +252,7 @@ footer{margin-top:15px;font-size:11px;color:var(--slate);text-align:center}
   </div>
 </header>
 
-<div class="shared">
-  <div class="field" style="grid-column: 1 / -1; display:none;">
-    <label>Vehicle Price</label>
-    <div class="inputrow"><span class="prefix">$</span><input type="number" id="priceShared" value="25000" min="0" step="100"></div>
-  </div>
-</div>
+<div class="shared" style="display:none;"></div>
 
 <div class="split-grid">
 <div class="option a">
@@ -328,7 +332,7 @@ footer{margin-top:15px;font-size:11px;color:var(--slate);text-align:center}
   </div>
 
   <div class="compact-row">
-    <div class="field" style="display:none;">
+    <div class="field">
       <label>Trade Value</label>
       <div class="inputrow"><span class="prefix">$</span><input type="number" id="tradeB" value="0" min="0" step="100"></div>
     </div>
@@ -365,7 +369,7 @@ footer{margin-top:15px;font-size:11px;color:var(--slate);text-align:center}
     <div class="stats">
       <div class="stat"><div class="k">Financed</div><div class="v" id="financedB">$0</div></div>
       <div class="stat"><div class="k">Sales Tax</div><div class="v" id="taxamtB">$0</div></div>
-      <div class="stat warn"><div class="k">Total Interest</div><div class="v" id="interestB">$0</div></div>
+      <div class="stat warn"><div class="k">Total of Payments</div><div class="v" id="interestB">$0</div></div>
       <div class="stat good"><div class="k">Total of Payments</div><div class="v" id="totalB">$0</div></div>
     </div>
     <button class="schedule-toggle" id="scheduleToggleB">Amortization Schedule <span class="chev">▾</span></button>
@@ -386,7 +390,7 @@ footer{margin-top:15px;font-size:11px;color:var(--slate);text-align:center}
 const $=id=>document.getElementById(id);
 const money=n=>'$'+n.toLocaleString('en-US',{maximumFractionDigits:0});
 const moneyC=n=>'$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-const STORAGE_KEY='autoLoanCalculator.state.v3';
+const STORAGE_KEY='autoLoanCalculator.state.v4';
 const DEFAULTS={
   a:{price:25000,trade:0,payoff:0,fees:1307,down:0,apr:8.9,term:60},
   b:{price:25000,trade:0,payoff:0,fees:1307,down:0,apr:8.9,term:60}
@@ -518,7 +522,10 @@ function calcOption(K){
   state[key].fees=fees;
   state[key].down=down;
 
-  const taxAmt=price*.07;
+  // Taxable amount: difference between vehicle price and trade value (minimum 0) plus all fees
+  const taxableBase=Math.max(0,price-trade)+fees;
+  const taxAmt=taxableBase*.07;
+
   const netTrade=trade-payoff;
   const financed=Math.max(0,price+taxAmt+fees-netTrade-down);
   const apr=state[key].apr/100,n=state[key].term,r=apr/12;
@@ -530,7 +537,7 @@ function calcOption(K){
   $('payment'+K).textContent=payment.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});
   $('financed'+K).textContent=money(financed);
   $('taxamt'+K).textContent=money(taxAmt);
-  $('interest'+K).textContent=money(totalInterest);
+  $('interest'+K).textContent=money(totalPaid);
   $('total'+K).textContent=money(totalPaid);
 
   $('down'+K+'-val').textContent=money(down);
@@ -556,7 +563,7 @@ function buildSchedule(K,principal,r,n,payment){
 function calcAll(){
   const pa=calcOption('A'),pb=calcOption('B');
   $('cmpA').textContent=pa.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0})+'/mo';
-  $('cmpB').textContent=pb.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0})+'/mo';
+  $('cmpB').textContent=pb.toLocaleString('en-US',{style:'currency',currency:$('tag-top')?'USD':'USD',maximumFractionDigits:0})+'/mo';
   const delta=pa-pb;
   $('cmpDelta').textContent=Math.abs(delta)<.5?'Payments are about equal':
     delta>0?`Option B is ${money(delta)}/mo lower`:`Option A is ${money(-delta)}/mo lower`;
@@ -612,6 +619,7 @@ syncThemeBtn();
 $('themeBtn').addEventListener('click',()=>{
   document.documentElement.classList.toggle('light');
   try{localStorage.setItem('autoLoanCalculator.theme',isLight()?'light':'dark')}catch(e){}
+  syncTargetBtn=null;
   syncThemeBtn();
 });
 </script>
