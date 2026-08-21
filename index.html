@@ -9,6 +9,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0F1216">
+
 <script>
 (function(){
   try {
@@ -18,6 +19,7 @@
   } catch(e){}
 })();
 </script>
+
 <style>
 :root{
   --ink:#0F1216;--panel:#171B21;--panel-2:#1E232B;--line:#2A313B;
@@ -27,666 +29,2227 @@
   --mono:'JetBrains Mono','SF Mono',Consolas,monospace;
   --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 }
+
 html.light{
   --ink:#EEF0F3;--panel:#FFF;--panel-2:#F3F4F6;--line:#DBE0E6;
   --white:#14171C;--slate:#5B6472;--table-head:#E8EAED;
 }
-*{box-sizing:border-box;font-weight:bold !important;}
-html,body{margin:0;padding:0}
-body{
-  background:var(--ink);color:var(--white);font-family:var(--sans);
-  min-height:100vh;margin:0;
+
+*{
+  box-sizing:border-box;
+  font-weight:bold !important;
 }
-.wrap{width:100%;max-width:1180px;margin:0 auto;padding:14px 16px 48px}
+
+html,body{
+  margin:0;
+  padding:0
+}
+
+body{
+  background:var(--ink);
+  color:var(--white);
+  font-family:var(--sans);
+  min-height:100vh;
+  margin:0;
+}
+
+.wrap{
+  width:100%;
+  max-width:1180px;
+  margin:0 auto;
+  padding:14px 16px 48px
+}
 
 .masthead{
-  background:#000;padding:24px 16px 20px;text-align:center;
+  background:#000;
+  padding:24px 16px 20px;
+  text-align:center;
 }
-.masthead .brand{display:flex;align-items:center;justify-content:center;gap:10px}
-.masthead h1{
-  margin:0;font-size:26px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
-  background:linear-gradient(180deg,#F7DFA5,#E8A63A 55%,#C98B2E);
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-}
-.masthead .byline{margin-top:6px;font-size:13px;color:var(--slate);letter-spacing:.02em}
-.masthead .byline strong{color:var(--amber)}
 
-.toolbar{display:flex;justify-content:flex-end;margin-bottom:14px}
-.header-actions{display:flex;gap:8px}
-.clear-btn,.theme-btn{
-  background:var(--panel);border:1px solid var(--line);color:var(--slate);
-  border-radius:8px;cursor:pointer;transition:.15s
+.masthead .brand{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px
 }
-.clear-btn{font-family:var(--mono);font-size:12px;padding:8px 14px}
-.theme-btn{font-size:15px;width:36px;display:flex;align-items:center;justify-content:center}
-.clear-btn:hover,.theme-btn:hover{border-color:var(--amber);color:var(--amber)}
+
+.masthead h1{
+  margin:0;
+  font-size:26px;
+  font-weight:800;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  background:linear-gradient(180deg,#F7DFA5,#E8A63A 55%,#C98B2E);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+.masthead .byline{
+  margin-top:6px;
+  font-size:13px;
+  color:var(--slate);
+  letter-spacing:.02em
+}
+
+.masthead .byline strong{
+  color:var(--amber)
+}
+
+.toolbar{
+  display:flex;
+  justify-content:flex-end;
+  margin-bottom:14px
+}
+
+.header-actions{
+  display:flex;
+  gap:8px
+}
+
+.clear-btn,.theme-btn{
+  background:var(--panel);
+  border:1px solid var(--line);
+  color:var(--slate);
+  border-radius:8px;
+  cursor:pointer;
+  transition:.15s
+}
+
+.clear-btn{
+  font-family:var(--mono);
+  font-size:12px;
+  padding:8px 14px
+}
+
+.theme-btn{
+  font-size:15px;
+  width:36px;
+  display:flex;
+  align-items:center;
+  justify-content:center
+}
+
+.clear-btn:hover,.theme-btn:hover{
+  border-color:var(--amber);
+  color:var(--amber)
+}
 
 .shared{
-  background:var(--panel);border:1px solid var(--line);border-radius:12px;
-  padding:12px 18px;display:grid;grid-template-columns:1fr 1fr;gap:12px
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:12px 18px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px
 }
+
 .field label{
-  display:block;text-align:center;font-size:13px;color:var(--slate);
-  margin-bottom:5px;letter-spacing:.01em
+  display:block;
+  text-align:center;
+  font-size:13px;
+  color:var(--slate);
+  margin-bottom:5px;
+  letter-spacing:.01em
 }
+
 .inputrow{
-  display:flex;align-items:center;justify-content:center;background:var(--panel-2);
-  border:1px solid var(--line);border-radius:8px;padding:0 10px;
-  max-width:150px;margin:0 auto
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--panel-2);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:0 10px;
+  max-width:150px;
+  margin:0 auto
 }
-.inputrow .prefix{color:var(--slate);font-family:var(--mono);font-size:15px;padding-right:4px}
+
+.inputrow .prefix{
+  color:var(--slate);
+  font-family:var(--mono);
+  font-size:15px;
+  padding-right:4px
+}
+
 .inputrow input[type=number]{
-  flex:0 0 auto;width:6ch;min-width:0;background:transparent;border:0;outline:0;color:var(--white);
-  font-family:var(--mono);font-size:16px;text-align:center;padding:6px 0;
-  -moz-appearance:textfield
+  flex:0 0 auto;
+  width:6ch;
+  min-width:0;
+  background:transparent;
+  border:0;
+  outline:0;
+  color:var(--white);
+  font-family:var(--mono);
+  font-size:16px;
+  text-align:center;
+  padding:6px 0;
+  -moz-appearance:textfield;
+  cursor:text;
 }
+
 .inputrow input[type=number]::-webkit-outer-spin-button,
-.inputrow input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.inputrow input[type=number]::-webkit-inner-spin-button{
+  -webkit-appearance:none;
+  margin:0
+}
 
 .split-grid{
-  display:grid;grid-template-columns:minmax(0,1fr);gap:14px;margin-top:14px
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  gap:14px;
+  margin-top:14px
 }
-@media(min-width:860px){
-  .split-grid{grid-template-columns:minmax(0,1fr) 54px minmax(0,1fr);align-items:start}
-}
-.divider{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:8px}
-@media(min-width:860px){.divider{flex-direction:column;height:100%;gap:10px}}
-.divider .line{background:var(--line);flex:1;height:1px}
-@media(min-width:860px){.divider .line{width:1px;height:auto}}
-.divider .badge{
-  flex:0 0 auto;width:36px;height:36px;border-radius:50%;
-  background:linear-gradient(160deg,#3a4250,#20252c);border:1px solid var(--line);
-  display:flex;align-items:center;justify-content:center;font-family:var(--mono);
-  font-size:11px;color:var(--slate);letter-spacing:.05em
-}
-.option{
-  background:var(--panel);border:1px solid var(--line);border-radius:12px;
-  padding:15px 17px;min-width:0
-}
-.option.a{--accent:var(--amber)}.option.b{--accent:var(--blue)}
-.option-title{
-  display:flex;align-items:center;gap:7px;font-size:13.5px;
-  letter-spacing:.04em;text-transform:uppercase;color:var(--accent);margin-bottom:11px
-}
-.option-title .dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
 
-.option .field{margin-bottom:10px}
-.compact-row{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px}
-.compact-row .field{margin-bottom:0}
-.compact-row .field label,.down-field label{font-size:12.5px;margin-bottom:4px}
-.compact-row .inputrow input[type=number],.down-field .inputrow input[type=number]{font-size:15px;padding:5px 0}
+@media(min-width:860px){
+  .split-grid{
+    grid-template-columns:minmax(0,1fr) 54px minmax(0,1fr);
+    align-items:start
+  }
+}
+
+.divider{
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  justify-content:center;
+  gap:8px
+}
+
+@media(min-width:860px){
+  .divider{
+    flex-direction:column;
+    height:100%;
+    gap:10px
+  }
+}
+
+.divider .line{
+  background:var(--line);
+  flex:1;
+  height:1px
+}
+
+@media(min-width:860px){
+  .divider .line{
+    width:1px;
+    height:auto
+  }
+}
+
+.divider .badge{
+  flex:0 0 auto;
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  background:linear-gradient(160deg,#3a4250,#20252c);
+  border:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:var(--mono);
+  font-size:11px;
+  color:var(--slate);
+  letter-spacing:.05em
+}
+
+.option{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:15px 17px;
+  min-width:0
+}
+
+.option.a{--accent:var(--amber)}
+.option.b{--accent:var(--blue)}
+
+.option-title{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  font-size:13.5px;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:11px
+}
+
+.option-title .dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--accent)
+}
+
+.option .field{
+  margin-bottom:10px
+}
+
+.compact-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+  margin-bottom:10px
+}
+
+.compact-row .field{
+  margin-bottom:0
+}
+
+.compact-row .field label,
+.down-field label{
+  font-size:12.5px;
+  margin-bottom:4px
+}
+
+.compact-row .inputrow input[type=number],
+.down-field .inputrow input[type=number]{
+  font-size:15px;
+  padding:5px 0
+}
 
 .fixed-tax{
-  background:var(--panel-2);border:1px solid var(--line);border-radius:8px;
-  padding:7px 10px;text-align:center;font-family:var(--mono);font-size:15px;
+  background:var(--panel-2);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:7px 10px;
+  text-align:center;
+  font-family:var(--mono);
+  font-size:15px;
   color:var(--white)
 }
-.tax-label{font-size:12.5px;color:var(--slate);text-align:center;margin-bottom:4px}
 
-.ruler-block{margin-bottom:10px;min-width:0}
-.ruler-label{margin-bottom:4px;text-align:center}
-.ruler-label .name{font-size:12.5px;color:var(--slate)}
-.ruler-shell{
-  position:relative;height:47px;min-width:0;
-  background:linear-gradient(180deg,#232a33,#151920);
-  border:1px solid var(--line);border-radius:8px;
-  box-shadow:inset 0 2px 5px rgba(0,0,0,.4);overflow:hidden;
-  -webkit-mask-image:linear-gradient(to right,transparent 0,black 14%,black 86%,transparent 100%);
-  mask-image:linear-gradient(to right,transparent 0,black 14%,black 86%,transparent 100%)
+.tax-label{
+  font-size:12.5px;
+  color:var(--slate);
+  text-align:center;
+  margin-bottom:4px
 }
+
+.ruler-block{
+  margin-bottom:10px;
+  min-width:0
+}
+
+.ruler-label{
+  margin-bottom:4px;
+  text-align:center
+}
+
+.ruler-label .name{
+  font-size:12.5px;
+  color:var(--slate)
+}
+
+.ruler-shell{
+  position:relative;
+  height:47px;
+  min-width:0;
+  background:linear-gradient(180deg,#232a33,#151920);
+  border:1px solid var(--line);
+  border-radius:8px;
+  box-shadow:inset 0 2px 5px rgba(0,0,0,.4);
+  overflow:hidden;
+  -webkit-mask-image:linear-gradient(
+    to right,
+    transparent 0,
+    black 14%,
+    black 86%,
+    transparent 100%
+  );
+  mask-image:linear-gradient(
+    to right,
+    transparent 0,
+    black 14%,
+    black 86%,
+    transparent 100%
+  )
+}
+
 .ruler-scroll{
-  height:100%;width:100%;overflow-x:auto;overflow-y:hidden;
+  height:100%;
+  width:100%;
+  overflow-x:auto;
+  overflow-y:hidden;
   -webkit-overflow-scrolling:touch;
   scrollbar-width:none
 }
-.ruler-scroll::-webkit-scrollbar{display:none}
-.ruler-track{display:flex;align-items:flex-end;height:100%}
+
+.ruler-scroll::-webkit-scrollbar{
+  display:none
+}
+
+.ruler-track{
+  display:flex;
+  align-items:flex-end;
+  height:100%
+}
+
 .tick{
-  flex:0 0 auto;width:8px;height:100%;display:flex;flex-direction:column;
-  align-items:center;justify-content:flex-end;position:relative
+  flex:0 0 auto;
+  width:8px;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-end;
+  position:relative
 }
-.tick .bar{width:1.5px;background:#48505C;border-radius:1px}
-.tick.major .bar{width:2px;background:#9AA4B2}
-.tick.ghost .bar{opacity:.3}
+
+.tick .bar{
+  width:1.5px;
+  background:#48505C;
+  border-radius:1px
+}
+
+.tick.major .bar{
+  width:2px;
+  background:#9AA4B2
+}
+
+.tick.ghost .bar{
+  opacity:.3
+}
+
 .tick .num{
-  position:absolute;top:1px;left:50%;transform:translateX(-50%);
-  font-size:9px;font-family:var(--mono);color:var(--slate);white-space:nowrap
+  position:absolute;
+  top:1px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:9px;
+  font-family:var(--mono);
+  color:var(--slate);
+  white-space:nowrap
 }
+
 .ruler-lens{
-  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-  width:82px;height:43px;border-radius:4px;
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:82px;
+  height:43px;
+  border-radius:4px;
   background:
-    radial-gradient(160% 220% at 50% -20%,rgba(255,255,255,.85),rgba(255,255,255,0) 55%),
-    radial-gradient(140% 200% at 50% 130%,rgba(120,102,55,.4),rgba(120,102,55,0) 60%),
-    linear-gradient(180deg,#FEFCF4 0%,#F1E9D0 45%,#DACC9E 100%);
+    radial-gradient(
+      160% 220% at 50% -20%,
+      rgba(255,255,255,.85),
+      rgba(255,255,255,0) 55%
+    ),
+    radial-gradient(
+      140% 200% at 50% 130%,
+      rgba(120,102,55,.4),
+      rgba(120,102,55,0) 60%
+    ),
+    linear-gradient(
+      180deg,
+      #FEFCF4 0%,
+      #F1E9D0 45%,
+      #DACC9E 100%
+    );
   border:1px solid #A99C79;
-  box-shadow:inset 0 3px 3px rgba(255,255,255,.95),inset 0 -7px 11px rgba(105,90,50,.4),
-    inset 7px 0 10px -5px rgba(105,90,50,.35),inset -7px 0 10px -5px rgba(105,90,50,.35),
-    0 2px 4px rgba(0,0,0,.35),0 0 0 3px rgba(15,18,22,.55);
-  display:flex;align-items:center;justify-content:center;pointer-events:none;overflow:hidden
+  box-shadow:
+    inset 0 3px 3px rgba(255,255,255,.95),
+    inset 0 -7px 11px rgba(105,90,50,.4),
+    inset 7px 0 10px -5px rgba(105,90,50,.35),
+    inset -7px 0 10px -5px rgba(105,90,50,.35),
+    0 2px 4px rgba(0,0,0,.35),
+    0 0 0 3px rgba(15,18,22,.55);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  pointer-events:none;
+  overflow:hidden
 }
+
 .ruler-lens::before{
-  content:'';position:absolute;top:2px;left:5px;right:5px;height:9px;border-radius:2px;
-  background:linear-gradient(180deg,rgba(255,255,255,.75),rgba(255,255,255,0))
+  content:'';
+  position:absolute;
+  top:2px;
+  left:5px;
+  right:5px;
+  height:9px;
+  border-radius:2px;
+  background:linear-gradient(
+    180deg,
+    rgba(255,255,255,.75),
+    rgba(255,255,255,0)
+  )
 }
+
 .ruler-lens::after{
-  content:'';position:absolute;inset:0;
-  background:repeating-linear-gradient(180deg,rgba(0,0,0,.05) 0,rgba(0,0,0,.05) 1px,transparent 1px,transparent 3px)
+  content:'';
+  position:absolute;
+  inset:0;
+  background:repeating-linear-gradient(
+    180deg,
+    rgba(0,0,0,.05) 0,
+    rgba(0,0,0,.05) 1px,
+    transparent 1px,
+    transparent 3px
+  )
 }
+
 .ruler-lens .lcd-value{
-  position:relative;font-family:var(--mono);font-size:17px;
-  letter-spacing:-.01em;color:#151515;text-shadow:0 1px 0 rgba(255,255,255,.5);
+  position:relative;
+  font-family:var(--mono);
+  font-size:17px;
+  letter-spacing:-.01em;
+  color:#151515;
+  text-shadow:0 1px 0 rgba(255,255,255,.5);
   font-variant-numeric:tabular-nums
 }
 
-.term-field{margin-top:1px}
-.term-label{text-align:center;font-size:12.5px;color:var(--slate);margin-bottom:5px}
-.termrow{display:flex;gap:6px}
-.termbtn{
-  flex:1;min-width:0;text-align:center;padding:7px 2px;border-radius:7px;
-  border:1px solid var(--line);background:var(--panel-2);color:var(--slate);
-  font-family:var(--mono);font-size:12.5px;cursor:pointer
+.term-field{
+  margin-top:1px
 }
-.termbtn.active{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
 
-.sticker{border-radius:10px;overflow:hidden;margin-top:10px;color:var(--on-accent)}
-.option.a .sticker{background:var(--paper)}.option.b .sticker{background:var(--paper-b)}
-.sticker .tag-top{padding:10px 14px 0;text-align:center}
+.term-label{
+  text-align:center;
+  font-size:12.5px;
+  color:var(--slate);
+  margin-bottom:5px
+}
+
+.termrow{
+  display:flex;
+  gap:6px
+}
+
+.termbtn{
+  flex:1;
+  min-width:0;
+  text-align:center;
+  padding:7px 2px;
+  border-radius:7px;
+  border:1px solid var(--line);
+  background:var(--panel-2);
+  color:var(--slate);
+  font-family:var(--mono);
+  font-size:12.5px;
+  cursor:pointer
+}
+
+.termbtn.active{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:var(--on-accent)
+}
+
+.sticker{
+  border-radius:10px;
+  overflow:hidden;
+  margin-top:10px;
+  color:var(--on-accent)
+}
+
+.option.a .sticker{
+  background:var(--paper)
+}
+
+.option.b .sticker{
+  background:var(--paper-b)
+}
+
+.sticker .tag-top{
+  padding:10px 14px 0;
+  text-align:center
+}
+
 .sticker .eyebrow2{
-  font-family:var(--mono);font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:#5B5340
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+  color:#5B5340
 }
-.option.b .sticker .eyebrow2{color:#3E5A6E}
-.sticker .payment{font-size:34px;letter-spacing:-.02em;line-height:1.05;margin:3px 0 0;font-variant-numeric:tabular-nums}
-.sticker .payment sub{font-size:12px;color:#6B5A2E;font-family:var(--mono)}
-.option.b .sticker .payment sub{color:#3E5A6E}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:9px 14px 11px}
-.stat{text-align:center}.stat .k{font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:#6B5A2E;margin-bottom:2px}
-.option.b .stat .k{color:#3E5A6E}
-.stat .v{font-family:var(--mono);font-size:13px}
-.stat.warn .v{color:#9B4A2E}.stat.good .v{color:#2E6B47}
+
+.option.b .sticker .eyebrow2{
+  color:#3E5A6E
+}
+
+.sticker .payment{
+  font-size:34px;
+  letter-spacing:-.02em;
+  line-height:1.05;
+  margin:3px 0 0;
+  font-variant-numeric:tabular-nums
+}
+
+.sticker .payment sub{
+  font-size:12px;
+  color:#6B5A2E;
+  font-family:var(--mono)
+}
+
+.option.b .sticker .payment sub{
+  color:#3E5A6E
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+  padding:9px 14px 11px
+}
+
+.stat{
+  text-align:center
+}
+
+.stat .k{
+  font-size:9.5px;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+  color:#6B5A2E;
+  margin-bottom:2px
+}
+
+.option.b .stat .k{
+  color:#3E5A6E
+}
+
+.stat .v{
+  font-family:var(--mono);
+  font-size:13px
+}
+
+.stat.warn .v{
+  color:#9B4A2E
+}
+
+.stat.good .v{
+  color:#2E6B47
+}
+
 .schedule-toggle{
-  background:var(--ink);color:var(--white);border:0;width:100%;padding:8px;
-  font-family:var(--sans);font-size:12px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;gap:7px
+  background:var(--ink);
+  color:var(--white);
+  border:0;
+  width:100%;
+  padding:8px;
+  font-family:var(--sans);
+  font-size:12px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px
 }
-.schedule-toggle .chev{transition:transform .15s;font-size:10px;color:var(--accent)}
-.schedule-toggle.open .chev{transform:rotate(180deg)}
-.schedule{max-height:0;overflow:hidden;transition:max-height .2s ease;background:var(--panel-2)}
-.schedule.open{max-height:230px;overflow-y:auto}
-.schedule table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11px}
-.schedule th{position:sticky;top:0;background:var(--table-head);color:var(--slate);text-align:right;padding:6px 8px;font-size:9.5px}
-.schedule th:first-child,.schedule td:first-child{text-align:left}
-.schedule td{text-align:right;padding:5px 8px;color:var(--white);border-top:1px solid var(--line)}
+
+.schedule-toggle .chev{
+  transition:transform .15s;
+  font-size:10px;
+  color:var(--accent)
+}
+
+.schedule-toggle.open .chev{
+  transform:rotate(180deg)
+}
+
+.schedule{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height .2s ease;
+  background:var(--panel-2)
+}
+
+.schedule.open{
+  max-height:230px;
+  overflow-y:auto
+}
+
+.schedule table{
+  width:100%;
+  border-collapse:collapse;
+  font-family:var(--mono);
+  font-size:11px
+}
+
+.schedule th{
+  position:sticky;
+  top:0;
+  background:var(--table-head);
+  color:var(--slate);
+  text-align:right;
+  padding:6px 8px;
+  font-size:9.5px
+}
+
+.schedule th:first-child,
+.schedule td:first-child{
+  text-align:left
+}
+
+.schedule td{
+  text-align:right;
+  padding:5px 8px;
+  color:var(--white);
+  border-top:1px solid var(--line)
+}
 
 .compare-bar{
-  margin-top:12px;background:var(--panel);border:1px solid var(--line);
-  border-radius:12px;padding:10px 15px;display:flex;align-items:center;
-  justify-content:space-between;gap:10px;flex-wrap:wrap
+  margin-top:12px;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:10px 15px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap
 }
-.compare-side{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--slate)}
-.compare-side strong{font-family:var(--mono);color:var(--white);font-size:15px}
-.compare-mid{font-size:12.5px;color:var(--green);text-align:center;flex:1;min-width:140px}
-footer{margin-top:15px;font-size:11px;color:var(--slate);text-align:center}
+
+.compare-side{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  font-size:12.5px;
+  color:var(--slate)
+}
+
+.compare-side strong{
+  font-family:var(--mono);
+  color:var(--white);
+  font-size:15px
+}
+
+.compare-mid{
+  font-size:12.5px;
+  color:var(--green);
+  text-align:center;
+  flex:1;
+  min-width:140px
+}
+
+footer{
+  margin-top:15px;
+  font-size:11px;
+  color:var(--slate);
+  text-align:center
+}
 
 @media(max-width:859px){
-  .option{padding:14px}
+  .option{
+    padding:14px
+  }
 }
+
 @media(max-width:560px){
-  body{padding:16px 10px 38px}
-  .shared{padding:10px 12px}
-  .compact-row{gap:7px}
-  .termrow{gap:4px}
-  .termbtn{font-size:11.5px}
+  body{
+    padding:16px 10px 38px
+  }
+
+  .shared{
+    padding:10px 12px
+  }
+
+  .compact-row{
+    gap:7px
+  }
+
+  .termrow{
+    gap:4px
+  }
+
+  .termbtn{
+    font-size:11.5px
+  }
 }
 </style>
 </head>
+
 <body>
+
 <div class="masthead">
   <div class="brand">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E8A63A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+         stroke="#E8A63A" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round">
       <circle cx="12" cy="12" r="10"/>
       <line x1="8" y1="16" x2="16" y2="8"/>
-      <circle cx="8.5" cy="8.5" r="0.6" fill="#E8A63A" stroke="none"/>
-      <circle cx="15.5" cy="15.5" r="0.6" fill="#E8A63A" stroke="none"/>
+      <circle cx="8.5" cy="8.5" r="0.6"
+              fill="#E8A63A" stroke="none"/>
+      <circle cx="15.5" cy="15.5" r="0.6"
+              fill="#E8A63A" stroke="none"/>
     </svg>
+
     <h1>Auto Loan Calculator</h1>
   </div>
-  <div class="byline">designed by <strong>Jeff Patrick</strong></div>
+
+  <div class="byline">
+    designed by <strong>Jeff Patrick</strong>
+  </div>
 </div>
 
 <div class="wrap">
+
 <div class="toolbar">
   <div class="header-actions">
-    <button class="theme-btn" id="themeBtn" aria-label="Toggle light/dark theme" title="Toggle light/dark theme">☀</button>
-    <button class="clear-btn" id="clearBtn">Clear</button>
+    <button class="theme-btn"
+            id="themeBtn"
+            aria-label="Toggle light/dark theme"
+            title="Toggle light/dark theme">☀</button>
+
+    <button class="clear-btn" id="clearBtn">
+      Clear
+    </button>
   </div>
 </div>
 
 <div class="shared" style="display:none;"></div>
 
 <div class="split-grid">
+
+<!-- ================= OPTION A ================= -->
+
 <div class="option a" id="optionCardA">
-  <div class="option-title"><span class="dot"></span>Option A</div>
+
+  <div class="option-title">
+    <span class="dot"></span>
+    Option A
+  </div>
 
   <div class="compact-row">
+
     <div class="field">
       <label>Vehicle Price</label>
-      <div class="inputrow"><span class="prefix">$</span><input type="number" id="priceA" value="25000" min="0" step="100"></div>
+
+      <div class="inputrow">
+        <span class="prefix">$</span>
+        <input type="number"
+               id="priceA"
+               value="25000"
+               min="0"
+               step="100">
+      </div>
     </div>
+
     <div class="field">
       <label>Fees</label>
-      <div class="inputrow"><span class="prefix">$</span><input type="number" id="feesA" value="1307" min="0" step="1"></div>
+
+      <div class="inputrow">
+        <span class="prefix">$</span>
+        <input type="number"
+               id="feesA"
+               value="1307"
+               min="0"
+               step="1">
+      </div>
     </div>
+
   </div>
 
   <div class="compact-row">
+
     <div class="field">
       <label>Trade Value</label>
-      <div class="inputrow"><span class="prefix">$</span><input type="number" id="tradeA" value="0" min="0" step="100"></div>
+
+      <div class="inputrow">
+        <span class="prefix">$</span>
+        <input type="number"
+               id="tradeA"
+               value="0"
+               min="0"
+               step="100">
+      </div>
     </div>
+
     <div class="field">
       <label>Trade Payoff</label>
-      <div class="inputrow"><span class="prefix">$</span><input type="number" id="payoffA" value="0" min="0" step="100"></div>
+
+      <div class="inputrow">
+        <span class="prefix">$</span>
+        <input type="number"
+               id="payoffA"
+               value="0"
+               min="0"
+               step="100">
+      </div>
     </div>
+
   </div>
 
   <div class="ruler-block">
-    <div class="ruler-label"><span class="name">Down Payment</span></div>
-    <div class="ruler-shell"><div class="ruler-scroll"><div class="ruler-track" id="downA-track"></div></div><div class="ruler-lens"><span class="lcd-value" id="downA-val">$0</span></div></div>
+
+    <div class="ruler-label">
+      <span class="name">Down Payment</span>
+    </div>
+
+    <div class="ruler-shell">
+      <div class="ruler-scroll">
+        <div class="ruler-track" id="downA-track"></div>
+      </div>
+
+      <div class="ruler-lens">
+        <span class="lcd-value" id="downA-val">$0</span>
+      </div>
+    </div>
+
   </div>
 
   <div class="ruler-block">
-    <div class="ruler-label"><span class="name">APR</span></div>
-    <div class="ruler-shell"><div class="ruler-scroll"><div class="ruler-track" id="aprA-track"></div></div><div class="ruler-lens"><span class="lcd-value" id="aprA-val">8.90%</span></div></div>
+
+    <div class="ruler-label">
+      <span class="name">APR</span>
+    </div>
+
+    <div class="ruler-shell">
+      <div class="ruler-scroll">
+        <div class="ruler-track" id="aprA-track"></div>
+      </div>
+
+      <div class="ruler-lens">
+        <span class="lcd-value" id="aprA-val">8.90%</span>
+      </div>
+    </div>
+
   </div>
 
-  <div class="tax-label">Sales Tax Rate</div>
-  <div class="fixed-tax">7.00%</div>
+  <div class="tax-label">
+    Sales Tax Rate
+  </div>
+
+  <div class="fixed-tax">
+    7.00%
+  </div>
 
   <div class="term-field">
-    <div class="term-label">Loan Term</div>
+
+    <div class="term-label">
+      Loan Term
+    </div>
+
     <div class="termrow" data-group="A">
-      <div class="termbtn" data-term="24">24 mo</div><div class="termbtn" data-term="36">36 mo</div>
-      <div class="termbtn" data-term="48">48 mo</div><div class="termbtn active" data-term="60">60 mo</div>
-      <div class="termbtn" data-term="72">72 mo</div><div class="termbtn" data-term="84">84 mo</div>
+
+      <div class="termbtn" data-term="24">24 mo</div>
+      <div class="termbtn" data-term="36">36 mo</div>
+      <div class="termbtn" data-term="48">48 mo</div>
+      <div class="termbtn active" data-term="60">60 mo</div>
+      <div class="termbtn" data-term="72">72 mo</div>
+      <div class="termbtn" data-term="84">84 mo</div>
+
     </div>
   </div>
 
   <div class="sticker">
-    <div class="tag-top"><div class="eyebrow2">Estimated Payment</div><div class="payment"><span id="paymentA">$0</span><sub>/mo</sub></div></div>
-    <div class="stats">
-      <div class="stat"><div class="k">Financed</div><div class="v" id="financedA">$0</div></div>
-      <div class="stat"><div class="k">Sales Tax</div><div class="v" id="taxamtA">$0</div></div>
-      <div class="stat warn"><div class="k">Total Interest</div><div class="v" id="interestA">$0</div></div>
-      <div class="stat good"><div class="k">Total of Payments</div><div class="v" id="totalA">$0</div></div>
+
+    <div class="tag-top">
+
+      <div class="eyebrow2">
+        Estimated Payment
+      </div>
+
+      <div class="payment">
+        <span id="paymentA">$0</span>
+        <sub>/mo</sub>
+      </div>
+
     </div>
-    <button class="schedule-toggle" id="scheduleToggleA">Amortization Schedule <span class="chev">▾</span></button>
-    <div class="schedule" id="scheduleA"><table><thead><tr><th>Mo</th><th>Payment</th><th>Principal</th><th>Interest</th><th>Balance</th></tr></thead><tbody id="scheduleBodyA"></tbody></table></div>
+
+    <div class="stats">
+
+      <div class="stat">
+        <div class="k">Financed</div>
+        <div class="v" id="financedA">$0</div>
+      </div>
+
+      <div class="stat">
+        <div class="k">Sales Tax</div>
+        <div class="v" id="taxamtA">$0</div>
+      </div>
+
+      <div class="stat warn">
+        <div class="k">Total Interest</div>
+        <div class="v" id="interestA">$0</div>
+      </div>
+
+      <div class="stat good">
+        <div class="k">Total of Payments</div>
+        <div class="v" id="totalA">$0</div>
+      </div>
+
+    </div>
+
+    <button class="schedule-toggle" id="scheduleToggleA">
+      Amortization Schedule
+      <span class="chev">▾</span>
+    </button>
+
+    <div class="schedule" id="scheduleA">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>Mo</th>
+            <th>Payment</th>
+            <th>Principal</th>
+            <th>Interest</th>
+            <th>Balance</th>
+          </tr>
+        </thead>
+
+        <tbody id="scheduleBodyA"></tbody>
+
+      </table>
+
+    </div>
+
   </div>
+
 </div>
 
-<div class="divider"><div class="line"></div><div class="badge">VS</div><div class="line"></div></div>
+<!-- ================= DIVIDER ================= -->
+
+<div class="divider">
+  <div class="line"></div>
+  <div class="badge">VS</div>
+  <div class="line"></div>
+</div>
+
+<!-- ================= OPTION B ================= -->
 
 <div class="option b" id="optionCardB">
-  <div class="option-title"><span class="dot"></span>Option B</div>
+
+  <div class="option-title">
+    <span class="dot"></span>
+    Option B
+  </div>
 
   <div class="compact-row">
+
     <div class="field">
       <label>Vehicle Price</label>
-      <div class="inputrow"><span class="prefix">$</span><input type="number" id="priceB" value="25000" min="0" step="100"></div>
+
+      <div class="inputrow">
+        <span class="prefix">$</span>
+        <input type="number"
+               id="priceB"
+               value="25000"
+               min="0"
+               step="100">
+      </div>
     </div>
+
     <div class="field">
       <label>Fees</label>
-      <div class="inputrow"><span class="prefix">$</span><input type="number" id="feesB" value="1307" min="0" step="1"></div>
+
+      <div class="inputrow">
+        <span class="prefix">$</span>
+        <input type="number"
+               id="feesB"
+               value="1307"
+               min="0"
+               step="1">
+      </div>
     </div>
+
   </div>
 
   <div class="compact-row">
+
     <div class="field">
       <label>Trade Value</label>
-      <div class="inputrow"><span class="prefix">$</span><input type="number" id="tradeB" value="0" min="0" step="100"></div>
+
+      <div class="inputrow">
+        <span class="prefix">$</span>
+        <input type="number"
+               id="tradeB"
+               value="0"
+               min="0"
+               step="100">
+      </div>
     </div>
+
     <div class="field">
       <label>Trade Payoff</label>
-      <div class="inputrow"><span class="prefix">$</span><input type="number" id="payoffB" value="0" min="0" step="100"></div>
+
+      <div class="inputrow">
+        <span class="prefix">$</span>
+        <input type="number"
+               id="payoffB"
+               value="0"
+               min="0"
+               step="100">
+      </div>
     </div>
+
   </div>
 
   <div class="ruler-block">
-    <div class="ruler-label"><span class="name">Down Payment</span></div>
-    <div class="ruler-shell"><div class="ruler-scroll"><div class="ruler-track" id="downB-track"></div></div><div class="ruler-lens"><span class="lcd-value" id="downB-val">$0</span></div></div>
+
+    <div class="ruler-label">
+      <span class="name">Down Payment</span>
+    </div>
+
+    <div class="ruler-shell">
+
+      <div class="ruler-scroll">
+        <div class="ruler-track" id="downB-track"></div>
+      </div>
+
+      <div class="ruler-lens">
+        <span class="lcd-value" id="downB-val">$0</span>
+      </div>
+
+    </div>
+
   </div>
 
   <div class="ruler-block">
-    <div class="ruler-label"><span class="name">APR</span></div>
-    <div class="ruler-shell"><div class="ruler-scroll"><div class="ruler-track" id="aprB-track"></div></div><div class="ruler-lens"><span class="lcd-value" id="aprB-val">8.90%</span></div></div>
+
+    <div class="ruler-label">
+      <span class="name">APR</span>
+    </div>
+
+    <div class="ruler-shell">
+
+      <div class="ruler-scroll">
+        <div class="ruler-track" id="aprB-track"></div>
+      </div>
+
+      <div class="ruler-lens">
+        <span class="lcd-value" id="aprB-val">8.90%</span>
+      </div>
+
+    </div>
+
   </div>
 
-  <div class="tax-label">Sales Tax Rate</div>
-  <div class="fixed-tax">7.00%</div>
+  <div class="tax-label">
+    Sales Tax Rate
+  </div>
+
+  <div class="fixed-tax">
+    7.00%
+  </div>
 
   <div class="term-field">
-    <div class="term-label">Loan Term</div>
-    <div class="termrow" data-group="B">
-      <div class="termbtn" data-term="24">24 mo</div><div class="termbtn" data-term="36">36 mo</div>
-      <div class="termbtn" data-term="48">48 mo</div><div class="termbtn active" data-term="60">60 mo</div>
-      <div class="termbtn" data-term="72">72 mo</div><div class="termbtn" data-term="84">84 mo</div>
+
+    <div class="term-label">
+      Loan Term
     </div>
+
+    <div class="termrow" data-group="B">
+
+      <div class="termbtn" data-term="24">24 mo</div>
+      <div class="termbtn" data-term="36">36 mo</div>
+      <div class="termbtn" data-term="48">48 mo</div>
+      <div class="termbtn active" data-term="60">60 mo</div>
+      <div class="termbtn" data-term="72">72 mo</div>
+      <div class="termbtn" data-term="84">84 mo</div>
+
+    </div>
+
   </div>
 
   <div class="sticker">
-    <div class="tag-top"><div class="eyebrow2">Estimated Payment</div><div class="payment"><span id="paymentB">$0</span><sub>/mo</sub></div></div>
-    <div class="stats">
-      <div class="stat"><div class="k">Financed</div><div class="v" id="financedB">$0</div></div>
-      <div class="stat"><div class="k">Sales Tax</div><div class="v" id="taxamtB">$0</div></div>
-      <div class="stat warn"><div class="k">Total of Payments</div><div class="v" id="interestB">$0</div></div>
-      <div class="stat good"><div class="k">Total of Payments</div><div class="v" id="totalB">$0</div></div>
+
+    <div class="tag-top">
+
+      <div class="eyebrow2">
+        Estimated Payment
+      </div>
+
+      <div class="payment">
+        <span id="paymentB">$0</span>
+        <sub>/mo</sub>
+      </div>
+
     </div>
-    <button class="schedule-toggle" id="scheduleToggleB">Amortization Schedule <span class="chev">▾</span></button>
-    <div class="schedule" id="scheduleB"><table><thead><tr><th>Mo</th><th>Payment</th><th>Principal</th><th>Interest</th><th>Balance</th></tr></thead><tbody id="scheduleBodyB"></tbody></table></div>
+
+    <div class="stats">
+
+      <div class="stat">
+        <div class="k">Financed</div>
+        <div class="v" id="financedB">$0</div>
+      </div>
+
+      <div class="stat">
+        <div class="k">Sales Tax</div>
+        <div class="v" id="taxamtB">$0</div>
+      </div>
+
+      <div class="stat warn">
+        <div class="k">Total of Payments</div>
+        <div class="v" id="interestB">$0</div>
+      </div>
+
+      <div class="stat good">
+        <div class="k">Total of Payments</div>
+        <div class="v" id="totalB">$0</div>
+      </div>
+
+    </div>
+
+    <button class="schedule-toggle" id="scheduleToggleB">
+      Amortization Schedule
+      <span class="chev">▾</span>
+    </button>
+
+    <div class="schedule" id="scheduleB">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>Mo</th>
+            <th>Payment</th>
+            <th>Principal</th>
+            <th>Interest</th>
+            <th>Balance</th>
+          </tr>
+        </thead>
+
+        <tbody id="scheduleBodyB"></tbody>
+
+      </table>
+
+    </div>
+
   </div>
+
 </div>
+
 </div>
 
 <div class="compare-bar">
-  <div class="compare-side">Option A <strong id="cmpA">$0/mo</strong></div>
-  <div class="compare-mid" id="cmpDelta">—</div>
-  <div class="compare-side">Option B <strong id="cmpB">$0/mo</strong></div>
+
+  <div class="compare-side">
+    Option A
+    <strong id="cmpA">$0/mo</strong>
+  </div>
+
+  <div class="compare-mid" id="cmpDelta">
+    —
+  </div>
+
+  <div class="compare-side">
+    Option B
+    <strong id="cmpB">$0/mo</strong>
+  </div>
+
 </div>
-<footer>Estimate only — actual APR, fees, and tax vary by lender and state. Your inputs are saved on this device.</footer>
+
+<footer>
+  Estimate only — actual APR, fees, and tax vary by lender and state.
+  Your inputs are saved on this device.
+</footer>
+
 </div>
 
 <script>
+
 const $=id=>document.getElementById(id);
-const money=n=>'$'+n.toLocaleString('en-US',{maximumFractionDigits:0});
-const moneyC=n=>'$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+const money=n=>'$'+n.toLocaleString('en-US',{
+  maximumFractionDigits:0
+});
+
+const moneyC=n=>'$'+n.toLocaleString('en-US',{
+  minimumFractionDigits:2,
+  maximumFractionDigits:2
+});
+
 const STORAGE_KEY='autoLoanCalculator.state.v4';
+
 const DEFAULTS={
-  a:{price:25000,trade:0,payoff:0,fees:1307,down:0,apr:8.9,term:60},
-  b:{price:25000,trade:0,payoff:0,fees:1307,down:0,apr:8.9,term:60}
+  a:{
+    price:25000,
+    trade:0,
+    payoff:0,
+    fees:1307,
+    down:0,
+    apr:8.9,
+    term:60
+  },
+  b:{
+    price:25000,
+    trade:0,
+    payoff:0,
+    fees:1307,
+    down:0,
+    apr:8.9,
+    term:60
+  }
 };
 
 function loadSaved(){
+
   try{
+
     const raw=localStorage.getItem(STORAGE_KEY);
+
     if(!raw)return null;
+
     const p=JSON.parse(raw);
+
     return {
       a:Object.assign({},DEFAULTS.a,p.a||{}),
       b:Object.assign({},DEFAULTS.b,p.b||{})
     };
-  }catch(e){return null}
+
+  }catch(e){
+
+    return null;
+
+  }
+
 }
+
 const saved=loadSaved();
+
 const state=saved||JSON.parse(JSON.stringify(DEFAULTS));
 
 const rulers={};
 
-function buildRuler({key,trackId,min,max,step,majorStep,decimals,initial,tickPx,format,onChange}){
-  const track=$(trackId), scroll=track.parentElement, shell=scroll.parentElement;
-  const tickWidth=tickPx||8,count=Math.round((max-min)/step)+1;
+
+function buildRuler({
+  key,
+  trackId,
+  min,
+  max,
+  step,
+  majorStep,
+  decimals,
+  initial,
+  tickPx,
+  format,
+  onChange
+}){
+
+  const track=$(trackId);
+
+  const scroll=track.parentElement;
+
+  const shell=scroll.parentElement;
+
+  const tickWidth=tickPx||8;
+
+  const count=Math.round((max-min)/step)+1;
 
   track.innerHTML='';
+
   track.style.position='relative';
 
+
   const startSpacer=document.createElement('div');
-  startSpacer.style.cssText='flex:0 0 auto;align-self:stretch';
+
+  startSpacer.style.cssText=
+    'flex:0 0 auto;align-self:stretch';
+
   track.appendChild(startSpacer);
 
+
   for(let i=0;i<count;i++){
+
     const val=+(min+i*step).toFixed(decimals);
+
     const d=document.createElement('div');
-    const major=Math.abs(Math.round(val/majorStep)*majorStep-val)<step/2;
+
+    const major=
+      Math.abs(
+        Math.round(val/majorStep)*majorStep-val
+      )<step/2;
+
     d.className='tick'+(major?' major':'');
+
     d.style.width=tickWidth+'px';
-    const bar=document.createElement('div');bar.className='bar';bar.style.height=major?'20px':'9px';
+
+
+    const bar=document.createElement('div');
+
+    bar.className='bar';
+
+    bar.style.height=major?'20px':'9px';
+
     d.appendChild(bar);
+
+
     if(major){
-      const num=document.createElement('div');num.className='num';
-      num.textContent=decimals?val.toFixed(decimals):Math.round(val);
+
+      const num=document.createElement('div');
+
+      num.className='num';
+
+      num.textContent=
+        decimals
+          ? val.toFixed(decimals)
+          : Math.round(val);
+
       d.appendChild(num);
+
     }
+
     track.appendChild(d);
+
   }
+
 
   const endSpacer=document.createElement('div');
-  endSpacer.style.cssText='flex:0 0 auto;align-self:stretch';
+
+  endSpacer.style.cssText=
+    'flex:0 0 auto;align-self:stretch';
+
   track.appendChild(endSpacer);
 
-  // Decorative ticks drawn into the spacer zones (not counted toward count, purely visual)
-  // so the ruler continues past true min/max instead of dead-ending. Repositioned by
-  // updateSpacers() whenever the measured spacer width changes.
+
   const ghostCount=4;
-  const rightGhosts=[],leftGhosts=[];
+
+  const rightGhosts=[];
+
+  const leftGhosts=[];
+
+
   for(let g=1;g<=ghostCount;g++){
+
     const isOuter=g===ghostCount;
+
     const rVal=+(max+g*step).toFixed(decimals);
+
     const rg=document.createElement('div');
+
     rg.className='tick ghost'+(isOuter?' major':'');
-    rg.style.cssText='position:absolute;top:0;bottom:0;width:'+tickWidth+'px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end';
-    const rbar=document.createElement('div');rbar.className='bar';rbar.style.height=isOuter?'20px':'9px';
+
+    rg.style.cssText=
+      'position:absolute;top:0;bottom:0;width:'+
+      tickWidth+
+      'px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end';
+
+    const rbar=document.createElement('div');
+
+    rbar.className='bar';
+
+    rbar.style.height=isOuter?'20px':'9px';
+
     rg.appendChild(rbar);
+
+
     if(isOuter){
-      const rnum=document.createElement('div');rnum.className='num';
-      rnum.textContent=decimals?rVal.toFixed(decimals):Math.round(rVal);
+
+      const rnum=document.createElement('div');
+
+      rnum.className='num';
+
+      rnum.textContent=
+        decimals
+          ? rVal.toFixed(decimals)
+          : Math.round(rVal);
+
       rg.appendChild(rnum);
+
     }
+
     track.appendChild(rg);
+
     rightGhosts.push({el:rg,g});
 
+
     const lVal=+(min-g*step).toFixed(decimals);
+
     const lg=document.createElement('div');
+
     lg.className='tick ghost'+(isOuter?' major':'');
-    lg.style.cssText='position:absolute;top:0;bottom:0;width:'+tickWidth+'px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end';
-    const lbar=document.createElement('div');lbar.className='bar';lbar.style.height=isOuter?'20px':'9px';
+
+    lg.style.cssText=
+      'position:absolute;top:0;bottom:0;width:'+
+      tickWidth+
+      'px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end';
+
+    const lbar=document.createElement('div');
+
+    lbar.className='bar';
+
+    lbar.style.height=isOuter?'20px':'9px';
+
     lg.appendChild(lbar);
+
+
     if(isOuter && lVal>=0){
-      const lnum=document.createElement('div');lnum.className='num';
-      lnum.textContent=decimals?lVal.toFixed(decimals):Math.round(lVal);
+
+      const lnum=document.createElement('div');
+
+      lnum.className='num';
+
+      lnum.textContent=
+        decimals
+          ? lVal.toFixed(decimals)
+          : Math.round(lVal);
+
       lg.appendChild(lnum);
+
     }
+
     track.appendChild(lg);
+
     leftGhosts.push({el:lg,g});
+
   }
+
 
   let current=initial;
 
+
   function updateSpacers(){
+
     const w=shell.clientWidth;
-    const spacerWidth=Math.max(0, w/2-tickWidth/2);
-    startSpacer.style.width=spacerWidth+'px';
-    endSpacer.style.width=spacerWidth+'px';
-    rightGhosts.forEach(({el,g})=>{ el.style.left=(spacerWidth+count*tickWidth+g*tickWidth)+'px'; });
-    leftGhosts.forEach(({el,g})=>{ el.style.left=(spacerWidth-g*tickWidth)+'px'; });
+
+    const spacerWidth=
+      Math.max(0,w/2-tickWidth/2);
+
+    startSpacer.style.width=
+      spacerWidth+'px';
+
+    endSpacer.style.width=
+      spacerWidth+'px';
+
+
+    rightGhosts.forEach(({el,g})=>{
+
+      el.style.left=
+        (
+          spacerWidth+
+          count*tickWidth+
+          g*tickWidth
+        )+'px';
+
+    });
+
+
+    leftGhosts.forEach(({el,g})=>{
+
+      el.style.left=
+        (
+          spacerWidth-
+          g*tickWidth
+        )+'px';
+
+    });
+
   }
 
-  function pos(val){return Math.round((val-min)/step)*tickWidth}
+
+  function pos(val){
+
+    return Math.round(
+      (val-min)/step
+    )*tickWidth;
+
+  }
+
+
   function jump(val){
+
     scroll.scrollLeft=pos(val);
+
   }
+
+
   function set(val,silent){
-    current=Math.min(max,Math.max(min,val));
+
+    current=
+      Math.min(
+        max,
+        Math.max(min,val)
+      );
+
     jump(current);
+
     if(!silent)onChange(current);
+
   }
+
+
   function readValue(){
-    const trueMax=scroll.scrollWidth-scroll.clientWidth;
+
+    const trueMax=
+      scroll.scrollWidth-scroll.clientWidth;
+
     if(trueMax<=0)return min;
-    const proportion=Math.min(1,Math.max(0,scroll.scrollLeft/trueMax));
-    const raw=min+proportion*(max-min);
-    const snapped=Math.round((raw-min)/step)*step+min;
-    return +Math.min(max,Math.max(min,snapped)).toFixed(decimals);
+
+    const proportion=
+      Math.min(
+        1,
+        Math.max(
+          0,
+          scroll.scrollLeft/trueMax
+        )
+      );
+
+    const raw=
+      min+
+      proportion*(max-min);
+
+    const snapped=
+      Math.round(
+        (raw-min)/step
+      )*step+min;
+
+    return +Math.min(
+      max,
+      Math.max(min,snapped)
+    ).toFixed(decimals);
+
   }
+
 
   let raf=null;
-  scroll.addEventListener('scroll',()=>{
-    if(raf)return;
-    raf=requestAnimationFrame(()=>{
-      raf=null;
-      current=readValue();
-      onChange(current);
-    });
-  },{passive:true});
+
+
+  scroll.addEventListener(
+    'scroll',
+    ()=>{
+
+      if(raf)return;
+
+      raf=requestAnimationFrame(()=>{
+
+        raf=null;
+
+        current=readValue();
+
+        onChange(current);
+
+      });
+
+    },
+    {passive:true}
+  );
+
 
   if(window.ResizeObserver){
-    const ro=new ResizeObserver(()=>{ updateSpacers(); jump(current); });
+
+    const ro=new ResizeObserver(()=>{
+
+      updateSpacers();
+
+      jump(current);
+
+    });
+
     ro.observe(shell);
-  } else {
-    window.addEventListener('resize',()=>{ updateSpacers(); jump(current); });
+
+  }else{
+
+    window.addEventListener('resize',()=>{
+
+      updateSpacers();
+
+      jump(current);
+
+    });
+
   }
 
+
   updateSpacers();
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{ updateSpacers(); set(current,false); }));
+
+  requestAnimationFrame(()=>{
+
+    requestAnimationFrame(()=>{
+
+      updateSpacers();
+
+      set(current,false);
+
+    });
+
+  });
+
+
   rulers[key]={set};
+
 }
+
 
 function updateDown(K,v){
+
   const key=K.toLowerCase();
+
   state[key].down=v;
+
   $('down'+K+'-val').textContent=money(v);
+
   calcAll();
+
 }
+
+
 function updateApr(K,v){
+
   const key=K.toLowerCase();
+
   state[key].apr=v;
-  $('apr'+K+'-val').textContent=v.toFixed(2)+'%';
+
+  $('apr'+K+'-val').textContent=
+    v.toFixed(2)+'%';
+
   calcAll();
+
 }
+
 
 ['A','B'].forEach(K=>{
+
   buildRuler({
-    key:'down'+K,trackId:'down'+K+'-track',min:0,max:100000,step:100,majorStep:1000,decimals:0,
-    initial:state[K.toLowerCase()].down,format:money,
+
+    key:'down'+K,
+
+    trackId:'down'+K+'-track',
+
+    min:0,
+
+    max:100000,
+
+    step:100,
+
+    majorStep:1000,
+
+    decimals:0,
+
+    initial:state[K.toLowerCase()].down,
+
+    format:money,
+
     onChange:v=>updateDown(K,v)
+
   });
+
+
   buildRuler({
-    key:'apr'+K,trackId:'apr'+K+'-track',min:0,max:24,step:.25,majorStep:2,decimals:2,tickPx:16,
+
+    key:'apr'+K,
+
+    trackId:'apr'+K+'-track',
+
+    min:0,
+
+    max:24,
+
+    step:.25,
+
+    majorStep:2,
+
+    decimals:2,
+
+    tickPx:16,
+
     initial:state[K.toLowerCase()].apr,
+
     onChange:v=>updateApr(K,v)
+
   });
+
 });
+
 
 function setActiveTerm(key,term){
-  const row=document.querySelector(`.termrow[data-group="${key.toUpperCase()}"]`);
-  row.querySelectorAll('.termbtn').forEach(b=>b.classList.toggle('active',+b.dataset.term===term));
+
+  const row=
+    document.querySelector(
+      `.termrow[data-group="${key.toUpperCase()}"]`
+    );
+
+  row.querySelectorAll('.termbtn')
+    .forEach(b=>
+      b.classList.toggle(
+        'active',
+        +b.dataset.term===term
+      )
+    );
+
 }
-document.querySelectorAll('.termrow').forEach(row=>{
+
+
+document.querySelectorAll('.termrow')
+.forEach(row=>{
+
   const key=row.dataset.group.toLowerCase();
-  row.querySelectorAll('.termbtn').forEach(btn=>{
+
+  row.querySelectorAll('.termbtn')
+  .forEach(btn=>{
+
     btn.addEventListener('click',()=>{
-      row.querySelectorAll('.termbtn').forEach(b=>b.classList.remove('active'));
+
+      row.querySelectorAll('.termbtn')
+        .forEach(b=>
+          b.classList.remove('active')
+        );
+
       btn.classList.add('active');
-      state[key].term=+btn.dataset.term;
+
+      state[key].term=
+        +btn.dataset.term;
+
       calcAll();
+
     });
+
   });
+
 });
 
+
 function calcOption(K){
+
   const key=K.toLowerCase();
-  const price=Math.max(0,parseFloat($('price'+K).value)||0);
-  const trade=Math.max(0,parseFloat($('trade'+K).value)||0);
-  const payoff=Math.max(0,parseFloat($('payoff'+K).value)||0);
-  const fees=Math.max(0,parseFloat($('fees'+K).value)||0);
-  const down=Math.max(0,state[key].down||0);
+
+  const price=
+    Math.max(
+      0,
+      parseFloat($('price'+K).value)||0
+    );
+
+  const trade=
+    Math.max(
+      0,
+      parseFloat($('trade'+K).value)||0
+    );
+
+  const payoff=
+    Math.max(
+      0,
+      parseFloat($('payoff'+K).value)||0
+    );
+
+  const fees=
+    Math.max(
+      0,
+      parseFloat($('fees'+K).value)||0
+    );
+
+  const down=
+    Math.max(
+      0,
+      state[key].down||0
+    );
+
 
   state[key].price=price;
   state[key].trade=trade;
   state[key].payoff=payoff;
   state[key].fees=fees;
 
-  // Taxable amount: difference between vehicle price and trade value (minimum 0) plus all fees
-  const taxableBase=Math.max(0,price-trade)+fees;
-  const taxAmt=taxableBase*.07;
 
-  const netTrade=trade-payoff;
-  const financed=Math.max(0,price+taxAmt+fees-netTrade-down);
-  const apr=state[key].apr/100,n=state[key].term,r=apr/12;
+  const taxableBase=
+    Math.max(0,price-trade)+fees;
 
-  let payment=r===0?financed/n:financed*(r*Math.pow(1+r,n))/(Math.pow(1+r,n)-1);
+  const taxAmt=
+    taxableBase*.07;
+
+
+  const netTrade=
+    trade-payoff;
+
+
+  const financed=
+    Math.max(
+      0,
+      price+
+      taxAmt+
+      fees-
+      netTrade-
+      down
+    );
+
+
+  const apr=
+    state[key].apr/100;
+
+  const n=
+    state[key].term;
+
+  const r=
+    apr/12;
+
+
+  let payment=
+    r===0
+      ? financed/n
+      : financed*
+        (r*Math.pow(1+r,n))/
+        (Math.pow(1+r,n)-1);
+
+
   if(!isFinite(payment))payment=0;
-  const totalPaid=payment*n,totalInterest=Math.max(0,totalPaid-financed);
 
-  $('payment'+K).textContent=payment.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});
-  $('financed'+K).textContent=money(financed);
-  $('taxamt'+K).textContent=money(taxAmt);
-  $('interest'+K).textContent=money(totalPaid);
-  $('total'+K).textContent=money(totalPaid);
 
-  $('down'+K+'-val').textContent=money(down);
-  $('apr'+K+'-val').textContent=state[key].apr.toFixed(2)+'%';
+  const totalPaid=
+    payment*n;
 
-  buildSchedule(K,financed,r,n,payment);
+  const totalInterest=
+    Math.max(
+      0,
+      totalPaid-financed
+    );
+
+
+  $('payment'+K).textContent=
+    payment.toLocaleString(
+      'en-US',
+      {
+        style:'currency',
+        currency:'USD',
+        maximumFractionDigits:0
+      }
+    );
+
+
+  $('financed'+K).textContent=
+    money(financed);
+
+  $('taxamt'+K).textContent=
+    money(taxAmt);
+
+  $('interest'+K).textContent=
+    money(totalPaid);
+
+  $('total'+K).textContent=
+    money(totalPaid);
+
+
+  $('down'+K+'-val').textContent=
+    money(down);
+
+  $('apr'+K+'-val').textContent=
+    state[key].apr.toFixed(2)+'%';
+
+
+  buildSchedule(
+    K,
+    financed,
+    r,
+    n,
+    payment
+  );
+
+
   return payment;
+
 }
-function buildSchedule(K,principal,r,n,payment){
-  const body=$('scheduleBody'+K);body.innerHTML='';
-  let balance=principal;const frag=document.createDocumentFragment();
+
+
+function buildSchedule(
+  K,
+  principal,
+  r,
+  n,
+  payment
+){
+
+  const body=
+    $('scheduleBody'+K);
+
+  body.innerHTML='';
+
+  let balance=principal;
+
+  const frag=
+    document.createDocumentFragment();
+
+
   for(let m=1;m<=n;m++){
-    const interest=balance*r;
-    let pp=payment-interest;
+
+    const interest=
+      balance*r;
+
+    let pp=
+      payment-interest;
+
     if(m===n)pp=balance;
-    balance=Math.max(0,balance-pp);
-    const tr=document.createElement('tr');
-    tr.innerHTML=`<td>${m}</td><td>${moneyC(payment)}</td><td>${moneyC(pp)}</td><td>${moneyC(interest)}</td><td>${moneyC(balance)}</td>`;
+
+    balance=
+      Math.max(
+        0,
+        balance-pp
+      );
+
+
+    const tr=
+      document.createElement('tr');
+
+
+    tr.innerHTML=
+      `<td>${m}</td>`+
+      `<td>${moneyC(payment)}</td>`+
+      `<td>${moneyC(pp)}</td>`+
+      `<td>${moneyC(interest)}</td>`+
+      `<td>${moneyC(balance)}</td>`;
+
+
     frag.appendChild(tr);
+
   }
+
+
   body.appendChild(frag);
+
 }
+
+
 function calcAll(){
-  const pa=calcOption('A'),pb=calcOption('B');
-  $('cmpA').textContent=pa.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0})+'/mo';
-  $('cmpB').textContent=pb.toLocaleString('en-US',{style:'currency',currency:$('tag-top')?'USD':'USD',maximumFractionDigits:0})+'/mo';
+
+  const pa=calcOption('A');
+
+  const pb=calcOption('B');
+
+
+  $('cmpA').textContent=
+    pa.toLocaleString(
+      'en-US',
+      {
+        style:'currency',
+        currency:'USD',
+        maximumFractionDigits:0
+      }
+    )+'/mo';
+
+
+  $('cmpB').textContent=
+    pb.toLocaleString(
+      'en-US',
+      {
+        style:'currency',
+        currency:'USD',
+        maximumFractionDigits:0
+      }
+    )+'/mo';
+
+
   const delta=pa-pb;
-  $('cmpDelta').textContent=Math.abs(delta)<.5?'Payments are about equal':
-    delta>0?`Option B is ${money(delta)}/mo lower`:`Option A is ${money(-delta)}/mo lower`;
-  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(e){}
+
+
+  $('cmpDelta').textContent=
+    Math.abs(delta)<.5
+      ? 'Payments are about equal'
+      : delta>0
+        ? `Option B is ${money(delta)}/mo lower`
+        : `Option A is ${money(-delta)}/mo lower`;
+
+
+  try{
+
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(state)
+    );
+
+  }catch(e){}
+
 }
 
-['priceA','priceB','tradeA','tradeB','payoffA','payoffB','feesA','feesB'].forEach(id=>{
-  $(id).addEventListener('input',()=>{
-    calcAll();
+
+/* ============================================================
+   CLICK-TO-SELECT INPUTS
+   Clicking any editable number field selects its entire
+   current value so typing immediately replaces it.
+   ============================================================ */
+
+[
+  'priceA',
+  'feesA',
+  'tradeA',
+  'payoffA',
+  'priceB',
+  'feesB',
+  'tradeB',
+  'payoffB'
+].forEach(id=>{
+
+  const input=$(id);
+
+  input.addEventListener('focus',function(){
+
+    /*
+      Small timeout allows the browser to finish placing
+      the cursor before selecting the existing number.
+    */
+    setTimeout(()=>{
+
+      try{
+        this.select();
+      }catch(e){}
+
+    },0);
+
   });
+
+
+  input.addEventListener('click',function(){
+
+    try{
+      this.select();
+    }catch(e){}
+
+  });
+
 });
 
-[['scheduleToggleA','scheduleA'],['scheduleToggleB','scheduleB']].forEach(([tId,sId])=>{
-  $(tId).addEventListener('click',()=>{
-    const open=$(sId).classList.toggle('open');
-    $(tId).classList.toggle('open',open);
-  });
+
+[
+  'priceA',
+  'priceB',
+  'tradeA',
+  'tradeB',
+  'payoffA',
+  'payoffB',
+  'feesA',
+  'feesB'
+].forEach(id=>{
+
+  $(id).addEventListener(
+    'input',
+    ()=>{
+      calcAll();
+    }
+  );
+
 });
+
+
+[['scheduleToggleA','scheduleA'],
+ ['scheduleToggleB','scheduleB']]
+.forEach(([tId,sId])=>{
+
+  $(tId).addEventListener('click',()=>{
+
+    const open=
+      $(sId).classList.toggle('open');
+
+    $(tId).classList.toggle(
+      'open',
+      open
+    );
+
+  });
+
+});
+
 
 function applyStateToDOM(){
+
   ['A','B'].forEach(K=>{
-    const s=state[K.toLowerCase()];
-    $('price'+K).value=s.price;
-    $('trade'+K).value=s.trade;
-    $('payoff'+K).value=s.payoff;
-    $('fees'+K).value=s.fees;
-    $('down'+K+'-val').textContent=money(s.down);
-    $('apr'+K+'-val').textContent=s.apr.toFixed(2)+'%';
-    setActiveTerm(K.toLowerCase(),s.term);
-    if(rulers['down'+K])rulers['down'+K].set(s.down,true);
-    if(rulers['apr'+K])rulers['apr'+K].set(s.apr,true);
+
+    const s=
+      state[K.toLowerCase()];
+
+
+    $('price'+K).value=
+      s.price;
+
+    $('trade'+K).value=
+      s.trade;
+
+    $('payoff'+K).value=
+      s.payoff;
+
+    $('fees'+K).value=
+      s.fees;
+
+
+    $('down'+K+'-val').textContent=
+      money(s.down);
+
+    $('apr'+K+'-val').textContent=
+      s.apr.toFixed(2)+'%';
+
+
+    setActiveTerm(
+      K.toLowerCase(),
+      s.term
+    );
+
+
+    if(rulers['down'+K])
+      rulers['down'+K].set(
+        s.down,
+        true
+      );
+
+
+    if(rulers['apr'+K])
+      rulers['apr'+K].set(
+        s.apr,
+        true
+      );
+
   });
+
 }
+
+
 applyStateToDOM();
-$('clearBtn').addEventListener('click',()=>{
-  Object.assign(state,JSON.parse(JSON.stringify(DEFAULTS)));
-  applyStateToDOM();
-  calcAll();
-});
+
+
+$('clearBtn').addEventListener(
+  'click',
+  ()=>{
+
+    Object.assign(
+      state,
+      JSON.parse(
+        JSON.stringify(DEFAULTS)
+      )
+    );
+
+    applyStateToDOM();
+
+    calcAll();
+
+  }
+);
+
+
 calcAll();
 
-function isLight(){return document.documentElement.classList.contains('light')}
-function syncThemeBtn(){$('themeBtn').textContent=isLight()?'☾':'☀'}
+
+function isLight(){
+
+  return document.documentElement
+    .classList.contains('light');
+
+}
+
+
+function syncThemeBtn(){
+
+  $('themeBtn').textContent=
+    isLight()?'☾':'☀';
+
+}
+
+
 syncThemeBtn();
-$('themeBtn').addEventListener('click',()=>{
-  document.documentElement.classList.toggle('light');
-  try{localStorage.setItem('autoLoanCalculator.theme',isLight()?'light':'dark')}catch(e){}
-  syncTargetBtn=null;
-  syncThemeBtn();
-});
+
+
+$('themeBtn').addEventListener(
+  'click',
+  ()=>{
+
+    document.documentElement
+      .classList.toggle('light');
+
+
+    try{
+
+      localStorage.setItem(
+        'autoLoanCalculator.theme',
+        isLight()?'light':'dark'
+      );
+
+    }catch(e){}
+
+
+    syncThemeBtn();
+
+  }
+);
+
 </script>
+
 </body>
 </html>
