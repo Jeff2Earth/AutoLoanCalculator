@@ -9,6 +9,15 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0F1216">
+<script>
+  (function(){
+    try {
+      if (localStorage.getItem('autoLoanCalculator.theme') === 'light') {
+        document.documentElement.classList.add('light');
+      }
+    } catch (e) { /* storage unavailable */ }
+  })();
+</script>
 <style>
   :root{
     --ink:#0F1216;
@@ -23,8 +32,19 @@
     --slate:#8B95A5;
     --white:#F3F5F7;
     --green:#5FAE7E;
+    --on-accent:#14171C;
+    --table-head:#242A33;
     --mono:'JetBrains Mono','SF Mono',Consolas,monospace;
     --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  }
+  html.light{
+    --ink:#EEF0F3;
+    --panel:#FFFFFF;
+    --panel-2:#F3F4F6;
+    --line:#DBE0E6;
+    --white:#14171C;
+    --slate:#5B6472;
+    --table-head:#E8EAED;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
@@ -47,19 +67,21 @@
     flex-wrap:wrap;
     gap:12px;
   }
-  header .eyebrow{
-    font-family:var(--mono);
-    font-size:12px;
-    letter-spacing:.14em;
-    text-transform:uppercase;
-    color:var(--amber);
-  }
   header h1{
     font-size:25px;
     font-weight:700;
-    margin:2px 0 0;
+    margin:0;
     letter-spacing:-.01em;
+    color:var(--amber);
   }
+  header .byline{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:.04em;
+    color:var(--amber);
+    margin-top:6px;
+  }
+  .header-actions{display:flex;gap:8px;flex:0 0 auto;}
   .clear-btn{
     background:var(--panel);
     border:1px solid var(--line);
@@ -75,6 +97,19 @@
   }
   .clear-btn:hover{border-color:var(--amber);color:var(--amber);}
   .clear-btn:active{background:var(--panel-2);}
+  .theme-btn{
+    background:var(--panel);
+    border:1px solid var(--line);
+    color:var(--slate);
+    font-size:16px;
+    width:38px;
+    border-radius:8px;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:border-color .15s,color .15s,background .15s;
+  }
+  .theme-btn:hover{border-color:var(--amber);color:var(--amber);}
+  .theme-btn:active{background:var(--panel-2);}
 
   /* ---- Shared vehicle panel ---- */
   .shared{
@@ -145,7 +180,7 @@
   .termbtn.active{
     background:var(--accent);
     border-color:var(--accent);
-    color:var(--ink);
+    color:var(--on-accent);
     font-weight:700;
   }
 
@@ -287,7 +322,7 @@
     border-radius:12px;
     overflow:hidden;
     margin-top:6px;
-    color:var(--ink);
+    color:var(--on-accent);
   }
   .option.a .sticker{background:var(--paper);}
   .option.b .sticker{background:var(--paper-b);}
@@ -324,7 +359,7 @@
   .schedule.open{max-height:240px;overflow-y:auto;}
   .schedule table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12.5px;}
   .schedule th{
-    position:sticky;top:0;background:#242A33;color:var(--slate);text-align:right;
+    position:sticky;top:0;background:var(--table-head);color:var(--slate);text-align:right;
     padding:7px 10px;font-weight:600;font-size:11px;letter-spacing:.05em;text-transform:uppercase;
   }
   .schedule th:first-child,.schedule td:first-child{text-align:left;}
@@ -361,10 +396,13 @@
 
   <header>
     <div>
-      <div class="eyebrow">Finance / Estimate</div>
       <h1>Auto Loan Calculator</h1>
+      <div class="byline">Designed by Jeff Patrick</div>
     </div>
-    <button class="clear-btn" id="clearBtn">Clear</button>
+    <div class="header-actions">
+      <button class="theme-btn" id="themeBtn" aria-label="Toggle light/dark theme" title="Toggle light/dark theme">☀</button>
+      <button class="clear-btn" id="clearBtn">Clear</button>
+    </div>
   </header>
 
   <!-- Shared vehicle info -->
@@ -779,6 +817,16 @@
   });
 
   calcAll();
+
+  // ---------- Theme toggle ----------
+  function isLight(){ return document.documentElement.classList.contains('light'); }
+  function syncThemeBtn(){ $('themeBtn').textContent = isLight() ? '☾' : '☀'; }
+  syncThemeBtn();
+  $('themeBtn').addEventListener('click', () => {
+    document.documentElement.classList.toggle('light');
+    try { localStorage.setItem('autoLoanCalculator.theme', isLight() ? 'light' : 'dark'); } catch (e) { /* storage unavailable */ }
+    syncThemeBtn();
+  });
 </script>
 </body>
 </html>
