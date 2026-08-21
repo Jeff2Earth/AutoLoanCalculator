@@ -35,28 +35,24 @@ html.light{
 html,body{margin:0;padding:0}
 body{
   background:var(--ink);color:var(--white);font-family:var(--sans);
-  min-height:100vh;display:flex;justify-content:center;align-items:center;padding:12px 16px 48px;
+  min-height:100vh;margin:0;
 }
-.wrap{width:100%;max-width:1180px}
-header{
-  display:flex;flex-direction:column;align-items:center;
-  margin-bottom:14px;gap:6px
+.wrap{width:100%;max-width:1180px;margin:0 auto;padding:14px 16px 48px}
+
+.masthead{
+  background:#000;padding:24px 16px 20px;text-align:center;
 }
-header h1{font-size:24px;margin:0;color:var(--amber);letter-spacing:-.01em;text-align:center}
-.header-row2{
-  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
-  width:100%;gap:10px
+.masthead .brand{display:flex;align-items:center;justify-content:center;gap:10px}
+.masthead h1{
+  margin:0;font-size:26px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+  background:linear-gradient(180deg,#F7DFA5,#E8A63A 55%,#C98B2E);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
 }
-.header-row2 .spacer{}
-header .byline{
-  grid-column:2;justify-self:center;text-align:center;
-  font-family:var(--sans);
-  font-size:13px;
-  letter-spacing:.02em;
-  color:var(--amber);
-  margin-top:4px;
-}
-.header-actions{display:flex;gap:8px;grid-column:3;justify-self:end}
+.masthead .byline{margin-top:6px;font-size:13px;color:var(--slate);letter-spacing:.02em}
+.masthead .byline strong{color:var(--amber)}
+
+.toolbar{display:flex;justify-content:flex-end;margin-bottom:14px}
+.header-actions{display:flex;gap:8px}
 .clear-btn,.theme-btn{
   background:var(--panel);border:1px solid var(--line);color:var(--slate);
   border-radius:8px;cursor:pointer;transition:.15s
@@ -244,18 +240,26 @@ footer{margin-top:15px;font-size:11px;color:var(--slate);text-align:center}
 </style>
 </head>
 <body>
-<div class="wrap">
-<header>
-  <h1>Auto Loan Calculator</h1>
-  <div class="header-row2">
-    <div class="spacer"></div>
-    <div class="byline">Designed by Jeff Patrick</div>
-    <div class="header-actions">
-      <button class="theme-btn" id="themeBtn" aria-label="Toggle light/dark theme" title="Toggle light/dark theme">☀</button>
-      <button class="clear-btn" id="clearBtn">Clear</button>
-    </div>
+<div class="masthead">
+  <div class="brand">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E8A63A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/>
+      <line x1="8" y1="16" x2="16" y2="8"/>
+      <circle cx="8.5" cy="8.5" r="0.6" fill="#E8A63A" stroke="none"/>
+      <circle cx="15.5" cy="15.5" r="0.6" fill="#E8A63A" stroke="none"/>
+    </svg>
+    <h1>Auto Loan Calculator</h1>
   </div>
-</header>
+  <div class="byline">designed by <strong>Jeff Patrick</strong></div>
+</div>
+
+<div class="wrap">
+<div class="toolbar">
+  <div class="header-actions">
+    <button class="theme-btn" id="themeBtn" aria-label="Toggle light/dark theme" title="Toggle light/dark theme">☀</button>
+    <button class="clear-btn" id="clearBtn">Clear</button>
+  </div>
+</div>
 
 <div class="shared" style="display:none;"></div>
 
@@ -465,11 +469,12 @@ function buildRuler({key,trackId,min,max,step,majorStep,decimals,initial,format,
       onChange(current);
     });
   },{passive:true});
-  let lastWidth=shell.clientWidth;
-  window.addEventListener('resize',()=>{
-    const w=shell.clientWidth;
-    if(w!==lastWidth){ lastWidth=w; jump(current); }
-  });
+  if(window.ResizeObserver){
+    const ro=new ResizeObserver(()=>jump(current));
+    ro.observe(shell);
+  } else {
+    window.addEventListener('resize',()=>jump(current));
+  }
   requestAnimationFrame(()=>requestAnimationFrame(()=>set(current,false)));
   rulers[key]={set};
 }
