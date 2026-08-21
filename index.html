@@ -4,829 +4,2478 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Auto Loan Calculator</title>
+
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0F1216">
+
 <script>
-  (function(){
-    try {
-      if (localStorage.getItem('autoLoanCalculator.theme') === 'light') {
-        document.documentElement.classList.add('light');
-      }
-    } catch (e) { /* storage unavailable */ }
-  })();
+(function(){
+  try {
+    if (localStorage.getItem('autoLoanCalculator.theme') === 'light') {
+      document.documentElement.classList.add('light');
+    }
+  } catch (e) {}
+})();
 </script>
+
 <style>
-  :root{
-    --ink:#0F1216;
-    --panel:#171B21;
-    --panel-2:#1E232B;
-    --line:#2A313B;
-    --amber:#E8A63A;
-    --blue:#4FA8D8;
-    --amber-dim:#8A6423;
-    --paper:#F4EFE4;
-    --paper-b:#E7EFF5;
-    --slate:#8B95A5;
-    --white:#F3F5F7;
-    --green:#5FAE7E;
-    --on-accent:#14171C;
-    --table-head:#242A33;
-    --mono:'JetBrains Mono','SF Mono',Consolas,monospace;
-    --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+:root{
+  --ink:#0F1216;
+  --panel:#171B21;
+  --panel-2:#1E232B;
+  --line:#2A313B;
+  --amber:#E8A63A;
+  --blue:#4FA8D8;
+  --paper:#F4EFE4;
+  --paper-b:#E7EFF5;
+  --slate:#8B95A5;
+  --white:#F3F5F7;
+  --green:#5FAE7E;
+  --on-accent:#14171C;
+  --table-head:#242A33;
+
+  --mono:'JetBrains Mono','SF Mono',Consolas,monospace;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+
+html.light{
+  --ink:#EEF0F3;
+  --panel:#FFFFFF;
+  --panel-2:#F3F4F6;
+  --line:#DBE0E6;
+  --white:#14171C;
+  --slate:#5B6472;
+  --table-head:#E8EAED;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html,body{
+  margin:0;
+  padding:0;
+}
+
+body{
+  background:var(--ink);
+  color:var(--white);
+  font-family:var(--sans);
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+
+  /* REDUCED TOP MARGIN */
+  padding:16px 16px 48px;
+}
+
+.wrap{
+  width:100%;
+  max-width:1180px;
+}
+
+header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  margin-bottom:14px;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+header h1{
+  font-size:24px;
+  font-weight:700;
+  margin:0;
+  letter-spacing:-.01em;
+  color:var(--amber);
+}
+
+header .byline{
+  font-family:var(--mono);
+  font-size:12px;
+  letter-spacing:.04em;
+  color:var(--amber);
+  margin-top:5px;
+}
+
+.header-actions{
+  display:flex;
+  gap:8px;
+}
+
+.clear-btn{
+  background:var(--panel);
+  border:1px solid var(--line);
+  color:var(--slate);
+  font-family:var(--mono);
+  font-size:13px;
+  letter-spacing:.03em;
+  padding:9px 16px;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.clear-btn:hover{
+  border-color:var(--amber);
+  color:var(--amber);
+}
+
+.theme-btn{
+  background:var(--panel);
+  border:1px solid var(--line);
+  color:var(--slate);
+  font-size:16px;
+  width:38px;
+  border-radius:8px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.theme-btn:hover{
+  border-color:var(--amber);
+  color:var(--amber);
+}
+
+/* --------------------------------------------------
+   SHARED VEHICLE INFO
+-------------------------------------------------- */
+
+.shared{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:14px 20px;
+
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:16px;
+}
+
+@media(max-width:560px){
+  .shared{
+    grid-template-columns:1fr;
   }
-  html.light{
-    --ink:#EEF0F3;
-    --panel:#FFFFFF;
-    --panel-2:#F3F4F6;
-    --line:#DBE0E6;
-    --white:#14171C;
-    --slate:#5B6472;
-    --table-head:#E8EAED;
+}
+
+.field label{
+  display:block;
+  font-size:14px;
+  color:var(--slate);
+  margin-bottom:6px;
+}
+
+.inputrow{
+  display:flex;
+  align-items:center;
+  background:var(--panel-2);
+  border:1px solid var(--line);
+  border-radius:9px;
+  padding:0 12px;
+}
+
+.inputrow .prefix{
+  color:var(--slate);
+  font-family:var(--mono);
+  font-size:16px;
+  padding-right:6px;
+}
+
+.inputrow input[type=number]{
+  flex:1;
+  min-width:0;
+  background:transparent;
+  border:none;
+  outline:none;
+  color:var(--white);
+  font-family:var(--mono);
+  font-size:18px;
+  padding:10px 0;
+  width:100%;
+  -moz-appearance:textfield;
+}
+
+.inputrow input[type=number]::-webkit-outer-spin-button,
+.inputrow input[type=number]::-webkit-inner-spin-button{
+  -webkit-appearance:none;
+  margin:0;
+}
+
+/* --------------------------------------------------
+   SPLIT VIEW
+-------------------------------------------------- */
+
+.split-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  gap:14px;
+  margin-top:14px;
+}
+
+@media(min-width:860px){
+  .split-grid{
+    grid-template-columns:minmax(0,1fr) 54px minmax(0,1fr);
+    align-items:start;
   }
-  *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;}
+}
+
+.divider{
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+
+@media(min-width:860px){
+  .divider{
+    flex-direction:column;
+    height:100%;
+    gap:10px;
+  }
+}
+
+.divider .line{
+  background:var(--line);
+  flex:1;
+  height:1px;
+}
+
+@media(min-width:860px){
+  .divider .line{
+    width:1px;
+    height:auto;
+  }
+}
+
+.divider .badge{
+  flex:0 0 auto;
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  background:linear-gradient(160deg,#3a4250,#20252c);
+  border:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:var(--mono);
+  font-size:11px;
+  font-weight:700;
+  color:var(--slate);
+}
+
+/* --------------------------------------------------
+   OPTIONS
+-------------------------------------------------- */
+
+.option{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:16px 18px;
+  min-width:0;
+}
+
+.option.a{
+  --accent:var(--amber);
+}
+
+.option.b{
+  --accent:var(--blue);
+}
+
+.option-title{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:14.5px;
+  font-weight:700;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:12px;
+}
+
+.option-title .dot{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:var(--accent);
+}
+
+.option .field{
+  margin-bottom:12px;
+}
+
+/* --------------------------------------------------
+   RULER
+-------------------------------------------------- */
+
+.ruler-block{
+  margin-bottom:12px;
+  min-width:0;
+}
+
+.ruler-label{
+  margin-bottom:6px;
+}
+
+.ruler-label .name{
+  font-size:14px;
+  color:var(--slate);
+}
+
+.ruler-shell{
+  position:relative;
+  height:56px;
+  min-width:0;
+
+  background:
+    linear-gradient(
+      180deg,
+      #232a33 0%,
+      #191e25 48%,
+      #151920 100%
+    );
+
+  border:1px solid var(--line);
+  border-radius:10px;
+
+  box-shadow:
+    inset 0 2px 6px rgba(0,0,0,.45),
+    inset 0 -1px 0 rgba(255,255,255,.03);
+
+  overflow:hidden;
+}
+
+/* subtle measuring-device background */
+.ruler-shell::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity:.18;
+
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 7px,
+      rgba(160,170,184,.45) 7px,
+      rgba(160,170,184,.45) 8px
+    );
+
+  z-index:1;
+}
+
+.ruler-scroll{
+  height:100%;
+  width:100%;
+  overflow-x:auto;
+  overflow-y:hidden;
+
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+
+  scrollbar-width:none;
+
+  -webkit-mask-image:
+    linear-gradient(
+      to right,
+      transparent 0,
+      black 15%,
+      black 85%,
+      transparent 100%
+    );
+
+  mask-image:
+    linear-gradient(
+      to right,
+      transparent 0,
+      black 15%,
+      black 85%,
+      transparent 100%
+    );
+}
+
+.ruler-scroll::-webkit-scrollbar{
+  display:none;
+}
+
+.ruler-track{
+  display:flex;
+  align-items:flex-end;
+  height:100%;
+  position:relative;
+  z-index:2;
+}
+
+.tick{
+  flex:0 0 auto;
+  width:8px;
+  height:100%;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-end;
+
+  position:relative;
+  scroll-snap-align:center;
+}
+
+.tick .bar{
+  width:1px;
+  background:#56606D;
+  border-radius:1px;
+}
+
+.tick.major .bar{
+  width:2px;
+  background:#A4ADB8;
+}
+
+.tick .num{
+  position:absolute;
+  top:2px;
+  left:50%;
+  transform:translateX(-50%);
+
+  font-family:var(--mono);
+  font-size:10px;
+  color:#8E98A6;
+  white-space:nowrap;
+}
+
+/* --------------------------------------------------
+   APPLE-STYLE MEASUREMENT WINDOW
+-------------------------------------------------- */
+
+.ruler-lens{
+  position:absolute;
+
+  left:50%;
+  top:50%;
+
+  transform:translate(-50%,-50%);
+
+  /*
+    Nearly the full ruler height.
+    This makes it feel like an actual measurement
+    window cut into the ruler.
+  */
+  width:84px;
+  height:50px;
+
+  border-radius:5px;
+
+  background:
+    radial-gradient(
+      160% 220% at 50% -20%,
+      rgba(255,255,255,.92),
+      rgba(255,255,255,0) 55%
+    ),
+    radial-gradient(
+      140% 200% at 50% 130%,
+      rgba(120,102,55,.42),
+      rgba(120,102,55,0) 60%
+    ),
+    linear-gradient(
+      180deg,
+      #FEFCF4 0%,
+      #F1E9D0 45%,
+      #DACC9E 100%
+    );
+
+  border:1px solid #A99C79;
+
+  box-shadow:
+    inset 0 3px 3px rgba(255,255,255,.95),
+    inset 0 -7px 11px rgba(105,90,50,.4),
+    inset 7px 0 10px -5px rgba(105,90,50,.35),
+    inset -7px 0 10px -5px rgba(105,90,50,.35),
+    0 2px 4px rgba(0,0,0,.35),
+    0 0 0 3px rgba(15,18,22,.60);
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  pointer-events:none;
+  overflow:hidden;
+
+  z-index:5;
+}
+
+.ruler-lens::before{
+  content:'';
+
+  position:absolute;
+  top:2px;
+  left:6px;
+  right:6px;
+  height:12px;
+
+  border-radius:2px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.78),
+      rgba(255,255,255,0)
+    );
+}
+
+.ruler-lens::after{
+  content:'';
+
+  position:absolute;
+  inset:0;
+
+  background:
+    repeating-linear-gradient(
+      180deg,
+      rgba(0,0,0,.045) 0px,
+      rgba(0,0,0,.045) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+}
+
+.ruler-lens .lcd-value{
+  position:relative;
+  z-index:2;
+
+  /*
+    Same font treatment on both rulers.
+  */
+  font-family:var(--mono);
+  font-weight:800;
+  font-size:18px;
+  letter-spacing:-.02em;
+
+  color:#151515;
+
+  text-shadow:
+    0 1px 0 rgba(255,255,255,.55);
+
+  font-variant-numeric:tabular-nums;
+
+  white-space:nowrap;
+}
+
+/* Slightly smaller currency display */
+.ruler-lens .lcd-value.money-value{
+  font-size:17px;
+}
+
+/* --------------------------------------------------
+   TERM BUTTONS
+-------------------------------------------------- */
+
+.termrow{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+}
+
+.termbtn{
+  flex:1;
+  min-width:50px;
+  text-align:center;
+
+  padding:8px 4px;
+
+  border-radius:8px;
+  border:1px solid var(--line);
+
+  background:var(--panel-2);
+  color:var(--slate);
+
+  font-family:var(--mono);
+  font-size:13.5px;
+
+  cursor:pointer;
+
+  transition:
+    background .12s,
+    color .12s,
+    border-color .12s;
+}
+
+.termbtn.active{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:var(--on-accent);
+  font-weight:700;
+}
+
+/* --------------------------------------------------
+   STICKER RESULT
+-------------------------------------------------- */
+
+.sticker{
+  border-radius:12px;
+  overflow:hidden;
+  margin-top:4px;
+  color:var(--on-accent);
+}
+
+.option.a .sticker{
+  background:var(--paper);
+}
+
+.option.b .sticker{
+  background:var(--paper-b);
+}
+
+.sticker .tag-top{
+  padding:14px 16px 0;
+}
+
+.sticker .eyebrow2{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:#5B5340;
+}
+
+.option.b .sticker .eyebrow2{
+  color:#3E5A6E;
+}
+
+.sticker .payment{
+  font-size:40px;
+  font-weight:800;
+  letter-spacing:-.02em;
+  line-height:1.05;
+  margin:3px 0 0;
+  font-variant-numeric:tabular-nums;
+}
+
+.sticker .payment sub{
+  font-size:14px;
+  font-weight:600;
+  color:#6B5A2E;
+  font-family:var(--mono);
+}
+
+.option.b .sticker .payment sub{
+  color:#3E5A6E;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+
+  padding:12px 16px 15px;
+}
+
+.stat .k{
+  font-size:10.5px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:#6B5A2E;
+  margin-bottom:3px;
+}
+
+.option.b .stat .k{
+  color:#3E5A6E;
+}
+
+.stat .v{
+  font-family:var(--mono);
+  font-size:15px;
+  font-weight:700;
+}
+
+.stat.warn .v{
+  color:#9B4A2E;
+}
+
+.stat.good .v{
+  color:#2E6B47;
+}
+
+/* --------------------------------------------------
+   AMORTIZATION
+-------------------------------------------------- */
+
+.schedule-toggle{
+  background:var(--ink);
+  color:var(--white);
+  border:none;
+  width:100%;
+
+  padding:10px;
+
+  font-family:var(--sans);
+  font-size:13px;
+  font-weight:600;
+
+  cursor:pointer;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+
+.schedule-toggle .chev{
+  transition:transform .15s;
+  font-size:11px;
+  color:var(--accent);
+}
+
+.schedule-toggle.open .chev{
+  transform:rotate(180deg);
+}
+
+.schedule{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height .2s ease;
+  background:var(--panel-2);
+}
+
+.schedule.open{
+  max-height:240px;
+  overflow-y:auto;
+}
+
+.schedule table{
+  width:100%;
+  border-collapse:collapse;
+  font-family:var(--mono);
+  font-size:12px;
+}
+
+.schedule th{
+  position:sticky;
+  top:0;
+
+  background:var(--table-head);
+  color:var(--slate);
+
+  text-align:right;
+
+  padding:7px 10px;
+
+  font-weight:600;
+  font-size:10.5px;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+}
+
+.schedule th:first-child,
+.schedule td:first-child{
+  text-align:left;
+}
+
+.schedule td{
+  text-align:right;
+  padding:6px 10px;
+  color:var(--white);
+  border-top:1px solid var(--line);
+}
+
+.schedule tr:nth-child(even) td{
+  background:rgba(255,255,255,.015);
+}
+
+/* --------------------------------------------------
+   COMPARE
+-------------------------------------------------- */
+
+.compare-bar{
+  margin-top:14px;
+
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:14px;
+
+  padding:13px 18px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.compare-side{
+  display:flex;
+  align-items:center;
+  gap:9px;
+
+  font-size:14px;
+  color:var(--slate);
+}
+
+.compare-side strong{
+  font-family:var(--mono);
+  color:var(--white);
+  font-size:17px;
+  margin-left:3px;
+}
+
+.compare-side.a::before,
+.compare-side.b::before{
+  content:'';
+  width:9px;
+  height:9px;
+  border-radius:50%;
+}
+
+.compare-side.a::before{
+  background:var(--amber);
+}
+
+.compare-side.b::before{
+  background:var(--blue);
+}
+
+.compare-mid{
+  font-size:13.5px;
+  color:var(--green);
+  font-weight:600;
+  text-align:center;
+  flex:1;
+  min-width:160px;
+}
+
+footer{
+  margin-top:16px;
+  font-size:12px;
+  color:var(--slate);
+  text-align:center;
+}
+
+/* --------------------------------------------------
+   MOBILE
+-------------------------------------------------- */
+
+@media(max-width:600px){
+
   body{
-    background:var(--ink);
-    color:var(--white);
-    font-family:var(--sans);
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    padding:32px 16px 64px;
+    padding:10px 10px 36px;
   }
-  .wrap{width:100%;max-width:1180px;}
 
   header{
-    display:flex;
-    align-items:flex-start;
-    justify-content:space-between;
-    margin-bottom:24px;
-    flex-wrap:wrap;
-    gap:12px;
+    margin-bottom:10px;
   }
+
   header h1{
-    font-size:25px;
-    font-weight:700;
-    margin:0;
-    letter-spacing:-.01em;
-    color:var(--amber);
+    font-size:21px;
   }
-  header .byline{
-    font-family:var(--mono);
-    font-size:12px;
-    letter-spacing:.04em;
-    color:var(--amber);
-    margin-top:6px;
-  }
-  .header-actions{display:flex;gap:8px;flex:0 0 auto;}
-  .clear-btn{
-    background:var(--panel);
-    border:1px solid var(--line);
-    color:var(--slate);
-    font-family:var(--mono);
-    font-size:13px;
-    letter-spacing:.03em;
-    padding:9px 16px;
-    border-radius:8px;
-    cursor:pointer;
-    transition:border-color .15s,color .15s,background .15s;
-    flex:0 0 auto;
-  }
-  .clear-btn:hover{border-color:var(--amber);color:var(--amber);}
-  .clear-btn:active{background:var(--panel-2);}
-  .theme-btn{
-    background:var(--panel);
-    border:1px solid var(--line);
-    color:var(--slate);
-    font-size:16px;
-    width:38px;
-    border-radius:8px;
-    cursor:pointer;
-    display:flex;align-items:center;justify-content:center;
-    transition:border-color .15s,color .15s,background .15s;
-  }
-  .theme-btn:hover{border-color:var(--amber);color:var(--amber);}
-  .theme-btn:active{background:var(--panel-2);}
 
-  /* ---- Shared vehicle panel ---- */
   .shared{
-    background:var(--panel);
-    border:1px solid var(--line);
-    border-radius:14px;
-    padding:18px 22px;
-    display:grid;
-    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-    gap:18px;
-  }
-  @media (max-width:560px){ .shared{grid-template-columns:minmax(0,1fr);} }
-
-  .field label{
-    display:block;
-    font-size:14px;
-    color:var(--slate);
-    margin-bottom:8px;
-    letter-spacing:.01em;
-  }
-  .inputrow{
-    display:flex;
-    align-items:center;
-    background:var(--panel-2);
-    border:1px solid var(--line);
-    border-radius:9px;
-    padding:0 12px;
-  }
-  .inputrow .prefix{
-    color:var(--slate);
-    font-family:var(--mono);
-    font-size:16px;
-    padding-right:6px;
-  }
-  .inputrow input[type=number]{
-    flex:1;
-    min-width:0;
-    background:transparent;
-    border:none;
-    outline:none;
-    color:var(--white);
-    font-family:var(--mono);
-    font-size:18px;
-    padding:11px 0;
-    width:100%;
-    -moz-appearance:textfield;
-  }
-  .inputrow input[type=number]::-webkit-outer-spin-button,
-  .inputrow input[type=number]::-webkit-inner-spin-button{
-    -webkit-appearance:none;margin:0;
-  }
-
-  .termrow{display:flex;gap:8px;flex-wrap:wrap;}
-  .termbtn{
-    flex:1;
-    min-width:52px;
-    text-align:center;
-    padding:9px 4px;
-    border-radius:8px;
-    border:1px solid var(--line);
-    background:var(--panel-2);
-    color:var(--slate);
-    font-family:var(--mono);
-    font-size:14.5px;
-    cursor:pointer;
-    transition:background .12s,color .12s,border-color .12s;
-  }
-  .termbtn.active{
-    background:var(--accent);
-    border-color:var(--accent);
-    color:var(--on-accent);
-    font-weight:700;
-  }
-
-  /* ---- Ruler scrubber (old-Apple wheel picker) ---- */
-  .ruler-block{margin-bottom:16px;min-width:0;}
-  .ruler-label{margin-bottom:8px;}
-  .ruler-label .name{font-size:14px;color:var(--slate);}
-  .ruler-shell{
-    position:relative;
-    height:54px;
-    min-width:0;
-    background:linear-gradient(180deg,#232a33,#151920);
-    border:1px solid var(--line);
-    border-radius:10px;
-    box-shadow:inset 0 2px 6px rgba(0,0,0,.4);
-    overflow:hidden;
-  }
-  .ruler-scroll{
-    height:100%;
-    width:100%;
-    overflow-x:auto;
-    overflow-y:hidden;
-    scroll-snap-type:x mandatory;
-    -webkit-overflow-scrolling:touch;
-    scrollbar-width:none;
-    -webkit-mask-image:linear-gradient(to right, transparent 0, black 16%, black 84%, transparent 100%);
-    mask-image:linear-gradient(to right, transparent 0, black 16%, black 84%, transparent 100%);
-  }
-  .ruler-scroll::-webkit-scrollbar{display:none;}
-  .ruler-track{display:flex;align-items:flex-end;height:100%;}
-  .tick{
-    flex:0 0 auto;width:8px;height:100%;
-    display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
-    position:relative;scroll-snap-align:center;
-  }
-  .tick .bar{width:1.5px;background:#48505C;border-radius:1px;}
-  .tick.major .bar{width:2px;background:#9AA4B2;}
-  .tick .num{
-    position:absolute;top:2px;left:50%;transform:translateX(-50%);
-    font-size:10px;font-family:var(--mono);color:var(--slate);white-space:nowrap;
-  }
-  .ruler-lens{
-    position:absolute;
-    left:50%;top:50%;
-    transform:translate(-50%,-50%);
-    width:80px;
-    height:42px;
-    border-radius:4px;
-    background:
-      radial-gradient(160% 220% at 50% -20%, rgba(255,255,255,.85), rgba(255,255,255,0) 55%),
-      radial-gradient(140% 200% at 50% 130%, rgba(120,102,55,.4), rgba(120,102,55,0) 60%),
-      linear-gradient(180deg,#FEFCF4 0%, #F1E9D0 45%, #DACC9E 100%);
-    border:1px solid #A99C79;
-    box-shadow:
-      inset 0 3px 3px rgba(255,255,255,.95),
-      inset 0 -7px 11px rgba(105,90,50,.4),
-      inset 7px 0 10px -5px rgba(105,90,50,.35),
-      inset -7px 0 10px -5px rgba(105,90,50,.35),
-      0 2px 4px rgba(0,0,0,.35),
-      0 0 0 4px rgba(15,18,22,.55);
-    display:flex;align-items:center;justify-content:center;
-    pointer-events:none;
-    overflow:hidden;
-  }
-  .ruler-lens::before{
-    content:'';
-    position:absolute;top:2px;left:6px;right:6px;height:12px;
-    border-radius:2px;
-    background:linear-gradient(180deg, rgba(255,255,255,.75), rgba(255,255,255,0));
-  }
-  .ruler-lens::after{
-    content:'';
-    position:absolute;inset:0;
-    background:repeating-linear-gradient(180deg, rgba(0,0,0,.05) 0px, rgba(0,0,0,.05) 1px, transparent 1px, transparent 3px);
-  }
-  .ruler-lens .lcd-value{
-    position:relative;
-    font-family:var(--mono);
-    font-weight:800;
-    font-size:19px;
-    letter-spacing:-.01em;
-    color:#151515;
-    text-shadow:0 1px 0 rgba(255,255,255,.5);
-    font-variant-numeric:tabular-nums;
-  }
-
-  /* ---- Split view ---- */
-  .split-grid{
-    display:grid;
-    grid-template-columns:minmax(0,1fr);
-    gap:18px;
-    margin-top:20px;
-  }
-  @media (min-width:860px){
-    .split-grid{grid-template-columns:minmax(0,1fr) 64px minmax(0,1fr);align-items:start;}
-  }
-
-  .divider{
-    display:flex;flex-direction:row;align-items:center;justify-content:center;gap:10px;
-  }
-  @media (min-width:860px){
-    .divider{flex-direction:column;height:100%;gap:12px;}
-  }
-  .divider .line{background:var(--line);flex:1;height:1px;}
-  @media (min-width:860px){ .divider .line{width:1px;height:auto;} }
-  .divider .badge{
-    flex:0 0 auto;
-    width:38px;height:38px;border-radius:50%;
-    background:linear-gradient(160deg,#3a4250,#20252c);
-    border:1px solid var(--line);
-    display:flex;align-items:center;justify-content:center;
-    font-family:var(--mono);font-size:12px;font-weight:700;color:var(--slate);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.06), 0 2px 6px rgba(0,0,0,.35);
-    letter-spacing:.05em;
+    padding:12px 14px;
   }
 
   .option{
-    background:var(--panel);
-    border:1px solid var(--line);
-    border-radius:14px;
-    padding:20px;
-    min-width:0;
+    padding:14px;
   }
-  .option.a{--accent:var(--amber);}
-  .option.b{--accent:var(--blue);}
 
-  .option-title{
-    display:flex;align-items:center;gap:8px;
-    font-size:14.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
-    color:var(--accent);
-    margin-bottom:16px;
+  .ruler-lens{
+    width:82px;
+    height:50px;
   }
-  .option-title .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);}
 
-  .option .field{margin-bottom:16px;}
+  .ruler-lens .lcd-value{
+    font-size:17px;
+  }
 
-  /* Sticker result, tinted per option */
-  .sticker{
-    border-radius:12px;
-    overflow:hidden;
-    margin-top:6px;
-    color:var(--on-accent);
-  }
-  .option.a .sticker{background:var(--paper);}
-  .option.b .sticker{background:var(--paper-b);}
-  .sticker .tag-top{padding:16px 18px 0;}
-  .sticker .eyebrow2{
-    font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:#5B5340;
-  }
-  .option.b .sticker .eyebrow2{color:#3E5A6E;}
   .sticker .payment{
-    font-size:42px;font-weight:800;letter-spacing:-.02em;line-height:1.05;margin:4px 0 0;
-    font-variant-numeric:tabular-nums;
+    font-size:36px;
   }
-  .sticker .payment sub{font-size:14.5px;font-weight:600;color:#6B5A2E;font-family:var(--mono);}
-  .option.b .sticker .payment sub{color:#3E5A6E;}
 
-  .stats{
-    display:grid;grid-template-columns:1fr 1fr;gap:10px;
-    padding:14px 18px 18px;
-  }
-  .stat .k{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#6B5A2E;margin-bottom:3px;}
-  .option.b .stat .k{color:#3E5A6E;}
-  .stat .v{font-family:var(--mono);font-size:16px;font-weight:700;}
-  .stat.warn .v{color:#9B4A2E;}
-  .stat.good .v{color:#2E6B47;}
-
-  .schedule-toggle{
-    background:var(--ink);color:var(--white);border:none;width:100%;
-    padding:11px;font-family:var(--sans);font-size:13.5px;font-weight:600;cursor:pointer;
-    display:flex;align-items:center;justify-content:center;gap:8px;
-  }
-  .schedule-toggle .chev{transition:transform .15s;font-size:11px;color:var(--accent);}
-  .schedule-toggle.open .chev{transform:rotate(180deg);}
-  .schedule{max-height:0;overflow:hidden;transition:max-height .2s ease;background:var(--panel-2);}
-  .schedule.open{max-height:240px;overflow-y:auto;}
-  .schedule table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12.5px;}
-  .schedule th{
-    position:sticky;top:0;background:var(--table-head);color:var(--slate);text-align:right;
-    padding:7px 10px;font-weight:600;font-size:11px;letter-spacing:.05em;text-transform:uppercase;
-  }
-  .schedule th:first-child,.schedule td:first-child{text-align:left;}
-  .schedule td{text-align:right;padding:6px 10px;color:var(--white);border-top:1px solid var(--line);}
-  .schedule tr:nth-child(even) td{background:rgba(255,255,255,.015);}
-
-  /* ---- Compare bar ---- */
   .compare-bar{
-    margin-top:18px;
-    background:var(--panel);
-    border:1px solid var(--line);
-    border-radius:14px;
-    padding:16px 20px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:14px;
-    flex-wrap:wrap;
-  }
-  .compare-side{display:flex;align-items:center;gap:9px;font-size:14.5px;color:var(--slate);}
-  .compare-side .dot{width:9px;height:9px;border-radius:50%;}
-  .compare-side.a .dot{background:var(--amber);}
-  .compare-side.b .dot{background:var(--blue);}
-  .compare-side strong{font-family:var(--mono);color:var(--white);font-size:18px;margin-left:4px;}
-  .compare-mid{
-    font-size:14px;color:var(--green);font-weight:600;text-align:center;flex:1;min-width:160px;
+    flex-direction:column;
   }
 
-  footer{margin-top:22px;font-size:12.5px;color:var(--slate);text-align:center;}
+  .compare-mid{
+    order:2;
+  }
+
+  .compare-side{
+    width:100%;
+    justify-content:space-between;
+  }
+}
 </style>
 </head>
+
 <body>
+
 <div class="wrap">
 
-  <header>
-    <div>
-      <h1>Auto Loan Calculator</h1>
-      <div class="byline">Designed by Jeff Patrick</div>
-    </div>
-    <div class="header-actions">
-      <button class="theme-btn" id="themeBtn" aria-label="Toggle light/dark theme" title="Toggle light/dark theme">☀</button>
-      <button class="clear-btn" id="clearBtn">Clear</button>
-    </div>
-  </header>
+<header>
+  <div>
+    <h1>Auto Loan Calculator</h1>
+    <div class="byline">Designed by Jeff Patrick</div>
+  </div>
 
-  <!-- Shared vehicle info -->
-  <div class="shared">
-    <div class="field">
-      <label>Vehicle price</label>
-      <div class="inputrow">
-        <span class="prefix">$</span>
-        <input type="number" id="priceShared" value="25000" min="0" step="100">
-      </div>
-    </div>
-    <div class="field">
-      <label>Trade-in value</label>
-      <div class="inputrow">
-        <span class="prefix">$</span>
-        <input type="number" id="tradeShared" value="0" min="0" step="100">
-      </div>
+  <div class="header-actions">
+    <button
+      class="theme-btn"
+      id="themeBtn"
+      aria-label="Toggle light/dark theme"
+      title="Toggle light/dark theme">☀</button>
+
+    <button class="clear-btn" id="clearBtn">Clear</button>
+  </div>
+</header>
+
+<!-- ==================================================
+     SHARED VEHICLE INFORMATION
+================================================== -->
+
+<div class="shared">
+
+  <div class="field">
+    <label>Vehicle price</label>
+
+    <div class="inputrow">
+      <span class="prefix">$</span>
+      <input
+        type="number"
+        id="priceShared"
+        value="25000"
+        min="0"
+        step="100">
     </div>
   </div>
 
-  <!-- Split comparison -->
-  <div class="split-grid">
+  <div class="field">
+    <label>Trade-in value</label>
 
-    <!-- OPTION A -->
-    <div class="option a">
-      <div class="option-title"><span class="dot"></span> Option A</div>
+    <div class="inputrow">
+      <span class="prefix">$</span>
+      <input
+        type="number"
+        id="tradeShared"
+        value="0"
+        min="0"
+        step="100">
+    </div>
+  </div>
 
-      <div class="field">
-        <label>Down payment</label>
-        <div class="inputrow">
-          <span class="prefix">$</span>
-          <input type="number" id="downA" value="0" min="0" step="100">
-        </div>
-      </div>
+</div>
 
-      <div class="ruler-block">
-        <div class="ruler-label"><span class="name">Sales tax rate</span></div>
-        <div class="ruler-shell" id="taxA-ruler"><div class="ruler-scroll"><div class="ruler-track" id="taxA-track"></div></div><div class="ruler-lens"><span class="lcd-value" id="taxA-val">7.0%</span></div></div>
-      </div>
+<!-- ==================================================
+     SPLIT COMPARISON
+================================================== -->
 
-      <div class="ruler-block">
-        <div class="ruler-label"><span class="name">APR</span></div>
-        <div class="ruler-shell" id="aprA-ruler"><div class="ruler-scroll"><div class="ruler-track" id="aprA-track"></div></div><div class="ruler-lens"><span class="lcd-value" id="aprA-val">8.90%</span></div></div>
-      </div>
+<div class="split-grid">
 
-      <div class="field">
-        <label>Loan term</label>
-        <div class="termrow" data-group="A">
-          <div class="termbtn" data-term="24">24 mo</div>
-          <div class="termbtn" data-term="36">36 mo</div>
-          <div class="termbtn" data-term="48">48 mo</div>
-          <div class="termbtn active" data-term="60">60 mo</div>
-          <div class="termbtn" data-term="72">72 mo</div>
-          <div class="termbtn" data-term="84">84 mo</div>
-        </div>
-      </div>
+<!-- ==================================================
+     OPTION A
+================================================== -->
 
-      <div class="sticker">
-        <div class="tag-top">
-          <div class="eyebrow2">Estimated payment</div>
-          <div class="payment"><span id="paymentA">$0</span><sub>/mo</sub></div>
-        </div>
-        <div class="stats">
-          <div class="stat"><div class="k">Financed</div><div class="v" id="financedA">$0</div></div>
-          <div class="stat"><div class="k">Sales tax</div><div class="v" id="taxamtA">$0</div></div>
-          <div class="stat warn"><div class="k">Total interest</div><div class="v" id="interestA">$0</div></div>
-          <div class="stat good"><div class="k">Total of payments</div><div class="v" id="totalA">$0</div></div>
-        </div>
-        <button class="schedule-toggle" id="scheduleToggleA">Amortization schedule <span class="chev">▾</span></button>
-        <div class="schedule" id="scheduleA">
-          <table>
-            <thead><tr><th>Mo</th><th>Payment</th><th>Principal</th><th>Interest</th><th>Balance</th></tr></thead>
-            <tbody id="scheduleBodyA"></tbody>
-          </table>
-        </div>
-      </div>
+<div class="option a">
+
+  <div class="option-title">
+    <span class="dot"></span>
+    Option A
+  </div>
+
+  <!-- DOWN PAYMENT RULER -->
+  <div class="ruler-block">
+
+    <div class="ruler-label">
+      <span class="name">Down payment</span>
     </div>
 
-    <!-- DIVIDER -->
-    <div class="divider">
-      <div class="line"></div>
-      <div class="badge">VS</div>
-      <div class="line"></div>
+    <div class="ruler-shell" id="downA-ruler">
+
+      <div class="ruler-scroll">
+        <div class="ruler-track" id="downA-track"></div>
+      </div>
+
+      <div class="ruler-lens">
+        <span class="lcd-value money-value" id="downA-val">$0</span>
+      </div>
+
     </div>
+  </div>
 
-    <!-- OPTION B -->
-    <div class="option b">
-      <div class="option-title"><span class="dot"></span> Option B</div>
+  <!-- TRADE PAYOFF -->
+  <div class="field">
 
-      <div class="field">
-        <label>Down payment</label>
-        <div class="inputrow">
-          <span class="prefix">$</span>
-          <input type="number" id="downB" value="0" min="0" step="100">
-        </div>
-      </div>
+    <label>Trade payoff</label>
 
-      <div class="ruler-block">
-        <div class="ruler-label"><span class="name">Sales tax rate</span></div>
-        <div class="ruler-shell" id="taxB-ruler"><div class="ruler-scroll"><div class="ruler-track" id="taxB-track"></div></div><div class="ruler-lens"><span class="lcd-value" id="taxB-val">7.0%</span></div></div>
-      </div>
+    <div class="inputrow">
+      <span class="prefix">$</span>
 
-      <div class="ruler-block">
-        <div class="ruler-label"><span class="name">APR</span></div>
-        <div class="ruler-shell" id="aprB-ruler"><div class="ruler-scroll"><div class="ruler-track" id="aprB-track"></div></div><div class="ruler-lens"><span class="lcd-value" id="aprB-val">8.90%</span></div></div>
-      </div>
-
-      <div class="field">
-        <label>Loan term</label>
-        <div class="termrow" data-group="B">
-          <div class="termbtn" data-term="24">24 mo</div>
-          <div class="termbtn" data-term="36">36 mo</div>
-          <div class="termbtn" data-term="48">48 mo</div>
-          <div class="termbtn active" data-term="60">60 mo</div>
-          <div class="termbtn" data-term="72">72 mo</div>
-          <div class="termbtn" data-term="84">84 mo</div>
-        </div>
-      </div>
-
-      <div class="sticker">
-        <div class="tag-top">
-          <div class="eyebrow2">Estimated payment</div>
-          <div class="payment"><span id="paymentB">$0</span><sub>/mo</sub></div>
-        </div>
-        <div class="stats">
-          <div class="stat"><div class="k">Financed</div><div class="v" id="financedB">$0</div></div>
-          <div class="stat"><div class="k">Sales tax</div><div class="v" id="taxamtB">$0</div></div>
-          <div class="stat warn"><div class="k">Total interest</div><div class="v" id="interestB">$0</div></div>
-          <div class="stat good"><div class="k">Total of payments</div><div class="v" id="totalB">$0</div></div>
-        </div>
-        <button class="schedule-toggle" id="scheduleToggleB">Amortization schedule <span class="chev">▾</span></button>
-        <div class="schedule" id="scheduleB">
-          <table>
-            <thead><tr><th>Mo</th><th>Payment</th><th>Principal</th><th>Interest</th><th>Balance</th></tr></thead>
-            <tbody id="scheduleBodyB"></tbody>
-          </table>
-        </div>
-      </div>
+      <input
+        type="number"
+        id="payoffA"
+        value="0"
+        min="0"
+        step="100">
     </div>
 
   </div>
 
-  <!-- Compare summary -->
-  <div class="compare-bar">
-    <div class="compare-side a">Option A <strong id="cmpA">$0/mo</strong></div>
-    <div class="compare-mid" id="cmpDelta">—</div>
-    <div class="compare-side b">Option B <strong id="cmpB">$0/mo</strong></div>
+  <!-- FEES -->
+  <div class="field">
+
+    <label>Fees</label>
+
+    <div class="inputrow">
+      <span class="prefix">$</span>
+
+      <input
+        type="number"
+        id="feesA"
+        value="1307"
+        min="0"
+        step="1">
+    </div>
+
   </div>
 
-  <footer>Estimate only — actual APR, fees, and tax vary by lender and state. Your inputs are saved on this device.</footer>
+  <!-- APR -->
+  <div class="ruler-block">
+
+    <div class="ruler-label">
+      <span class="name">APR</span>
+    </div>
+
+    <div class="ruler-shell" id="aprA-ruler">
+
+      <div class="ruler-scroll">
+        <div class="ruler-track" id="aprA-track"></div>
+      </div>
+
+      <div class="ruler-lens">
+        <span class="lcd-value" id="aprA-val">8.90%</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TERM -->
+  <div class="field">
+
+    <label>Loan term</label>
+
+    <div class="termrow" data-group="A">
+
+      <div class="termbtn" data-term="24">24 mo</div>
+      <div class="termbtn" data-term="36">36 mo</div>
+      <div class="termbtn" data-term="48">48 mo</div>
+      <div class="termbtn active" data-term="60">60 mo</div>
+      <div class="termbtn" data-term="72">72 mo</div>
+      <div class="termbtn" data-term="84">84 mo</div>
+
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div class="sticker">
+
+    <div class="tag-top">
+
+      <div class="eyebrow2">
+        Estimated payment
+      </div>
+
+      <div class="payment">
+        <span id="paymentA">$0</span>
+        <sub>/mo</sub>
+      </div>
+
+    </div>
+
+    <div class="stats">
+
+      <div class="stat">
+        <div class="k">Financed</div>
+        <div class="v" id="financedA">$0</div>
+      </div>
+
+      <div class="stat">
+        <div class="k">Sales tax</div>
+        <div class="v" id="taxamtA">$0</div>
+      </div>
+
+      <div class="stat warn">
+        <div class="k">Total interest</div>
+        <div class="v" id="interestA">$0</div>
+      </div>
+
+      <div class="stat good">
+        <div class="k">Total of payments</div>
+        <div class="v" id="totalA">$0</div>
+      </div>
+
+    </div>
+
+    <button class="schedule-toggle" id="scheduleToggleA">
+      Amortization schedule
+      <span class="chev">▾</span>
+    </button>
+
+    <div class="schedule" id="scheduleA">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>Mo</th>
+            <th>Payment</th>
+            <th>Principal</th>
+            <th>Interest</th>
+            <th>Balance</th>
+          </tr>
+        </thead>
+
+        <tbody id="scheduleBodyA"></tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ==================================================
+     DIVIDER
+================================================== -->
+
+<div class="divider">
+
+  <div class="line"></div>
+
+  <div class="badge">VS</div>
+
+  <div class="line"></div>
+
+</div>
+
+<!-- ==================================================
+     OPTION B
+================================================== -->
+
+<div class="option b">
+
+  <div class="option-title">
+    <span class="dot"></span>
+    Option B
+  </div>
+
+  <!-- DOWN PAYMENT RULER -->
+  <div class="ruler-block">
+
+    <div class="ruler-label">
+      <span class="name">Down payment</span>
+    </div>
+
+    <div class="ruler-shell" id="downB-ruler">
+
+      <div class="ruler-scroll">
+        <div class="ruler-track" id="downB-track"></div>
+      </div>
+
+      <div class="ruler-lens">
+        <span class="lcd-value money-value" id="downB-val">$0</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TRADE PAYOFF -->
+  <div class="field">
+
+    <label>Trade payoff</label>
+
+    <div class="inputrow">
+      <span class="prefix">$</span>
+
+      <input
+        type="number"
+        id="payoffB"
+        value="0"
+        min="0"
+        step="100">
+    </div>
+
+  </div>
+
+  <!-- FEES -->
+  <div class="field">
+
+    <label>Fees</label>
+
+    <div class="inputrow">
+      <span class="prefix">$</span>
+
+      <input
+        type="number"
+        id="feesB"
+        value="1307"
+        min="0"
+        step="1">
+    </div>
+
+  </div>
+
+  <!-- APR -->
+  <div class="ruler-block">
+
+    <div class="ruler-label">
+      <span class="name">APR</span>
+    </div>
+
+    <div class="ruler-shell" id="aprB-ruler">
+
+      <div class="ruler-scroll">
+        <div class="ruler-track" id="aprB-track"></div>
+      </div>
+
+      <div class="ruler-lens">
+        <span class="lcd-value" id="aprB-val">8.90%</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TERM -->
+  <div class="field">
+
+    <label>Loan term</label>
+
+    <div class="termrow" data-group="B">
+
+      <div class="termbtn" data-term="24">24 mo</div>
+      <div class="termbtn" data-term="36">36 mo</div>
+      <div class="termbtn" data-term="48">48 mo</div>
+      <div class="termbtn active" data-term="60">60 mo</div>
+      <div class="termbtn" data-term="72">72 mo</div>
+      <div class="termbtn" data-term="84">84 mo</div>
+
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div class="sticker">
+
+    <div class="tag-top">
+
+      <div class="eyebrow2">
+        Estimated payment
+      </div>
+
+      <div class="payment">
+        <span id="paymentB">$0</span>
+        <sub>/mo</sub>
+      </div>
+
+    </div>
+
+    <div class="stats">
+
+      <div class="stat">
+        <div class="k">Financed</div>
+        <div class="v" id="financedB">$0</div>
+      </div>
+
+      <div class="stat">
+        <div class="k">Sales tax</div>
+        <div class="v" id="taxamtB">$0</div>
+      </div>
+
+      <div class="stat warn">
+        <div class="k">Total interest</div>
+        <div class="v" id="interestB">$0</div>
+      </div>
+
+      <div class="stat good">
+        <div class="k">Total of payments</div>
+        <div class="v" id="totalB">$0</div>
+      </div>
+
+    </div>
+
+    <button class="schedule-toggle" id="scheduleToggleB">
+      Amortization schedule
+      <span class="chev">▾</span>
+    </button>
+
+    <div class="schedule" id="scheduleB">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>Mo</th>
+            <th>Payment</th>
+            <th>Principal</th>
+            <th>Interest</th>
+            <th>Balance</th>
+          </tr>
+        </thead>
+
+        <tbody id="scheduleBodyB"></tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>
+
+</div>
+
+<!-- ==================================================
+     COMPARISON
+================================================== -->
+
+<div class="compare-bar">
+
+  <div class="compare-side a">
+    Option A
+    <strong id="cmpA">$0/mo</strong>
+  </div>
+
+  <div class="compare-mid" id="cmpDelta">
+    —
+  </div>
+
+  <div class="compare-side b">
+    Option B
+    <strong id="cmpB">$0/mo</strong>
+  </div>
+
+</div>
+
+<footer>
+  Estimate only — actual APR, fees, and tax vary by lender and state.
+  Your inputs are saved on this device.
+</footer>
+
 </div>
 
 <script>
-  const $ = id => document.getElementById(id);
-  const money = n => '$' + n.toLocaleString('en-US', {maximumFractionDigits:0});
-  const moneyC = n => '$' + n.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
 
-  const STORAGE_KEY = 'autoLoanCalculator.state.v1';
+const $ = id => document.getElementById(id);
 
-  const DEFAULTS = {
-    price: 25000, trade: 0,
-    a: { down: 0, tax: 7.0, apr: 8.9, term: 60 },
-    b: { down: 0, tax: 7.0, apr: 8.9, term: 60 }
-  };
-
-  function loadSaved(){
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return null;
-      const parsed = JSON.parse(raw);
-      // shallow-validate shape, fall back to defaults for anything missing
-      return {
-        price: typeof parsed.price === 'number' ? parsed.price : DEFAULTS.price,
-        trade: typeof parsed.trade === 'number' ? parsed.trade : DEFAULTS.trade,
-        a: Object.assign({}, DEFAULTS.a, parsed.a || {}),
-        b: Object.assign({}, DEFAULTS.b, parsed.b || {})
-      };
-    } catch (e) { return null; }
-  }
-
-  function saveState(){
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({
-        price: state.price, trade: state.trade, a: state.a, b: state.b
-      }));
-    } catch (e) { /* storage unavailable — fail silently */ }
-  }
-
-  const saved = loadSaved();
-  const state = saved || JSON.parse(JSON.stringify(DEFAULTS));
-
-  // ---------- Ruler (old-Apple style horizontal wheel picker) ----------
-  const rulers = {};
-
-  function buildRuler({ key, trackId, min, max, step, majorStep, decimals, initial, onChange }){
-    const track = $(trackId);
-    const ruler = track.parentElement;
-    const tickWidth = 8;
-    const count = Math.round((max - min) / step) + 1;
-
-    const frag = document.createDocumentFragment();
-    for (let idx = 0; idx < count; idx++){
-      const val = +(min + idx * step).toFixed(decimals);
-      const div = document.createElement('div');
-      const isMajor = Math.abs(Math.round(val / majorStep) * majorStep - val) < step / 2;
-      div.className = 'tick' + (isMajor ? ' major' : '');
-      const bar = document.createElement('div');
-      bar.className = 'bar';
-      bar.style.height = isMajor ? '22px' : '10px';
-      div.appendChild(bar);
-      if (isMajor){
-        const num = document.createElement('div');
-        num.className = 'num';
-        num.textContent = majorStep >= 1 ? Math.round(val) : val;
-        div.appendChild(num);
-      }
-      frag.appendChild(div);
-    }
-    track.innerHTML = '';
-    track.appendChild(frag);
-
-    let current = initial;
-
-    function setPadding(){
-      const w = ruler.clientWidth;
-      const pad = (w / 2) + 'px';
-      track.style.paddingLeft = pad;
-      track.style.paddingRight = pad;
-    }
-
-    function positionFor(val){
-      const idx = Math.round((val - min) / step);
-      return idx * tickWidth + tickWidth / 2;
-    }
-
-    function jumpTo(val){
-      setPadding();
-      ruler.scrollLeft = positionFor(val);
-    }
-
-    function set(val, silent){
-      current = Math.min(max, Math.max(min, val));
-      jumpTo(current);
-      if (!silent) onChange(current);
-    }
-
-    let raf = null;
-    ruler.addEventListener('scroll', () => {
-      if (raf) return;
-      raf = requestAnimationFrame(() => {
-        raf = null;
-        const idx = Math.round(ruler.scrollLeft / tickWidth - 0.5);
-        const clamped = Math.min(count - 1, Math.max(0, idx));
-        current = +(min + clamped * step).toFixed(decimals);
-        onChange(current);
-      });
-    }, { passive: true });
-
-    window.addEventListener('resize', () => jumpTo(current));
-
-    // Wait for layout to fully settle (mobile toolbars, fonts, etc.) before centering.
-    requestAnimationFrame(() => requestAnimationFrame(() => set(current, false)));
-
-    const api = { set };
-    rulers[key] = api;
-    return api;
-  }
-
-  buildRuler({
-    key: 'taxA', trackId: 'taxA-track', min: 0, max: 12, step: 0.25, majorStep: 1, decimals: 2, initial: state.a.tax,
-    onChange: v => { state.a.tax = v; $('taxA-val').textContent = v.toFixed(2) + '%'; calcAll(); }
-  });
-  buildRuler({
-    key: 'aprA', trackId: 'aprA-track', min: 0, max: 24, step: 0.25, majorStep: 2, decimals: 2, initial: state.a.apr,
-    onChange: v => { state.a.apr = v; $('aprA-val').textContent = v.toFixed(2) + '%'; calcAll(); }
-  });
-  buildRuler({
-    key: 'taxB', trackId: 'taxB-track', min: 0, max: 12, step: 0.25, majorStep: 1, decimals: 2, initial: state.b.tax,
-    onChange: v => { state.b.tax = v; $('taxB-val').textContent = v.toFixed(2) + '%'; calcAll(); }
-  });
-  buildRuler({
-    key: 'aprB', trackId: 'aprB-track', min: 0, max: 24, step: 0.25, majorStep: 2, decimals: 2, initial: state.b.apr,
-    onChange: v => { state.b.apr = v; $('aprB-val').textContent = v.toFixed(2) + '%'; calcAll(); }
+const money = n =>
+  '$' + n.toLocaleString('en-US',{
+    maximumFractionDigits:0
   });
 
-  // ---------- Term buttons ----------
-  function setActiveTerm(key, term){
-    const row = document.querySelector(`.termrow[data-group="${key.toUpperCase()}"]`);
-    row.querySelectorAll('.termbtn').forEach(b => {
-      b.classList.toggle('active', parseInt(b.dataset.term, 10) === term);
-    });
-  }
-
-  document.querySelectorAll('.termrow').forEach(row => {
-    const key = row.dataset.group.toLowerCase();
-    row.querySelectorAll('.termbtn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        row.querySelectorAll('.termbtn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        state[key].term = parseInt(btn.dataset.term, 10);
-        calcAll();
-      });
-    });
+const moneyC = n =>
+  '$' + n.toLocaleString('en-US',{
+    minimumFractionDigits:2,
+    maximumFractionDigits:2
   });
 
-  // ---------- Calculation ----------
-  function calcOption(K){
-    const key = K.toLowerCase();
-    const price = Math.max(0, parseFloat($('priceShared').value) || 0);
-    const trade = Math.max(0, parseFloat($('tradeShared').value) || 0);
-    const down  = Math.max(0, parseFloat($('down' + K).value) || 0);
-    state.price = price;
-    state.trade = trade;
-    state[key].down = down;
+const STORAGE_KEY =
+  'autoLoanCalculator.state.v2';
 
-    const taxRate = state[key].tax / 100;
-    const apr = state[key].apr / 100;
-    const n = state[key].term;
-    const r = apr / 12;
+/*
+==================================================
+DEFAULTS
+==================================================
+*/
 
-    const taxAmt = price * taxRate;
-    const financed = Math.max(0, price + taxAmt - down - trade);
+const DEFAULTS = {
 
-    let payment = r === 0 ? financed / n : financed * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
-    if (!isFinite(payment)) payment = 0;
+  price:25000,
 
-    const totalPaid = payment * n;
-    const totalInterest = totalPaid - financed;
+  trade:0,
 
-    $('payment' + K).textContent = payment.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
-    $('financed' + K).textContent = money(financed);
-    $('taxamt' + K).textContent = money(taxAmt);
-    $('interest' + K).textContent = money(Math.max(0, totalInterest));
-    $('total' + K).textContent = money(totalPaid);
+  a:{
+    down:0,
+    payoff:0,
+    fees:1307,
+    tax:7.0,
+    apr:8.9,
+    term:60
+  },
 
-    buildSchedule(K, financed, r, n, payment);
-    return payment;
+  b:{
+    down:0,
+    payoff:0,
+    fees:1307,
+    tax:7.0,
+    apr:8.9,
+    term:60
   }
 
-  function buildSchedule(K, principal, r, n, payment){
-    const body = $('scheduleBody' + K);
-    body.innerHTML = '';
-    let balance = principal;
-    const frag = document.createDocumentFragment();
-    for (let m = 1; m <= n; m++){
-      const interest = balance * r;
-      let principalPortion = payment - interest;
-      if (m === n) principalPortion = balance;
-      balance = Math.max(0, balance - principalPortion);
-      const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${m}</td><td>${moneyC(payment)}</td><td>${moneyC(principalPortion)}</td><td>${moneyC(interest)}</td><td>${moneyC(balance)}</td>`;
-      frag.appendChild(tr);
+};
+
+/*
+==================================================
+LOAD / SAVE
+==================================================
+*/
+
+function loadSaved(){
+
+  try{
+
+    const raw =
+      localStorage.getItem(STORAGE_KEY);
+
+    if(!raw)
+      return null;
+
+    const parsed =
+      JSON.parse(raw);
+
+    return {
+
+      price:
+        typeof parsed.price === 'number'
+          ? parsed.price
+          : DEFAULTS.price,
+
+      trade:
+        typeof parsed.trade === 'number'
+          ? parsed.trade
+          : DEFAULTS.trade,
+
+      a:Object.assign(
+        {},
+        DEFAULTS.a,
+        parsed.a || {}
+      ),
+
+      b:Object.assign(
+        {},
+        DEFAULTS.b,
+        parsed.b || {}
+      )
+
+    };
+
+  }catch(e){
+
+    return null;
+
+  }
+
+}
+
+function saveState(){
+
+  try{
+
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({
+        price:state.price,
+        trade:state.trade,
+        a:state.a,
+        b:state.b
+      })
+    );
+
+  }catch(e){}
+
+}
+
+const saved =
+  loadSaved();
+
+const state =
+  saved ||
+  JSON.parse(
+    JSON.stringify(DEFAULTS)
+  );
+
+/*
+==================================================
+RULERS
+==================================================
+*/
+
+const rulers = {};
+
+function buildRuler({
+
+  key,
+  trackId,
+  min,
+  max,
+  step,
+  majorStep,
+  decimals,
+  initial,
+  formatter,
+  onChange
+
+}){
+
+  const track =
+    $(trackId);
+
+  const ruler =
+    track.parentElement;
+
+  const tickWidth = 8;
+
+  const count =
+    Math.round(
+      (max-min)/step
+    ) + 1;
+
+  const frag =
+    document.createDocumentFragment();
+
+  for(
+    let idx=0;
+    idx<count;
+    idx++
+  ){
+
+    const val =
+      +(
+        min + idx*step
+      ).toFixed(decimals);
+
+    const div =
+      document.createElement('div');
+
+    const nearestMajor =
+      Math.round(val/majorStep)
+      * majorStep;
+
+    const isMajor =
+      Math.abs(
+        nearestMajor-val
+      ) < step/2;
+
+    div.className =
+      'tick' +
+      (isMajor ? ' major' : '');
+
+    const bar =
+      document.createElement('div');
+
+    bar.className =
+      'bar';
+
+    bar.style.height =
+      isMajor
+        ? '22px'
+        : '10px';
+
+    div.appendChild(bar);
+
+    if(isMajor){
+
+      const num =
+        document.createElement('div');
+
+      num.className =
+        'num';
+
+      num.textContent =
+        formatter
+          ? formatter(val)
+          : val;
+
+      div.appendChild(num);
+
     }
-    body.appendChild(frag);
+
+    frag.appendChild(div);
+
   }
 
-  function calcAll(){
-    const pa = calcOption('A');
-    const pb = calcOption('B');
-    $('cmpA').textContent = pa.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }) + '/mo';
-    $('cmpB').textContent = pb.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }) + '/mo';
-    const delta = pa - pb;
-    if (Math.abs(delta) < 0.5){
-      $('cmpDelta').textContent = 'Payments are about equal';
-    } else if (delta > 0){
-      $('cmpDelta').textContent = `Option B is ${money(delta)}/mo lower`;
-    } else {
-      $('cmpDelta').textContent = `Option A is ${money(-delta)}/mo lower`;
-    }
-    saveState();
+  track.innerHTML='';
+
+  track.appendChild(frag);
+
+  let current =
+    initial;
+
+  function setPadding(){
+
+    const w =
+      ruler.clientWidth;
+
+    const pad =
+      (w/2) + 'px';
+
+    track.style.paddingLeft =
+      pad;
+
+    track.style.paddingRight =
+      pad;
+
   }
 
-  ['priceShared', 'tradeShared', 'downA', 'downB'].forEach(id => {
-    $(id).addEventListener('input', calcAll);
-  });
+  function positionFor(val){
 
-  [['scheduleToggleA', 'scheduleA'], ['scheduleToggleB', 'scheduleB']].forEach(([tId, sId]) => {
-    const toggle = $(tId), schedule = $(sId);
-    toggle.addEventListener('click', () => {
-      const open = schedule.classList.toggle('open');
-      toggle.classList.toggle('open', open);
-    });
-  });
+    const idx =
+      Math.round(
+        (val-min)/step
+      );
 
-  // ---------- Restore saved/initial values into the inputs + term buttons ----------
-  function applyStateToDOM(){
-    $('priceShared').value = state.price;
-    $('tradeShared').value = state.trade;
-    $('downA').value = state.a.down;
-    $('downB').value = state.b.down;
-    setActiveTerm('a', state.a.term);
-    setActiveTerm('b', state.b.term);
-    $('taxA-val').textContent = state.a.tax.toFixed(2) + '%';
-    $('aprA-val').textContent = state.a.apr.toFixed(2) + '%';
-    $('taxB-val').textContent = state.b.tax.toFixed(2) + '%';
-    $('aprB-val').textContent = state.b.apr.toFixed(2) + '%';
-    if (rulers.taxA) rulers.taxA.set(state.a.tax, true);
-    if (rulers.aprA) rulers.aprA.set(state.a.apr, true);
-    if (rulers.taxB) rulers.taxB.set(state.b.tax, true);
-    if (rulers.aprB) rulers.aprB.set(state.b.apr, true);
+    return (
+      idx*tickWidth
+      + tickWidth/2
+    );
+
   }
-  applyStateToDOM();
 
-  // ---------- Clear button ----------
-  $('clearBtn').addEventListener('click', () => {
-    state.price = DEFAULTS.price;
-    state.trade = DEFAULTS.trade;
-    state.a = Object.assign({}, DEFAULTS.a);
-    state.b = Object.assign({}, DEFAULTS.b);
-    applyStateToDOM();
+  function jumpTo(val){
+
+    setPadding();
+
+    ruler.scrollLeft =
+      positionFor(val);
+
+  }
+
+  function set(
+    val,
+    silent
+  ){
+
+    current =
+      Math.min(
+        max,
+        Math.max(min,val)
+      );
+
+    jumpTo(current);
+
+    if(!silent)
+      onChange(current);
+
+  }
+
+  let raf=null;
+
+  ruler.addEventListener(
+    'scroll',
+    ()=>{
+
+      if(raf)
+        return;
+
+      raf =
+        requestAnimationFrame(
+          ()=>{
+
+            raf=null;
+
+            const idx =
+              Math.round(
+                ruler.scrollLeft/
+                tickWidth - .5
+              );
+
+            const clamped =
+              Math.min(
+                count-1,
+                Math.max(0,idx)
+              );
+
+            current =
+              +(
+                min +
+                clamped*step
+              ).toFixed(decimals);
+
+            onChange(current);
+
+          }
+        );
+
+    },
+    {passive:true}
+  );
+
+  window.addEventListener(
+    'resize',
+    ()=>jumpTo(current)
+  );
+
+  requestAnimationFrame(
+    ()=>requestAnimationFrame(
+      ()=>set(current,false)
+    )
+  );
+
+  rulers[key]={set};
+
+  return rulers[key];
+
+}
+
+/*
+==================================================
+DOWN PAYMENT RULERS
+==================================================
+
+The maximum is $50,000 so the ruler has plenty of
+room for normal dealership use.
+
+$100 increments.
+==================================================
+*/
+
+buildRuler({
+
+  key:'downA',
+
+  trackId:'downA-track',
+
+  min:0,
+
+  max:50000,
+
+  step:100,
+
+  majorStep:1000,
+
+  decimals:0,
+
+  initial:state.a.down,
+
+  formatter:v =>
+    '$' +
+    Math.round(v/1000) +
+    'k',
+
+  onChange:v=>{
+
+    state.a.down=v;
+
+    $('downA-val').textContent =
+      money(v);
+
     calcAll();
+
+  }
+
+});
+
+buildRuler({
+
+  key:'downB',
+
+  trackId:'downB-track',
+
+  min:0,
+
+  max:50000,
+
+  step:100,
+
+  majorStep:1000,
+
+  decimals:0,
+
+  initial:state.b.down,
+
+  formatter:v =>
+    '$' +
+    Math.round(v/1000) +
+    'k',
+
+  onChange:v=>{
+
+    state.b.down=v;
+
+    $('downB-val').textContent =
+      money(v);
+
+    calcAll();
+
+  }
+
+});
+
+/*
+==================================================
+APR RULERS
+==================================================
+
+0% through 24%, in .25% increments.
+==================================================
+*/
+
+buildRuler({
+
+  key:'aprA',
+
+  trackId:'aprA-track',
+
+  min:0,
+
+  max:24,
+
+  step:.25,
+
+  majorStep:2,
+
+  decimals:2,
+
+  initial:state.a.apr,
+
+  formatter:v =>
+    v.toFixed(0) + '%',
+
+  onChange:v=>{
+
+    state.a.apr=v;
+
+    $('aprA-val').textContent =
+      v.toFixed(2)+'%';
+
+    calcAll();
+
+  }
+
+});
+
+buildRuler({
+
+  key:'aprB',
+
+  trackId:'aprB-track',
+
+  min:0,
+
+  max:24,
+
+  step:.25,
+
+  majorStep:2,
+
+  decimals:2,
+
+  initial:state.b.apr,
+
+  formatter:v =>
+    v.toFixed(0) + '%',
+
+  onChange:v=>{
+
+    state.b.apr=v;
+
+    $('aprB-val').textContent =
+      v.toFixed(2)+'%';
+
+    calcAll();
+
+  }
+
+});
+
+/*
+==================================================
+TERM BUTTONS
+==================================================
+*/
+
+function setActiveTerm(
+  key,
+  term
+){
+
+  const row =
+    document.querySelector(
+      `.termrow[data-group="${key.toUpperCase()}"]`
+    );
+
+  row.querySelectorAll(
+    '.termbtn'
+  ).forEach(btn=>{
+
+    btn.classList.toggle(
+      'active',
+      parseInt(
+        btn.dataset.term,
+        10
+      )===term
+    );
+
   });
 
-  calcAll();
+}
 
-  // ---------- Theme toggle ----------
-  function isLight(){ return document.documentElement.classList.contains('light'); }
-  function syncThemeBtn(){ $('themeBtn').textContent = isLight() ? '☾' : '☀'; }
-  syncThemeBtn();
-  $('themeBtn').addEventListener('click', () => {
-    document.documentElement.classList.toggle('light');
-    try { localStorage.setItem('autoLoanCalculator.theme', isLight() ? 'light' : 'dark'); } catch (e) { /* storage unavailable */ }
+document.querySelectorAll(
+  '.termrow'
+).forEach(row=>{
+
+  const key =
+    row.dataset.group.toLowerCase();
+
+  row.querySelectorAll(
+    '.termbtn'
+  ).forEach(btn=>{
+
+    btn.addEventListener(
+      'click',
+      ()=>{
+
+        row.querySelectorAll(
+          '.termbtn'
+        ).forEach(
+          b=>b.classList.remove('active')
+        );
+
+        btn.classList.add('active');
+
+        state[key].term =
+          parseInt(
+            btn.dataset.term,
+            10
+          );
+
+        calcAll();
+
+      }
+    );
+
+  });
+
+});
+
+/*
+==================================================
+CALCULATION
+==================================================
+
+Financed amount:
+
+Vehicle price
++ Sales tax
++ Fees
+- Trade allowance
+- Trade payoff
+- Down payment
+
+Sales tax is permanently locked at 7%.
+==================================================
+*/
+
+function calcOption(K){
+
+  const key =
+    K.toLowerCase();
+
+  const price =
+    Math.max(
+      0,
+      parseFloat(
+        $('priceShared').value
+      ) || 0
+    );
+
+  const trade =
+    Math.max(
+      0,
+      parseFloat(
+        $('tradeShared').value
+      ) || 0
+    );
+
+  const payoff =
+    Math.max(
+      0,
+      parseFloat(
+        $('payoff'+K).value
+      ) || 0
+    );
+
+  const fees =
+    Math.max(
+      0,
+      parseFloat(
+        $('fees'+K).value
+      ) || 0
+    );
+
+  const down =
+    Math.max(
+      0,
+      state[key].down
+    );
+
+  state.price =
+    price;
+
+  state.trade =
+    trade;
+
+  state[key].payoff =
+    payoff;
+
+  state[key].fees =
+    fees;
+
+  /*
+    LOCKED GEORGIA SALES TAX
+  */
+  state[key].tax =
+    7.0;
+
+  const taxRate =
+    .07;
+
+  const apr =
+    state[key].apr/100;
+
+  const n =
+    state[key].term;
+
+  const r =
+    apr/12;
+
+  const taxAmt =
+    price*taxRate;
+
+  const financed =
+    Math.max(
+      0,
+      price +
+      taxAmt +
+      fees -
+      trade -
+      payoff -
+      down
+    );
+
+  let payment;
+
+  if(r===0){
+
+    payment =
+      financed/n;
+
+  }else{
+
+    payment =
+      financed *
+      (
+        r *
+        Math.pow(1+r,n)
+      ) /
+      (
+        Math.pow(1+r,n)-1
+      );
+
+  }
+
+  if(!isFinite(payment))
+    payment=0;
+
+  const totalPaid =
+    payment*n;
+
+  const totalInterest =
+    totalPaid-financed;
+
+  $('payment'+K).textContent =
+    payment.toLocaleString(
+      'en-US',
+      {
+        style:'currency',
+        currency:'USD',
+        maximumFractionDigits:0
+      }
+    );
+
+  $('financed'+K).textContent =
+    money(financed);
+
+  $('taxamt'+K).textContent =
+    money(taxAmt);
+
+  $('interest'+K).textContent =
+    money(
+      Math.max(
+        0,
+        totalInterest
+      )
+    );
+
+  $('total'+K).textContent =
+    money(totalPaid);
+
+  buildSchedule(
+    K,
+    financed,
+    r,
+    n,
+    payment
+  );
+
+  return payment;
+
+}
+
+/*
+==================================================
+AMORTIZATION
+==================================================
+*/
+
+function buildSchedule(
+  K,
+  principal,
+  r,
+  n,
+  payment
+){
+
+  const body =
+    $('scheduleBody'+K);
+
+  body.innerHTML='';
+
+  let balance =
+    principal;
+
+  const frag =
+    document.createDocumentFragment();
+
+  for(
+    let m=1;
+    m<=n;
+    m++
+  ){
+
+    const interest =
+      balance*r;
+
+    let principalPortion =
+      payment-interest;
+
+    if(m===n)
+      principalPortion=balance;
+
+    balance =
+      Math.max(
+        0,
+        balance-principalPortion
+      );
+
+    const tr =
+      document.createElement('tr');
+
+    tr.innerHTML=`
+      <td>${m}</td>
+      <td>${moneyC(payment)}</td>
+      <td>${moneyC(principalPortion)}</td>
+      <td>${moneyC(interest)}</td>
+      <td>${moneyC(balance)}</td>
+    `;
+
+    frag.appendChild(tr);
+
+  }
+
+  body.appendChild(frag);
+
+}
+
+/*
+==================================================
+CALCULATE EVERYTHING
+==================================================
+*/
+
+function calcAll(){
+
+  const pa =
+    calcOption('A');
+
+  const pb =
+    calcOption('B');
+
+  $('cmpA').textContent =
+    pa.toLocaleString(
+      'en-US',
+      {
+        style:'currency',
+        currency:'USD',
+        maximumFractionDigits:0
+      }
+    )+'/mo';
+
+  $('cmpB').textContent =
+    pb.toLocaleString(
+      'en-US',
+      {
+        style:'currency',
+        currency:'USD',
+        maximumFractionDigits:0
+      }
+    )+'/mo';
+
+  const delta =
+    pa-pb;
+
+  if(Math.abs(delta)<.5){
+
+    $('cmpDelta').textContent =
+      'Payments are about equal';
+
+  }else if(delta>0){
+
+    $('cmpDelta').textContent =
+      `Option B is ${money(delta)}/mo lower`;
+
+  }else{
+
+    $('cmpDelta').textContent =
+      `Option A is ${money(-delta)}/mo lower`;
+
+  }
+
+  saveState();
+
+}
+
+/*
+==================================================
+INPUT EVENTS
+==================================================
+*/
+
+[
+  'priceShared',
+  'tradeShared',
+  'payoffA',
+  'payoffB',
+  'feesA',
+  'feesB'
+].forEach(id=>{
+
+  $(id).addEventListener(
+    'input',
+    calcAll
+  );
+
+});
+
+/*
+==================================================
+SCHEDULE TOGGLES
+==================================================
+*/
+
+[
+  ['scheduleToggleA','scheduleA'],
+  ['scheduleToggleB','scheduleB']
+].forEach(
+  ([tId,sId])=>{
+
+    const toggle =
+      $(tId);
+
+    const schedule =
+      $(sId);
+
+    toggle.addEventListener(
+      'click',
+      ()=>{
+
+        const open =
+          schedule.classList.toggle(
+            'open'
+          );
+
+        toggle.classList.toggle(
+          'open',
+          open
+        );
+
+      }
+    );
+
+  }
+);
+
+/*
+==================================================
+APPLY SAVED STATE
+==================================================
+*/
+
+function applyStateToDOM(){
+
+  $('priceShared').value =
+    state.price;
+
+  $('tradeShared').value =
+    state.trade;
+
+  $('payoffA').value =
+    state.a.payoff;
+
+  $('payoffB').value =
+    state.b.payoff;
+
+  $('feesA').value =
+    state.a.fees;
+
+  $('feesB').value =
+    state.b.fees;
+
+  $('downA-val').textContent =
+    money(state.a.down);
+
+  $('downB-val').textContent =
+    money(state.b.down);
+
+  $('aprA-val').textContent =
+    state.a.apr.toFixed(2)+'%';
+
+  $('aprB-val').textContent =
+    state.b.apr.toFixed(2)+'%';
+
+  setActiveTerm(
+    'a',
+    state.a.term
+  );
+
+  setActiveTerm(
+    'b',
+    state.b.term
+  );
+
+  if(rulers.downA)
+    rulers.downA.set(
+      state.a.down,
+      true
+    );
+
+  if(rulers.downB)
+    rulers.downB.set(
+      state.b.down,
+      true
+    );
+
+  if(rulers.aprA)
+    rulers.aprA.set(
+      state.a.apr,
+      true
+    );
+
+  if(rulers.aprB)
+    rulers.aprB.set(
+      state.b.apr,
+      true
+    );
+
+}
+
+applyStateToDOM();
+
+/*
+==================================================
+CLEAR
+==================================================
+*/
+
+$('clearBtn').addEventListener(
+  'click',
+  ()=>{
+
+    state.price =
+      DEFAULTS.price;
+
+    state.trade =
+      DEFAULTS.trade;
+
+    state.a =
+      Object.assign(
+        {},
+        DEFAULTS.a
+      );
+
+    state.b =
+      Object.assign(
+        {},
+        DEFAULTS.b
+      );
+
+    applyStateToDOM();
+
+    calcAll();
+
+  }
+);
+
+/*
+==================================================
+INITIAL CALCULATION
+==================================================
+*/
+
+calcAll();
+
+/*
+==================================================
+THEME
+==================================================
+*/
+
+function isLight(){
+
+  return document.documentElement
+    .classList.contains('light');
+
+}
+
+function syncThemeBtn(){
+
+  $('themeBtn').textContent =
+    isLight()
+      ? '☾'
+      : '☀';
+
+}
+
+syncThemeBtn();
+
+$('themeBtn').addEventListener(
+  'click',
+  ()=>{
+
+    document.documentElement
+      .classList.toggle('light');
+
+    try{
+
+      localStorage.setItem(
+        'autoLoanCalculator.theme',
+        isLight()
+          ? 'light'
+          : 'dark'
+      );
+
+    }catch(e){}
+
     syncThemeBtn();
-  });
+
+  }
+);
+
 </script>
+
 </body>
 </html>
