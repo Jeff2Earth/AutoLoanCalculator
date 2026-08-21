@@ -49,13 +49,13 @@
   }
   header .eyebrow{
     font-family:var(--mono);
-    font-size:11px;
+    font-size:12px;
     letter-spacing:.14em;
     text-transform:uppercase;
     color:var(--amber);
   }
   header h1{
-    font-size:22px;
+    font-size:25px;
     font-weight:700;
     margin:2px 0 0;
     letter-spacing:-.01em;
@@ -65,7 +65,7 @@
     border:1px solid var(--line);
     color:var(--slate);
     font-family:var(--mono);
-    font-size:12px;
+    font-size:13px;
     letter-spacing:.03em;
     padding:9px 16px;
     border-radius:8px;
@@ -90,7 +90,7 @@
 
   .field label{
     display:block;
-    font-size:12.5px;
+    font-size:14px;
     color:var(--slate);
     margin-bottom:8px;
     letter-spacing:.01em;
@@ -106,7 +106,7 @@
   .inputrow .prefix{
     color:var(--slate);
     font-family:var(--mono);
-    font-size:14px;
+    font-size:16px;
     padding-right:6px;
   }
   .inputrow input[type=number]{
@@ -117,7 +117,7 @@
     outline:none;
     color:var(--white);
     font-family:var(--mono);
-    font-size:16px;
+    font-size:18px;
     padding:11px 0;
     width:100%;
     -moz-appearance:textfield;
@@ -138,7 +138,7 @@
     background:var(--panel-2);
     color:var(--slate);
     font-family:var(--mono);
-    font-size:13px;
+    font-size:14.5px;
     cursor:pointer;
     transition:background .12s,color .12s,border-color .12s;
   }
@@ -152,7 +152,7 @@
   /* ---- Ruler scrubber (old-Apple wheel picker) ---- */
   .ruler-block{margin-bottom:16px;min-width:0;}
   .ruler-label{margin-bottom:8px;}
-  .ruler-label .name{font-size:12.5px;color:var(--slate);}
+  .ruler-label .name{font-size:14px;color:var(--slate);}
   .ruler-shell{
     position:relative;
     height:54px;
@@ -185,22 +185,25 @@
   .tick.major .bar{width:2px;background:#9AA4B2;}
   .tick .num{
     position:absolute;top:2px;left:50%;transform:translateX(-50%);
-    font-size:9px;font-family:var(--mono);color:var(--slate);white-space:nowrap;
+    font-size:10px;font-family:var(--mono);color:var(--slate);white-space:nowrap;
   }
   .ruler-lens{
     position:absolute;
     left:50%;top:50%;
     transform:translate(-50%,-50%);
-    width:112px;
+    width:80px;
     height:42px;
     border-radius:4px;
     background:
-      radial-gradient(140% 180% at 50% -30%, rgba(255,255,255,.65), rgba(255,255,255,0) 55%),
-      linear-gradient(180deg,#FBF7EA 0%, #EDE4CC 55%, #DFD3B4 100%);
+      radial-gradient(160% 220% at 50% -20%, rgba(255,255,255,.85), rgba(255,255,255,0) 55%),
+      radial-gradient(140% 200% at 50% 130%, rgba(120,102,55,.4), rgba(120,102,55,0) 60%),
+      linear-gradient(180deg,#FEFCF4 0%, #F1E9D0 45%, #DACC9E 100%);
     border:1px solid #A99C79;
     box-shadow:
-      inset 0 1px 0 rgba(255,255,255,.85),
-      inset 0 -4px 8px rgba(110,95,55,.28),
+      inset 0 3px 3px rgba(255,255,255,.95),
+      inset 0 -7px 11px rgba(105,90,50,.4),
+      inset 7px 0 10px -5px rgba(105,90,50,.35),
+      inset -7px 0 10px -5px rgba(105,90,50,.35),
       0 2px 4px rgba(0,0,0,.35),
       0 0 0 4px rgba(15,18,22,.55);
     display:flex;align-items:center;justify-content:center;
@@ -209,9 +212,9 @@
   }
   .ruler-lens::before{
     content:'';
-    position:absolute;top:2px;left:8px;right:8px;height:14px;
+    position:absolute;top:2px;left:6px;right:6px;height:12px;
     border-radius:2px;
-    background:linear-gradient(180deg, rgba(255,255,255,.7), rgba(255,255,255,0));
+    background:linear-gradient(180deg, rgba(255,255,255,.75), rgba(255,255,255,0));
   }
   .ruler-lens::after{
     content:'';
@@ -223,9 +226,9 @@
     font-family:var(--mono);
     font-weight:800;
     font-size:19px;
-    letter-spacing:.01em;
-    color:#C1560B;
-    text-shadow:0 0 5px rgba(216,110,15,.4), 0 0 1px rgba(216,110,15,.6);
+    letter-spacing:-.01em;
+    color:#151515;
+    text-shadow:0 1px 0 rgba(255,255,255,.5);
     font-variant-numeric:tabular-nums;
   }
 
@@ -254,7 +257,7 @@
     background:linear-gradient(160deg,#3a4250,#20252c);
     border:1px solid var(--line);
     display:flex;align-items:center;justify-content:center;
-    font-family:var(--mono);font-size:11px;font-weight:700;color:var(--slate);
+    font-family:var(--mono);font-size:12px;font-weight:700;color:var(--slate);
     box-shadow:inset 0 1px 0 rgba(255,255,255,.06), 0 2px 6px rgba(0,0,0,.35);
     letter-spacing:.05em;
   }
@@ -271,7 +274,7 @@
 
   .option-title{
     display:flex;align-items:center;gap:8px;
-    font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+    font-size:14.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
     color:var(--accent);
     margin-bottom:16px;
   }
@@ -290,39 +293,39 @@
   .option.b .sticker{background:var(--paper-b);}
   .sticker .tag-top{padding:16px 18px 0;}
   .sticker .eyebrow2{
-    font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:#5B5340;
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:#5B5340;
   }
   .option.b .sticker .eyebrow2{color:#3E5A6E;}
   .sticker .payment{
-    font-size:38px;font-weight:800;letter-spacing:-.02em;line-height:1.05;margin:4px 0 0;
+    font-size:42px;font-weight:800;letter-spacing:-.02em;line-height:1.05;margin:4px 0 0;
     font-variant-numeric:tabular-nums;
   }
-  .sticker .payment sub{font-size:13px;font-weight:600;color:#6B5A2E;font-family:var(--mono);}
+  .sticker .payment sub{font-size:14.5px;font-weight:600;color:#6B5A2E;font-family:var(--mono);}
   .option.b .sticker .payment sub{color:#3E5A6E;}
 
   .stats{
     display:grid;grid-template-columns:1fr 1fr;gap:10px;
     padding:14px 18px 18px;
   }
-  .stat .k{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#6B5A2E;margin-bottom:3px;}
+  .stat .k{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#6B5A2E;margin-bottom:3px;}
   .option.b .stat .k{color:#3E5A6E;}
-  .stat .v{font-family:var(--mono);font-size:14.5px;font-weight:700;}
+  .stat .v{font-family:var(--mono);font-size:16px;font-weight:700;}
   .stat.warn .v{color:#9B4A2E;}
   .stat.good .v{color:#2E6B47;}
 
   .schedule-toggle{
     background:var(--ink);color:var(--white);border:none;width:100%;
-    padding:11px;font-family:var(--sans);font-size:12.5px;font-weight:600;cursor:pointer;
+    padding:11px;font-family:var(--sans);font-size:13.5px;font-weight:600;cursor:pointer;
     display:flex;align-items:center;justify-content:center;gap:8px;
   }
   .schedule-toggle .chev{transition:transform .15s;font-size:11px;color:var(--accent);}
   .schedule-toggle.open .chev{transform:rotate(180deg);}
   .schedule{max-height:0;overflow:hidden;transition:max-height .2s ease;background:var(--panel-2);}
   .schedule.open{max-height:240px;overflow-y:auto;}
-  .schedule table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11.5px;}
+  .schedule table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12.5px;}
   .schedule th{
     position:sticky;top:0;background:#242A33;color:var(--slate);text-align:right;
-    padding:7px 10px;font-weight:600;font-size:10px;letter-spacing:.05em;text-transform:uppercase;
+    padding:7px 10px;font-weight:600;font-size:11px;letter-spacing:.05em;text-transform:uppercase;
   }
   .schedule th:first-child,.schedule td:first-child{text-align:left;}
   .schedule td{text-align:right;padding:6px 10px;color:var(--white);border-top:1px solid var(--line);}
@@ -341,16 +344,16 @@
     gap:14px;
     flex-wrap:wrap;
   }
-  .compare-side{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--slate);}
+  .compare-side{display:flex;align-items:center;gap:9px;font-size:14.5px;color:var(--slate);}
   .compare-side .dot{width:9px;height:9px;border-radius:50%;}
   .compare-side.a .dot{background:var(--amber);}
   .compare-side.b .dot{background:var(--blue);}
-  .compare-side strong{font-family:var(--mono);color:var(--white);font-size:16px;margin-left:4px;}
+  .compare-side strong{font-family:var(--mono);color:var(--white);font-size:18px;margin-left:4px;}
   .compare-mid{
-    font-size:12.5px;color:var(--green);font-weight:600;text-align:center;flex:1;min-width:160px;
+    font-size:14px;color:var(--green);font-weight:600;text-align:center;flex:1;min-width:160px;
   }
 
-  footer{margin-top:22px;font-size:11.5px;color:var(--slate);text-align:center;}
+  footer{margin-top:22px;font-size:12.5px;color:var(--slate);text-align:center;}
 </style>
 </head>
 <body>
