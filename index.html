@@ -35,7 +35,7 @@ html.light{
 html,body{margin:0;padding:0}
 body{
   background:var(--ink);color:var(--white);font-family:var(--sans);
-  min-height:100vh;display:flex;justify-content:center;padding:22px 16px 48px;
+  min-height:100vh;display:flex;justify-content:center;align-items:center;padding:22px 16px 48px;
 }
 .wrap{width:100%;max-width:1180px}
 header{
@@ -260,23 +260,23 @@ footer{margin-top:15px;font-size:11px;color:var(--slate);text-align:center}
 
   <div class="compact-row">
     <div class="field">
-      <label>Trade Value</label>
-      <div class="inputrow"><span class="prefix">$</span><input type="number" id="tradeA" value="0" min="0" step="100"></div>
-    </div>
-    <div class="field">
       <label>Trade Payoff</label>
       <div class="inputrow"><span class="prefix">$</span><input type="number" id="payoffA" value="0" min="0" step="100"></div>
+    </div>
+    <div class="field">
+      <label>Trade Value</label>
+      <div class="inputrow"><span class="prefix">$</span><input type="number" id="tradeA" value="0" min="0" step="100"></div>
     </div>
   </div>
 
   <div class="compact-row">
-    <div class="field">
-      <label>Fees</label>
-      <div class="inputrow"><span class="prefix">$</span><input type="number" id="feesA" value="1307" min="0" step="1"></div>
-    </div>
     <div class="field down-field">
       <label>Down Payment</label>
       <div class="inputrow"><span class="prefix">$</span><input type="number" id="downA" value="0" min="0" step="100"></div>
+    </div>
+    <div class="field">
+      <label>Fees</label>
+      <div class="inputrow"><span class="prefix">$</span><input type="number" id="feesA" value="1307" min="0" step="1"></div>
     </div>
   </div>
 
@@ -322,23 +322,23 @@ footer{margin-top:15px;font-size:11px;color:var(--slate);text-align:center}
 
   <div class="compact-row">
     <div class="field">
-      <label>Trade Value</label>
-      <div class="inputrow"><span class="prefix">$</span><input type="number" id="tradeB" value="0" min="0" step="100"></div>
-    </div>
-    <div class="field">
       <label>Trade Payoff</label>
       <div class="inputrow"><span class="prefix">$</span><input type="number" id="payoffB" value="0" min="0" step="100"></div>
+    </div>
+    <div class="field" style="display:none;">
+      <label>Trade Value</label>
+      <div class="inputrow"><span class="prefix">$</span><input type="number" id="tradeB" value="0" min="0" step="100"></div>
     </div>
   </div>
 
   <div class="compact-row">
-    <div class="field">
-      <label>Fees</label>
-      <div class="inputrow"><span class="prefix">$</span><input type="number" id="feesB" value="1307" min="0" step="1"></div>
-    </div>
     <div class="field down-field">
       <label>Down Payment</label>
       <div class="inputrow"><span class="prefix">$</span><input type="number" id="downB" value="0" min="0" step="100"></div>
+    </div>
+    <div class="field">
+      <label>Fees</label>
+      <div class="inputrow"><span class="prefix">$</span><input type="number" id="feesB" value="1307" min="0" step="1"></div>
     </div>
   </div>
 
