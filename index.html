@@ -130,23 +130,24 @@ body{
   position:relative;height:47px;min-width:0;
   background:linear-gradient(180deg,#232a33,#151920);
   border:1px solid var(--line);border-radius:8px;
-  box-shadow:inset 0 2px 5px rgba(0,0,0,.4);overflow:hidden
-}
-.ruler-scroll{
-  height:100%;width:100%;overflow-x:auto;overflow-y:hidden;
-  scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;
-  scrollbar-width:none;
+  box-shadow:inset 0 2px 5px rgba(0,0,0,.4);overflow:hidden;
   -webkit-mask-image:linear-gradient(to right,transparent 0,black 14%,black 86%,transparent 100%);
   mask-image:linear-gradient(to right,transparent 0,black 14%,black 86%,transparent 100%)
 }
+.ruler-scroll{
+  height:100%;width:100%;overflow-x:auto;overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none
+}
 .ruler-scroll::-webkit-scrollbar{display:none}
-.ruler-track{display:flex;align-items:flex-end;height:100%}
+.ruler-track{display:flex;align-items:flex-end;height:100%;padding-left:calc(50% - 4px);padding-right:calc(50% - 4px)}
 .tick{
   flex:0 0 auto;width:8px;height:100%;display:flex;flex-direction:column;
-  align-items:center;justify-content:flex-end;position:relative;scroll-snap-align:center
+  align-items:center;justify-content:flex-end;position:relative
 }
 .tick .bar{width:1.5px;background:#48505C;border-radius:1px}
 .tick.major .bar{width:2px;background:#9AA4B2}
+.tick.ghost .bar{opacity:.3}
 .tick .num{
   position:absolute;top:1px;left:50%;transform:translateX(-50%);
   font-size:9px;font-family:var(--mono);color:var(--slate);white-space:nowrap
@@ -421,15 +422,16 @@ const state=saved||JSON.parse(JSON.stringify(DEFAULTS));
 
 const rulers={};
 
-function buildRuler({key,trackId,min,max,step,majorStep,decimals,initial,format,onChange}){
-  const track=$(trackId), scroll=track.parentElement, shell=scroll.parentElement;
-  const tickWidth=8,count=Math.round((max-min)/step)+1;
+function buildRuler({key,trackId,min,max,step,majorStep,decimals,initial,tickPx,format,onChange}){
+  const track=$(trackId), scroll=track.parentElement;
+  const tickWidth=tickPx||8,count=Math.round((max-min)/step)+1;
   const frag=document.createDocumentFragment();
   for(let i=0;i<count;i++){
     const val=+(min+i*step).toFixed(decimals);
     const d=document.createElement('div');
     const major=Math.abs(Math.round(val/majorStep)*majorStep-val)<step/2;
     d.className='tick'+(major?' major':'');
+    d.style.width=tickWidth+'px';
     const bar=document.createElement('div');bar.className='bar';bar.style.height=major?'20px':'9px';
     d.appendChild(bar);
     if(major){
@@ -440,16 +442,46 @@ function buildRuler({key,trackId,min,max,step,majorStep,decimals,initial,format,
     frag.appendChild(d);
   }
   track.innerHTML='';track.appendChild(frag);
+  track.style.position='relative';
+  track.style.paddingLeft='calc(50% - '+(tickWidth/2)+'px)';
+  track.style.paddingRight='calc(50% - '+(tickWidth/2)+'px)';
+
+  // Decorative ticks drawn into the existing padding zones (not part of the scrollable
+  // range) so the ruler visually continues past the true min/max instead of dead-ending.
+  const ghostCount=4;
+  for(let g=1;g<=ghostCount;g++){
+    const isOuter=g===ghostCount;
+    const rVal=+(max+g*step).toFixed(decimals);
+    const rightGhost=document.createElement('div');
+    rightGhost.className='tick ghost'+(isOuter?' major':'');
+    rightGhost.style.cssText='position:absolute;top:0;bottom:0;left:calc(50% - '+(tickWidth/2)+'px + '+(count*tickWidth+g*tickWidth)+'px);width:'+tickWidth+'px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end';
+    const rbar=document.createElement('div');rbar.className='bar';rbar.style.height=(isOuter?'20px':'9px');
+    rightGhost.appendChild(rbar);
+    if(isOuter){
+      const rnum=document.createElement('div');rnum.className='num';
+      rnum.textContent=decimals?rVal.toFixed(decimals):Math.round(rVal);
+      rightGhost.appendChild(rnum);
+    }
+    track.appendChild(rightGhost);
+
+    const lVal=+(min-g*step).toFixed(decimals);
+    const leftGhost=document.createElement('div');
+    leftGhost.className='tick ghost'+(isOuter?' major':'');
+    leftGhost.style.cssText='position:absolute;top:0;bottom:0;left:calc(50% - '+(tickWidth/2)+'px - '+(g*tickWidth)+'px);width:'+tickWidth+'px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end';
+    const lbar=document.createElement('div');lbar.className='bar';lbar.style.height=(isOuter?'20px':'9px');
+    leftGhost.appendChild(lbar);
+    if(isOuter && lVal>=0){
+      const lnum=document.createElement('div');lnum.className='num';
+      lnum.textContent=decimals?lVal.toFixed(decimals):Math.round(lVal);
+      leftGhost.appendChild(lnum);
+    }
+    track.appendChild(leftGhost);
+  }
+
   let current=initial;
 
-  function pad(){
-    const w=shell.clientWidth;
-    track.style.paddingLeft=(w/2-tickWidth/2)+'px';
-    track.style.paddingRight=(w/2-tickWidth/2)+'px';
-  }
   function pos(val){return Math.round((val-min)/step)*tickWidth}
   function jump(val){
-    pad();
     scroll.scrollLeft=pos(val);
   }
   function set(val,silent){
@@ -457,24 +489,24 @@ function buildRuler({key,trackId,min,max,step,majorStep,decimals,initial,format,
     jump(current);
     if(!silent)onChange(current);
   }
+  function readValue(){
+    const trueMax=scroll.scrollWidth-scroll.clientWidth;
+    if(trueMax<=0)return min;
+    const proportion=Math.min(1,Math.max(0,scroll.scrollLeft/trueMax));
+    const raw=min+proportion*(max-min);
+    const snapped=Math.round((raw-min)/step)*step+min;
+    return +Math.min(max,Math.max(min,snapped)).toFixed(decimals);
+  }
 
   let raf=null;
   scroll.addEventListener('scroll',()=>{
     if(raf)return;
     raf=requestAnimationFrame(()=>{
       raf=null;
-      const idx=Math.round(scroll.scrollLeft/tickWidth);
-      const clamped=Math.min(count-1,Math.max(0,idx));
-      current=+(min+clamped*step).toFixed(decimals);
+      current=readValue();
       onChange(current);
     });
   },{passive:true});
-  if(window.ResizeObserver){
-    const ro=new ResizeObserver(()=>jump(current));
-    ro.observe(shell);
-  } else {
-    window.addEventListener('resize',()=>jump(current));
-  }
   requestAnimationFrame(()=>requestAnimationFrame(()=>set(current,false)));
   rulers[key]={set};
 }
@@ -494,12 +526,12 @@ function updateApr(K,v){
 
 ['A','B'].forEach(K=>{
   buildRuler({
-    key:'down'+K,trackId:'down'+K+'-track',min:0,max:25000,step:100,majorStep:1000,decimals:0,
+    key:'down'+K,trackId:'down'+K+'-track',min:0,max:100000,step:100,majorStep:1000,decimals:0,
     initial:state[K.toLowerCase()].down,format:money,
     onChange:v=>updateDown(K,v)
   });
   buildRuler({
-    key:'apr'+K,trackId:'apr'+K+'-track',min:0,max:24,step:.25,majorStep:2,decimals:2,
+    key:'apr'+K,trackId:'apr'+K+'-track',min:0,max:24,step:.25,majorStep:2,decimals:2,tickPx:16,
     initial:state[K.toLowerCase()].apr,
     onChange:v=>updateApr(K,v)
   });
