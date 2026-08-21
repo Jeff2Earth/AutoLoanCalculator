@@ -3,12 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Auto Loan Calculator</title>
 
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
 <link rel="manifest" href="manifest.json">
+
 <meta name="theme-color" content="#0F1216">
 
 <script>
@@ -22,19 +24,30 @@
 </script>
 
 <style>
+
+/* =========================================================
+   COLORS / FONTS
+========================================================= */
+
 :root{
   --ink:#0F1216;
   --panel:#171B21;
   --panel-2:#1E232B;
   --line:#2A313B;
+
   --amber:#E8A63A;
   --blue:#4FA8D8;
+
   --paper:#F4EFE4;
   --paper-b:#E7EFF5;
+
   --slate:#8B95A5;
   --white:#F3F5F7;
+
   --green:#5FAE7E;
+
   --on-accent:#14171C;
+
   --table-head:#242A33;
 
   --mono:'JetBrains Mono','SF Mono',Consolas,monospace;
@@ -46,8 +59,10 @@ html.light{
   --panel:#FFFFFF;
   --panel-2:#F3F4F6;
   --line:#DBE0E6;
+
   --white:#14171C;
   --slate:#5B6472;
+
   --table-head:#E8EAED;
 }
 
@@ -55,7 +70,8 @@ html.light{
   box-sizing:border-box;
 }
 
-html,body{
+html,
+body{
   margin:0;
   padding:0;
 }
@@ -63,13 +79,15 @@ html,body{
 body{
   background:var(--ink);
   color:var(--white);
+
   font-family:var(--sans);
+
   min-height:100vh;
+
   display:flex;
   justify-content:center;
 
-  /* REDUCED TOP MARGIN */
-  padding:16px 16px 48px;
+  padding:14px 16px 42px;
 }
 
 .wrap{
@@ -77,11 +95,18 @@ body{
   max-width:1180px;
 }
 
+
+/* =========================================================
+   HEADER
+========================================================= */
+
 header{
   display:flex;
   align-items:flex-start;
   justify-content:space-between;
-  margin-bottom:14px;
+
+  margin-bottom:12px;
+
   flex-wrap:wrap;
   gap:10px;
 }
@@ -89,17 +114,24 @@ header{
 header h1{
   font-size:24px;
   font-weight:700;
+
   margin:0;
+
   letter-spacing:-.01em;
+
   color:var(--amber);
 }
 
 header .byline{
   font-family:var(--mono);
+
   font-size:12px;
+
   letter-spacing:.04em;
+
   color:var(--amber);
-  margin-top:5px;
+
+  margin-top:4px;
 }
 
 .header-actions{
@@ -107,96 +139,130 @@ header .byline{
   gap:8px;
 }
 
-.clear-btn{
-  background:var(--panel);
-  border:1px solid var(--line);
-  color:var(--slate);
-  font-family:var(--mono);
-  font-size:13px;
-  letter-spacing:.03em;
-  padding:9px 16px;
-  border-radius:8px;
-  cursor:pointer;
-}
-
-.clear-btn:hover{
-  border-color:var(--amber);
-  color:var(--amber);
-}
-
+.clear-btn,
 .theme-btn{
   background:var(--panel);
+
   border:1px solid var(--line);
+
   color:var(--slate);
-  font-size:16px;
-  width:38px;
+
   border-radius:8px;
+
   cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
 }
 
+.clear-btn{
+  font-family:var(--mono);
+
+  font-size:13px;
+
+  padding:9px 16px;
+}
+
+.clear-btn:hover,
 .theme-btn:hover{
   border-color:var(--amber);
   color:var(--amber);
 }
 
-/* --------------------------------------------------
-   SHARED VEHICLE INFO
--------------------------------------------------- */
+.theme-btn{
+  font-size:16px;
+
+  width:38px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+
+/* =========================================================
+   SHARED VEHICLE INFORMATION
+========================================================= */
 
 .shared{
   background:var(--panel);
+
   border:1px solid var(--line);
+
   border-radius:14px;
-  padding:14px 20px;
+
+  padding:12px 18px;
 
   display:grid;
-  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-  gap:16px;
+
+  grid-template-columns:
+    minmax(0,1fr)
+    minmax(0,1fr);
+
+  gap:14px;
 }
 
 @media(max-width:560px){
+
   .shared{
     grid-template-columns:1fr;
   }
+
 }
 
 .field label{
   display:block;
-  font-size:14px;
+
+  font-size:13.5px;
+
   color:var(--slate);
-  margin-bottom:6px;
+
+  margin-bottom:5px;
 }
 
 .inputrow{
   display:flex;
+
   align-items:center;
+
   background:var(--panel-2);
+
   border:1px solid var(--line);
+
   border-radius:9px;
-  padding:0 12px;
+
+  padding:0 11px;
 }
 
 .inputrow .prefix{
   color:var(--slate);
+
   font-family:var(--mono);
+
   font-size:16px;
-  padding-right:6px;
+
+  padding-right:5px;
 }
 
 .inputrow input[type=number]{
+
   flex:1;
+
   min-width:0;
+
   background:transparent;
+
   border:none;
+
   outline:none;
+
   color:var(--white);
+
   font-family:var(--mono);
-  font-size:18px;
-  padding:10px 0;
+
+  font-size:17px;
+
+  padding:9px 0;
+
   width:100%;
+
   -moz-appearance:textfield;
 }
 
@@ -206,78 +272,132 @@ header .byline{
   margin:0;
 }
 
-/* --------------------------------------------------
+
+/* =========================================================
    SPLIT VIEW
--------------------------------------------------- */
+========================================================= */
 
 .split-grid{
+
   display:grid;
-  grid-template-columns:minmax(0,1fr);
-  gap:14px;
-  margin-top:14px;
+
+  grid-template-columns:
+    minmax(0,1fr);
+
+  gap:12px;
+
+  margin-top:12px;
 }
 
 @media(min-width:860px){
+
   .split-grid{
-    grid-template-columns:minmax(0,1fr) 54px minmax(0,1fr);
+
+    grid-template-columns:
+      minmax(0,1fr)
+      50px
+      minmax(0,1fr);
+
     align-items:start;
   }
+
 }
 
 .divider{
+
   display:flex;
+
   flex-direction:row;
+
   align-items:center;
+
   justify-content:center;
+
   gap:8px;
 }
 
 @media(min-width:860px){
+
   .divider{
+
     flex-direction:column;
+
     height:100%;
+
     gap:10px;
   }
+
 }
 
 .divider .line{
+
   background:var(--line);
+
   flex:1;
+
   height:1px;
 }
 
 @media(min-width:860px){
+
   .divider .line{
+
     width:1px;
+
     height:auto;
   }
+
 }
 
 .divider .badge{
+
   flex:0 0 auto;
-  width:36px;
-  height:36px;
+
+  width:34px;
+  height:34px;
+
   border-radius:50%;
-  background:linear-gradient(160deg,#3a4250,#20252c);
+
+  background:
+    linear-gradient(
+      160deg,
+      #3a4250,
+      #20252c
+    );
+
   border:1px solid var(--line);
+
   display:flex;
+
   align-items:center;
   justify-content:center;
+
   font-family:var(--mono);
+
   font-size:11px;
+
   font-weight:700;
+
   color:var(--slate);
+
+  letter-spacing:.04em;
 }
 
-/* --------------------------------------------------
-   OPTIONS
--------------------------------------------------- */
+
+/* =========================================================
+   OPTION PANELS
+========================================================= */
 
 .option{
+
   background:var(--panel);
+
   border:1px solid var(--line);
+
   border-radius:14px;
-  padding:16px 18px;
+
+  padding:14px 16px;
+
   min-width:0;
 }
 
@@ -290,61 +410,105 @@ header .byline{
 }
 
 .option-title{
+
   display:flex;
+
   align-items:center;
+
   gap:8px;
-  font-size:14.5px;
+
+  font-size:14px;
+
   font-weight:700;
+
   letter-spacing:.04em;
+
   text-transform:uppercase;
+
   color:var(--accent);
-  margin-bottom:12px;
+
+  margin-bottom:10px;
 }
 
 .option-title .dot{
+
   width:9px;
   height:9px;
+
   border-radius:50%;
+
   background:var(--accent);
 }
 
 .option .field{
-  margin-bottom:12px;
+  margin-bottom:9px;
 }
 
-/* --------------------------------------------------
+
+/* =========================================================
+   TRADE VALUE / TRADE PAYOFF ROW
+========================================================= */
+
+.trade-row{
+
+  display:grid;
+
+  grid-template-columns:
+    minmax(0,1fr)
+    minmax(0,1fr);
+
+  gap:10px;
+
+  margin-bottom:9px;
+}
+
+.trade-row .field{
+  margin-bottom:0;
+}
+
+
+/* =========================================================
    RULER
--------------------------------------------------- */
+========================================================= */
 
 .ruler-block{
-  margin-bottom:12px;
+
+  margin-bottom:9px;
+
   min-width:0;
 }
 
 .ruler-label{
-  margin-bottom:6px;
+
+  margin-bottom:5px;
 }
 
 .ruler-label .name{
-  font-size:14px;
+
+  font-size:13.5px;
+
   color:var(--slate);
 }
 
 .ruler-shell{
+
   position:relative;
-  height:56px;
+
+  height:54px;
+
   min-width:0;
 
   background:
     linear-gradient(
       180deg,
-      #232a33 0%,
-      #191e25 48%,
-      #151920 100%
+      #252C35 0%,
+      #1A1F26 50%,
+      #14181E 100%
     );
 
   border:1px solid var(--line);
-  border-radius:10px;
+
+  border-radius:9px;
 
   box-shadow:
     inset 0 2px 6px rgba(0,0,0,.45),
@@ -353,33 +517,46 @@ header .byline{
   overflow:hidden;
 }
 
-/* subtle measuring-device background */
+
+/* subtle ruler marks */
+
 .ruler-shell::before{
+
   content:'';
+
   position:absolute;
+
   inset:0;
+
   pointer-events:none;
-  opacity:.18;
+
+  opacity:.17;
 
   background:
     repeating-linear-gradient(
       90deg,
+
       transparent 0px,
       transparent 7px,
-      rgba(160,170,184,.45) 7px,
-      rgba(160,170,184,.45) 8px
+
+      rgba(160,170,184,.5) 7px,
+      rgba(160,170,184,.5) 8px
     );
 
   z-index:1;
 }
 
 .ruler-scroll{
+
   height:100%;
+
   width:100%;
+
   overflow-x:auto;
   overflow-y:hidden;
 
   scroll-snap-type:x mandatory;
+
   -webkit-overflow-scrolling:touch;
 
   scrollbar-width:none;
@@ -388,8 +565,8 @@ header .byline{
     linear-gradient(
       to right,
       transparent 0,
-      black 15%,
-      black 85%,
+      black 14%,
+      black 86%,
       transparent 100%
     );
 
@@ -397,8 +574,8 @@ header .byline{
     linear-gradient(
       to right,
       transparent 0,
-      black 15%,
-      black 85%,
+      black 14%,
+      black 86%,
       transparent 100%
     );
 }
@@ -408,83 +585,115 @@ header .byline{
 }
 
 .ruler-track{
+
   display:flex;
+
   align-items:flex-end;
+
   height:100%;
+
   position:relative;
+
   z-index:2;
 }
 
 .tick{
+
   flex:0 0 auto;
+
   width:8px;
+
   height:100%;
 
   display:flex;
+
   flex-direction:column;
+
   align-items:center;
+
   justify-content:flex-end;
 
   position:relative;
+
   scroll-snap-align:center;
 }
 
 .tick .bar{
+
   width:1px;
+
   background:#56606D;
+
   border-radius:1px;
 }
 
 .tick.major .bar{
+
   width:2px;
+
   background:#A4ADB8;
 }
 
 .tick .num{
+
   position:absolute;
+
   top:2px;
+
   left:50%;
+
   transform:translateX(-50%);
 
   font-family:var(--mono);
-  font-size:10px;
+
+  font-size:9.5px;
+
   color:#8E98A6;
+
   white-space:nowrap;
 }
 
-/* --------------------------------------------------
-   APPLE-STYLE MEASUREMENT WINDOW
--------------------------------------------------- */
+
+/* =========================================================
+   APPLE-STYLE CENTER WINDOW
+========================================================= */
 
 .ruler-lens{
+
   position:absolute;
 
   left:50%;
   top:50%;
 
-  transform:translate(-50%,-50%);
+  transform:
+    translate(-50%,-50%);
 
   /*
-    Nearly the full ruler height.
-    This makes it feel like an actual measurement
-    window cut into the ruler.
+    Nearly fills the entire ruler.
+    This is intentionally much taller than
+    the previous version.
   */
-  width:84px;
-  height:50px;
+
+  width:86px;
+
+  height:49px;
 
   border-radius:5px;
 
   background:
+
     radial-gradient(
       160% 220% at 50% -20%,
       rgba(255,255,255,.92),
       rgba(255,255,255,0) 55%
     ),
+
     radial-gradient(
       140% 200% at 50% 130%,
       rgba(120,102,55,.42),
       rgba(120,102,55,0) 60%
     ),
+
     linear-gradient(
       180deg,
       #FEFCF4 0%,
@@ -495,31 +704,49 @@ header .byline{
   border:1px solid #A99C79;
 
   box-shadow:
-    inset 0 3px 3px rgba(255,255,255,.95),
-    inset 0 -7px 11px rgba(105,90,50,.4),
-    inset 7px 0 10px -5px rgba(105,90,50,.35),
-    inset -7px 0 10px -5px rgba(105,90,50,.35),
-    0 2px 4px rgba(0,0,0,.35),
-    0 0 0 3px rgba(15,18,22,.60);
+
+    inset 0 3px 3px
+      rgba(255,255,255,.95),
+
+    inset 0 -7px 11px
+      rgba(105,90,50,.4),
+
+    inset 7px 0 10px -5px
+      rgba(105,90,50,.35),
+
+    inset -7px 0 10px -5px
+      rgba(105,90,50,.35),
+
+    0 2px 4px
+      rgba(0,0,0,.35),
+
+    0 0 0 3px
+      rgba(15,18,22,.60);
 
   display:flex;
+
   align-items:center;
   justify-content:center;
 
   pointer-events:none;
+
   overflow:hidden;
 
   z-index:5;
 }
 
 .ruler-lens::before{
+
   content:'';
 
   position:absolute;
+
   top:2px;
+
   left:6px;
   right:6px;
-  height:12px;
+
+  height:11px;
 
   border-radius:2px;
 
@@ -532,31 +759,37 @@ header .byline{
 }
 
 .ruler-lens::after{
+
   content:'';
 
   position:absolute;
+
   inset:0;
 
   background:
     repeating-linear-gradient(
       180deg,
+
       rgba(0,0,0,.045) 0px,
       rgba(0,0,0,.045) 1px,
+
       transparent 1px,
       transparent 3px
     );
 }
 
 .ruler-lens .lcd-value{
+
   position:relative;
+
   z-index:2;
 
-  /*
-    Same font treatment on both rulers.
-  */
   font-family:var(--mono);
+
   font-weight:800;
+
   font-size:18px;
+
   letter-spacing:-.02em;
 
   color:#151515;
@@ -564,65 +797,79 @@ header .byline{
   text-shadow:
     0 1px 0 rgba(255,255,255,.55);
 
-  font-variant-numeric:tabular-nums;
+  font-variant-numeric:
+    tabular-nums;
 
   white-space:nowrap;
 }
 
-/* Slightly smaller currency display */
-.ruler-lens .lcd-value.money-value{
+.ruler-lens .money-value{
   font-size:17px;
 }
 
-/* --------------------------------------------------
-   TERM BUTTONS
--------------------------------------------------- */
+
+/* =========================================================
+   LOAN TERMS
+========================================================= */
 
 .termrow{
+
   display:flex;
-  gap:6px;
+
+  gap:5px;
+
   flex-wrap:wrap;
 }
 
 .termbtn{
+
   flex:1;
-  min-width:50px;
+
+  min-width:48px;
+
   text-align:center;
 
-  padding:8px 4px;
+  padding:7px 3px;
 
   border-radius:8px;
+
   border:1px solid var(--line);
 
   background:var(--panel-2);
+
   color:var(--slate);
 
   font-family:var(--mono);
-  font-size:13.5px;
+
+  font-size:13px;
 
   cursor:pointer;
-
-  transition:
-    background .12s,
-    color .12s,
-    border-color .12s;
 }
 
 .termbtn.active{
+
   background:var(--accent);
+
   border-color:var(--accent);
+
   color:var(--on-accent);
+
   font-weight:700;
 }
 
-/* --------------------------------------------------
-   STICKER RESULT
--------------------------------------------------- */
+
+/* =========================================================
+   PAYMENT STICKER
+========================================================= */
 
 .sticker{
-  border-radius:12px;
+
+  border-radius:11px;
+
   overflow:hidden;
+
   margin-top:4px;
+
   color:var(--on-accent);
 }
 
@@ -635,14 +882,20 @@ header .byline{
 }
 
 .sticker .tag-top{
-  padding:14px 16px 0;
+
+  padding:12px 14px 0;
 }
 
 .sticker .eyebrow2{
+
   font-family:var(--mono);
-  font-size:11px;
+
+  font-size:10.5px;
+
   letter-spacing:.12em;
+
   text-transform:uppercase;
+
   color:#5B5340;
 }
 
@@ -651,18 +904,28 @@ header .byline{
 }
 
 .sticker .payment{
-  font-size:40px;
+
+  font-size:38px;
+
   font-weight:800;
+
   letter-spacing:-.02em;
+
   line-height:1.05;
-  margin:3px 0 0;
+
+  margin:2px 0 0;
+
   font-variant-numeric:tabular-nums;
 }
 
 .sticker .payment sub{
-  font-size:14px;
+
+  font-size:13.5px;
+
   font-weight:600;
+
   color:#6B5A2E;
+
   font-family:var(--mono);
 }
 
@@ -671,19 +934,28 @@ header .byline{
 }
 
 .stats{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
 
-  padding:12px 16px 15px;
+  display:grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:7px;
+
+  padding:10px 14px 13px;
 }
 
 .stat .k{
-  font-size:10.5px;
+
+  font-size:10px;
+
   letter-spacing:.08em;
+
   text-transform:uppercase;
+
   color:#6B5A2E;
-  margin-bottom:3px;
+
+  margin-bottom:2px;
 }
 
 .option.b .stat .k{
@@ -691,8 +963,11 @@ header .byline{
 }
 
 .stat .v{
+
   font-family:var(--mono);
-  font-size:15px;
+
+  font-size:14px;
+
   font-weight:700;
 }
 
@@ -704,33 +979,47 @@ header .byline{
   color:#2E6B47;
 }
 
-/* --------------------------------------------------
+
+/* =========================================================
    AMORTIZATION
--------------------------------------------------- */
+========================================================= */
 
 .schedule-toggle{
+
   background:var(--ink);
+
   color:var(--white);
+
   border:none;
+
   width:100%;
 
-  padding:10px;
+  padding:9px;
 
   font-family:var(--sans);
-  font-size:13px;
+
+  font-size:12.5px;
+
   font-weight:600;
 
   cursor:pointer;
 
   display:flex;
+
   align-items:center;
+
   justify-content:center;
+
   gap:8px;
 }
 
 .schedule-toggle .chev{
-  transition:transform .15s;
+
+  transition:
+    transform .15s;
+
   font-size:11px;
+
   color:var(--accent);
 }
 
@@ -739,38 +1028,55 @@ header .byline{
 }
 
 .schedule{
+
   max-height:0;
+
   overflow:hidden;
-  transition:max-height .2s ease;
+
+  transition:
+    max-height .2s ease;
+
   background:var(--panel-2);
 }
 
 .schedule.open{
+
   max-height:240px;
+
   overflow-y:auto;
 }
 
 .schedule table{
+
   width:100%;
+
   border-collapse:collapse;
+
   font-family:var(--mono);
-  font-size:12px;
+
+  font-size:11.5px;
 }
 
 .schedule th{
+
   position:sticky;
+
   top:0;
 
   background:var(--table-head);
+
   color:var(--slate);
 
   text-align:right;
 
-  padding:7px 10px;
+  padding:6px 8px;
 
   font-weight:600;
-  font-size:10.5px;
+
+  font-size:10px;
+
   letter-spacing:.05em;
+
   text-transform:uppercase;
 }
 
@@ -780,9 +1086,13 @@ header .byline{
 }
 
 .schedule td{
+
   text-align:right;
-  padding:6px 10px;
+
+  padding:5px 8px;
+
   color:var(--white);
+
   border-top:1px solid var(--line);
 }
 
@@ -790,48 +1100,55 @@ header .byline{
   background:rgba(255,255,255,.015);
 }
 
-/* --------------------------------------------------
-   COMPARE
--------------------------------------------------- */
+
+/* =========================================================
+   COMPARISON
+========================================================= */
 
 .compare-bar{
-  margin-top:14px;
+
+  margin-top:12px;
 
   background:var(--panel);
-  border:1px solid var(--line);
-  border-radius:14px;
 
-  padding:13px 18px;
+  border:1px solid var(--line);
+
+  border-radius:13px;
+
+  padding:11px 16px;
 
   display:flex;
+
   align-items:center;
+
   justify-content:space-between;
 
-  gap:12px;
+  gap:10px;
+
   flex-wrap:wrap;
 }
 
 .compare-side{
-  display:flex;
-  align-items:center;
-  gap:9px;
 
-  font-size:14px;
+  display:flex;
+
+  align-items:center;
+
+  gap:8px;
+
+  font-size:13.5px;
+
   color:var(--slate);
 }
 
-.compare-side strong{
-  font-family:var(--mono);
-  color:var(--white);
-  font-size:17px;
-  margin-left:3px;
-}
+.compare-side::before{
 
-.compare-side.a::before,
-.compare-side.b::before{
   content:'';
-  width:9px;
-  height:9px;
+
+  width:8px;
+
+  height:8px;
+
   border-radius:50%;
 }
 
@@ -843,34 +1160,56 @@ header .byline{
   background:var(--blue);
 }
 
+.compare-side strong{
+
+  font-family:var(--mono);
+
+  color:var(--white);
+
+  font-size:16px;
+
+  margin-left:3px;
+}
+
 .compare-mid{
-  font-size:13.5px;
+
+  font-size:13px;
+
   color:var(--green);
+
   font-weight:600;
+
   text-align:center;
+
   flex:1;
+
   min-width:160px;
 }
 
 footer{
-  margin-top:16px;
-  font-size:12px;
+
+  margin-top:13px;
+
+  font-size:11.5px;
+
   color:var(--slate);
+
   text-align:center;
 }
 
-/* --------------------------------------------------
+
+/* =========================================================
    MOBILE
--------------------------------------------------- */
+========================================================= */
 
 @media(max-width:600px){
 
   body{
-    padding:10px 10px 36px;
+    padding:9px 9px 30px;
   }
 
   header{
-    margin-bottom:10px;
+    margin-bottom:8px;
   }
 
   header h1{
@@ -878,16 +1217,16 @@ footer{
   }
 
   .shared{
-    padding:12px 14px;
+    padding:10px 12px;
   }
 
   .option{
-    padding:14px;
+    padding:12px 13px;
   }
 
   .ruler-lens{
-    width:82px;
-    height:50px;
+    width:84px;
+    height:49px;
   }
 
   .ruler-lens .lcd-value{
@@ -895,7 +1234,7 @@ footer{
   }
 
   .sticker .payment{
-    font-size:36px;
+    font-size:35px;
   }
 
   .compare-bar{
@@ -910,129 +1249,206 @@ footer{
     width:100%;
     justify-content:space-between;
   }
+
 }
+
 </style>
 </head>
+
 
 <body>
 
 <div class="wrap">
 
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
 <header>
+
   <div>
-    <h1>Auto Loan Calculator</h1>
-    <div class="byline">Designed by Jeff Patrick</div>
+
+    <h1>
+      Auto Loan Calculator
+    </h1>
+
+    <div class="byline">
+      Designed by Jeff Patrick
+    </div>
+
   </div>
 
   <div class="header-actions">
+
     <button
       class="theme-btn"
       id="themeBtn"
       aria-label="Toggle light/dark theme"
-      title="Toggle light/dark theme">☀</button>
+      title="Toggle light/dark theme">
+      ☀
+    </button>
 
-    <button class="clear-btn" id="clearBtn">Clear</button>
+    <button
+      class="clear-btn"
+      id="clearBtn">
+      Clear
+    </button>
+
   </div>
+
 </header>
 
-<!-- ==================================================
-     SHARED VEHICLE INFORMATION
-================================================== -->
+
+<!-- =====================================================
+     VEHICLE PRICE / TRADE VALUE
+===================================================== -->
 
 <div class="shared">
 
   <div class="field">
-    <label>Vehicle price</label>
+
+    <label>
+      Vehicle price
+    </label>
 
     <div class="inputrow">
-      <span class="prefix">$</span>
+
+      <span class="prefix">
+        $
+      </span>
+
       <input
         type="number"
         id="priceShared"
         value="25000"
         min="0"
         step="100">
+
     </div>
+
   </div>
 
+
   <div class="field">
-    <label>Trade-in value</label>
+
+    <label>
+      Trade value
+    </label>
 
     <div class="inputrow">
-      <span class="prefix">$</span>
+
+      <span class="prefix">
+        $
+      </span>
+
       <input
         type="number"
         id="tradeShared"
         value="0"
         min="0"
         step="100">
+
     </div>
+
   </div>
 
 </div>
 
-<!-- ==================================================
-     SPLIT COMPARISON
-================================================== -->
+
+<!-- =====================================================
+     OPTION COMPARISON
+===================================================== -->
 
 <div class="split-grid">
 
-<!-- ==================================================
+
+<!-- =====================================================
      OPTION A
-================================================== -->
+===================================================== -->
 
 <div class="option a">
 
   <div class="option-title">
+
     <span class="dot"></span>
+
     Option A
+
   </div>
 
-  <!-- DOWN PAYMENT RULER -->
-  <div class="ruler-block">
 
-    <div class="ruler-label">
-      <span class="name">Down payment</span>
-    </div>
+  <!-- ================================================
+       TRADE VALUE / PAYOFF
+  ================================================= -->
 
-    <div class="ruler-shell" id="downA-ruler">
+  <div class="trade-row">
 
-      <div class="ruler-scroll">
-        <div class="ruler-track" id="downA-track"></div>
+    <div class="field">
+
+      <label>
+        Trade value
+      </label>
+
+      <div class="inputrow">
+
+        <span class="prefix">
+          $
+        </span>
+
+        <input
+          type="number"
+          id="tradeA"
+          value="0"
+          min="0"
+          step="100">
+
       </div>
 
-      <div class="ruler-lens">
-        <span class="lcd-value money-value" id="downA-val">$0</span>
+    </div>
+
+
+    <div class="field">
+
+      <label>
+        Trade payoff
+      </label>
+
+      <div class="inputrow">
+
+        <span class="prefix">
+          $
+        </span>
+
+        <input
+          type="number"
+          id="payoffA"
+          value="0"
+          min="0"
+          step="100">
+
       </div>
 
     </div>
-  </div>
-
-  <!-- TRADE PAYOFF -->
-  <div class="field">
-
-    <label>Trade payoff</label>
-
-    <div class="inputrow">
-      <span class="prefix">$</span>
-
-      <input
-        type="number"
-        id="payoffA"
-        value="0"
-        min="0"
-        step="100">
-    </div>
 
   </div>
 
-  <!-- FEES -->
+
+  <!-- ================================================
+       FEES
+  ================================================= -->
+
   <div class="field">
 
-    <label>Fees</label>
+    <label>
+      Fees
+    </label>
 
     <div class="inputrow">
-      <span class="prefix">$</span>
+
+      <span class="prefix">
+        $
+      </span>
 
       <input
         type="number"
@@ -1040,48 +1456,155 @@ footer{
         value="1307"
         min="0"
         step="1">
+
     </div>
 
   </div>
 
-  <!-- APR -->
+
+  <!-- ================================================
+       DOWN PAYMENT RULER
+  ================================================= -->
+
   <div class="ruler-block">
 
     <div class="ruler-label">
-      <span class="name">APR</span>
+
+      <span class="name">
+        Down payment
+      </span>
+
     </div>
 
-    <div class="ruler-shell" id="aprA-ruler">
+    <div
+      class="ruler-shell"
+      id="downA-ruler">
 
       <div class="ruler-scroll">
-        <div class="ruler-track" id="aprA-track"></div>
+
+        <div
+          class="ruler-track"
+          id="downA-track">
+        </div>
+
       </div>
 
       <div class="ruler-lens">
-        <span class="lcd-value" id="aprA-val">8.90%</span>
+
+        <span
+          class="lcd-value money-value"
+          id="downA-val">
+          $0
+        </span>
+
       </div>
 
     </div>
+
   </div>
 
-  <!-- TERM -->
-  <div class="field">
 
-    <label>Loan term</label>
+  <!-- ================================================
+       APR RULER
+  ================================================= -->
 
-    <div class="termrow" data-group="A">
+  <div class="ruler-block">
 
-      <div class="termbtn" data-term="24">24 mo</div>
-      <div class="termbtn" data-term="36">36 mo</div>
-      <div class="termbtn" data-term="48">48 mo</div>
-      <div class="termbtn active" data-term="60">60 mo</div>
-      <div class="termbtn" data-term="72">72 mo</div>
-      <div class="termbtn" data-term="84">84 mo</div>
+    <div class="ruler-label">
+
+      <span class="name">
+        APR
+      </span>
 
     </div>
+
+    <div
+      class="ruler-shell"
+      id="aprA-ruler">
+
+      <div class="ruler-scroll">
+
+        <div
+          class="ruler-track"
+          id="aprA-track">
+        </div>
+
+      </div>
+
+      <div class="ruler-lens">
+
+        <span
+          class="lcd-value"
+          id="aprA-val">
+          8.90%
+        </span>
+
+      </div>
+
+    </div>
+
   </div>
 
-  <!-- RESULT -->
+
+  <!-- ================================================
+       TERM
+  ================================================= -->
+
+  <div class="field">
+
+    <label>
+      Loan term
+    </label>
+
+    <div
+      class="termrow"
+      data-group="A">
+
+      <div
+        class="termbtn"
+        data-term="24">
+        24 mo
+      </div>
+
+      <div
+        class="termbtn"
+        data-term="36">
+        36 mo
+      </div>
+
+      <div
+        class="termbtn"
+        data-term="48">
+        48 mo
+      </div>
+
+      <div
+        class="termbtn active"
+        data-term="60">
+        60 mo
+      </div>
+
+      <div
+        class="termbtn"
+        data-term="72">
+        72 mo
+      </div>
+
+      <div
+        class="termbtn"
+        data-term="84">
+        84 mo
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================================================
+       RESULT
+  ================================================= -->
+
   <div class="sticker">
 
     <div class="tag-top">
@@ -1091,56 +1614,134 @@ footer{
       </div>
 
       <div class="payment">
-        <span id="paymentA">$0</span>
-        <sub>/mo</sub>
+
+        <span id="paymentA">
+          $0
+        </span>
+
+        <sub>
+          /mo
+        </sub>
+
       </div>
 
     </div>
+
 
     <div class="stats">
 
       <div class="stat">
-        <div class="k">Financed</div>
-        <div class="v" id="financedA">$0</div>
+
+        <div class="k">
+          Financed
+        </div>
+
+        <div
+          class="v"
+          id="financedA">
+          $0
+        </div>
+
       </div>
+
 
       <div class="stat">
-        <div class="k">Sales tax</div>
-        <div class="v" id="taxamtA">$0</div>
+
+        <div class="k">
+          Sales tax
+        </div>
+
+        <div
+          class="v"
+          id="taxamtA">
+          $0
+        </div>
+
       </div>
+
 
       <div class="stat warn">
-        <div class="k">Total interest</div>
-        <div class="v" id="interestA">$0</div>
+
+        <div class="k">
+          Total interest
+        </div>
+
+        <div
+          class="v"
+          id="interestA">
+          $0
+        </div>
+
       </div>
 
+
       <div class="stat good">
-        <div class="k">Total of payments</div>
-        <div class="v" id="totalA">$0</div>
+
+        <div class="k">
+          Total of payments
+        </div>
+
+        <div
+          class="v"
+          id="totalA">
+          $0
+        </div>
+
       </div>
 
     </div>
 
-    <button class="schedule-toggle" id="scheduleToggleA">
+
+    <button
+      class="schedule-toggle"
+      id="scheduleToggleA">
+
       Amortization schedule
-      <span class="chev">▾</span>
+
+      <span class="chev">
+        ▾
+      </span>
+
     </button>
 
-    <div class="schedule" id="scheduleA">
+
+    <div
+      class="schedule"
+      id="scheduleA">
 
       <table>
 
         <thead>
+
           <tr>
-            <th>Mo</th>
-            <th>Payment</th>
-            <th>Principal</th>
-            <th>Interest</th>
-            <th>Balance</th>
+
+            <th>
+              Mo
+            </th>
+
+            <th>
+              Payment
+            </th>
+
+            <th>
+              Principal
+            </th>
+
+            <th>
+              Interest
+            </th>
+
+            <th>
+              Balance
+            </th>
+
           </tr>
+
         </thead>
 
-        <tbody id="scheduleBodyA"></tbody>
+        <tbody
+          id="scheduleBodyA">
+        </tbody>
 
       </table>
 
@@ -1150,76 +1751,110 @@ footer{
 
 </div>
 
-<!-- ==================================================
+
+<!-- =====================================================
      DIVIDER
-================================================== -->
+===================================================== -->
 
 <div class="divider">
 
   <div class="line"></div>
 
-  <div class="badge">VS</div>
+  <div class="badge">
+    VS
+  </div>
 
   <div class="line"></div>
 
 </div>
 
-<!-- ==================================================
+
+<!-- =====================================================
      OPTION B
-================================================== -->
+===================================================== -->
 
 <div class="option b">
 
   <div class="option-title">
+
     <span class="dot"></span>
+
     Option B
+
   </div>
 
-  <!-- DOWN PAYMENT RULER -->
-  <div class="ruler-block">
 
-    <div class="ruler-label">
-      <span class="name">Down payment</span>
-    </div>
+  <!-- ================================================
+       TRADE VALUE / PAYOFF
+  ================================================= -->
 
-    <div class="ruler-shell" id="downB-ruler">
+  <div class="trade-row">
 
-      <div class="ruler-scroll">
-        <div class="ruler-track" id="downB-track"></div>
+    <div class="field">
+
+      <label>
+        Trade value
+      </label>
+
+      <div class="inputrow">
+
+        <span class="prefix">
+          $
+        </span>
+
+        <input
+          type="number"
+          id="tradeB"
+          value="0"
+          min="0"
+          step="100">
+
       </div>
 
-      <div class="ruler-lens">
-        <span class="lcd-value money-value" id="downB-val">$0</span>
+    </div>
+
+
+    <div class="field">
+
+      <label>
+        Trade payoff
+      </label>
+
+      <div class="inputrow">
+
+        <span class="prefix">
+          $
+        </span>
+
+        <input
+          type="number"
+          id="payoffB"
+          value="0"
+          min="0"
+          step="100">
+
       </div>
 
     </div>
-  </div>
-
-  <!-- TRADE PAYOFF -->
-  <div class="field">
-
-    <label>Trade payoff</label>
-
-    <div class="inputrow">
-      <span class="prefix">$</span>
-
-      <input
-        type="number"
-        id="payoffB"
-        value="0"
-        min="0"
-        step="100">
-    </div>
 
   </div>
 
-  <!-- FEES -->
+
+  <!-- ================================================
+       FEES
+  ================================================= -->
+
   <div class="field">
 
-    <label>Fees</label>
+    <label>
+      Fees
+    </label>
 
     <div class="inputrow">
-      <span class="prefix">$</span>
+
+      <span class="prefix">
+        $
+      </span>
 
       <input
         type="number"
@@ -1227,48 +1862,154 @@ footer{
         value="1307"
         min="0"
         step="1">
+
     </div>
 
   </div>
 
-  <!-- APR -->
+
+  <!-- ================================================
+       DOWN PAYMENT RULER
+  ================================================= -->
+
   <div class="ruler-block">
 
     <div class="ruler-label">
-      <span class="name">APR</span>
+
+      <span class="name">
+        Down payment
+      </span>
+
     </div>
 
-    <div class="ruler-shell" id="aprB-ruler">
+    <div
+      class="ruler-shell"
+      id="downB-ruler">
 
       <div class="ruler-scroll">
-        <div class="ruler-track" id="aprB-track"></div>
+
+        <div
+          class="ruler-track"
+          id="downB-track">
+        </div>
+
       </div>
 
       <div class="ruler-lens">
-        <span class="lcd-value" id="aprB-val">8.90%</span>
+
+        <span
+          class="lcd-value money-value"
+          id="downB-val">
+          $0
+        </span>
+
       </div>
 
     </div>
+
   </div>
 
-  <!-- TERM -->
-  <div class="field">
 
-    <label>Loan term</label>
+  <!-- ================================================
+       APR RULER
+  ================================================= -->
 
-    <div class="termrow" data-group="B">
+  <div class="ruler-block">
 
-      <div class="termbtn" data-term="24">24 mo</div>
-      <div class="termbtn" data-term="36">36 mo</div>
-      <div class="termbtn" data-term="48">48 mo</div>
-      <div class="termbtn active" data-term="60">60 mo</div>
-      <div class="termbtn" data-term="72">72 mo</div>
-      <div class="termbtn" data-term="84">84 mo</div>
+    <div class="ruler-label">
+
+      <span class="name">
+        APR
+      </span>
 
     </div>
+
+    <div
+      class="ruler-shell"
+      id="aprB-ruler">
+
+      <div class="ruler-scroll">
+
+        <div class="ruler-track"
+          id="aprB-track">
+        </div>
+
+      </div>
+
+      <div class="ruler-lens">
+
+        <span
+          class="lcd-value"
+          id="aprB-val">
+          8.90%
+        </span>
+
+      </div>
+
+    </div>
+
   </div>
 
-  <!-- RESULT -->
+
+  <!-- ================================================
+       TERM
+  ================================================= -->
+
+  <div class="field">
+
+    <label>
+      Loan term
+    </label>
+
+    <div
+      class="termrow"
+      data-group="B">
+
+      <div
+        class="termbtn"
+        data-term="24">
+        24 mo
+      </div>
+
+      <div
+        class="termbtn"
+        data-term="36">
+        36 mo
+      </div>
+
+      <div
+        class="termbtn"
+        data-term="48">
+        48 mo
+      </div>
+
+      <div
+        class="termbtn active"
+        data-term="60">
+        60 mo
+      </div>
+
+      <div
+        class="termbtn"
+        data-term="72">
+        72 mo
+      </div>
+
+      <div
+        class="termbtn"
+        data-term="84">
+        84 mo
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================================================
+       RESULT
+  ================================================= -->
+
   <div class="sticker">
 
     <div class="tag-top">
@@ -1278,56 +2019,134 @@ footer{
       </div>
 
       <div class="payment">
-        <span id="paymentB">$0</span>
-        <sub>/mo</sub>
+
+        <span id="paymentB">
+          $0
+        </span>
+
+        <sub>
+          /mo
+        </sub>
+
       </div>
 
     </div>
+
 
     <div class="stats">
 
       <div class="stat">
-        <div class="k">Financed</div>
-        <div class="v" id="financedB">$0</div>
+
+        <div class="k">
+          Financed
+        </div>
+
+        <div
+          class="v"
+          id="financedB">
+          $0
+        </div>
+
       </div>
+
 
       <div class="stat">
-        <div class="k">Sales tax</div>
-        <div class="v" id="taxamtB">$0</div>
+
+        <div class="k">
+          Sales tax
+        </div>
+
+        <div
+          class="v"
+          id="taxamtB">
+          $0
+        </div>
+
       </div>
+
 
       <div class="stat warn">
-        <div class="k">Total interest</div>
-        <div class="v" id="interestB">$0</div>
+
+        <div class="k">
+          Total interest
+        </div>
+
+        <div
+          class="v"
+          id="interestB">
+          $0
+        </div>
+
       </div>
 
+
       <div class="stat good">
-        <div class="k">Total of payments</div>
-        <div class="v" id="totalB">$0</div>
+
+        <div class="k">
+          Total of payments
+        </div>
+
+        <div
+          class="v"
+          id="totalB">
+          $0
+        </div>
+
       </div>
 
     </div>
 
-    <button class="schedule-toggle" id="scheduleToggleB">
+
+    <button
+      class="schedule-toggle"
+      id="scheduleToggleB">
+
       Amortization schedule
-      <span class="chev">▾</span>
+
+      <span class="chev">
+        ▾
+      </span>
+
     </button>
 
-    <div class="schedule" id="scheduleB">
+
+    <div
+      class="schedule"
+      id="scheduleB">
 
       <table>
 
         <thead>
+
           <tr>
-            <th>Mo</th>
-            <th>Payment</th>
-            <th>Principal</th>
-            <th>Interest</th>
-            <th>Balance</th>
+
+            <th>
+              Mo
+            </th>
+
+            <th>
+              Payment
+            </th>
+
+            <th>
+              Principal
+            </th>
+
+            <th>
+              Interest
+            </th>
+
+            <th>
+              Balance
+            </th>
+
           </tr>
+
         </thead>
 
-        <tbody id="scheduleBodyB"></tbody>
+        <tbody
+          id="scheduleBodyB">
+        </tbody>
 
       </table>
 
@@ -1339,58 +2158,98 @@ footer{
 
 </div>
 
-<!-- ==================================================
+
+<!-- =====================================================
      COMPARISON
-================================================== -->
+===================================================== -->
 
 <div class="compare-bar">
 
   <div class="compare-side a">
+
     Option A
-    <strong id="cmpA">$0/mo</strong>
+
+    <strong id="cmpA">
+      $0/mo
+    </strong>
+
   </div>
 
-  <div class="compare-mid" id="cmpDelta">
+
+  <div
+    class="compare-mid"
+    id="cmpDelta">
+
     —
+
   </div>
+
 
   <div class="compare-side b">
+
     Option B
-    <strong id="cmpB">$0/mo</strong>
+
+    <strong id="cmpB">
+      $0/mo
+    </strong>
+
   </div>
 
 </div>
 
+
 <footer>
+
   Estimate only — actual APR, fees, and tax vary by lender and state.
   Your inputs are saved on this device.
+
 </footer>
 
 </div>
 
+
 <script>
 
-const $ = id => document.getElementById(id);
+/* =========================================================
+   HELPERS
+========================================================= */
 
-const money = n =>
-  '$' + n.toLocaleString('en-US',{
-    maximumFractionDigits:0
-  });
+const $ =
+  id => document.getElementById(id);
 
-const moneyC = n =>
-  '$' + n.toLocaleString('en-US',{
-    minimumFractionDigits:2,
-    maximumFractionDigits:2
-  });
+const money =
+  n =>
+    '$' +
+    n.toLocaleString(
+      'en-US',
+      {
+        maximumFractionDigits:0
+      }
+    );
+
+const moneyC =
+  n =>
+    '$' +
+    n.toLocaleString(
+      'en-US',
+      {
+        minimumFractionDigits:2,
+        maximumFractionDigits:2
+      }
+    );
+
+
+/* =========================================================
+   STORAGE
+========================================================= */
 
 const STORAGE_KEY =
-  'autoLoanCalculator.state.v2';
+  'autoLoanCalculator.state.v3';
 
-/*
-==================================================
-DEFAULTS
-==================================================
-*/
+
+/* =========================================================
+   DEFAULTS
+========================================================= */
 
 const DEFAULTS = {
 
@@ -1399,37 +2258,52 @@ const DEFAULTS = {
   trade:0,
 
   a:{
+
     down:0,
+
     payoff:0,
+
     fees:1307,
-    tax:7.0,
+
+    tax:7,
+
     apr:8.9,
+
     term:60
+
   },
 
   b:{
+
     down:0,
+
     payoff:0,
+
     fees:1307,
-    tax:7.0,
+
+    tax:7,
+
     apr:8.9,
+
     term:60
+
   }
 
 };
 
-/*
-==================================================
-LOAD / SAVE
-==================================================
-*/
+
+/* =========================================================
+   LOAD SAVED STATE
+========================================================= */
 
 function loadSaved(){
 
   try{
 
     const raw =
-      localStorage.getItem(STORAGE_KEY);
+      localStorage.getItem(
+        STORAGE_KEY
+      );
 
     if(!raw)
       return null;
@@ -1437,7 +2311,7 @@ function loadSaved(){
     const parsed =
       JSON.parse(raw);
 
-    return {
+    return{
 
       price:
         typeof parsed.price === 'number'
@@ -1471,26 +2345,37 @@ function loadSaved(){
 
 }
 
+
 function saveState(){
 
   try{
 
     localStorage.setItem(
+
       STORAGE_KEY,
+
       JSON.stringify({
+
         price:state.price,
+
         trade:state.trade,
+
         a:state.a,
+
         b:state.b
+
       })
+
     );
 
   }catch(e){}
 
 }
 
+
 const saved =
   loadSaved();
+
 
 const state =
   saved ||
@@ -1498,25 +2383,34 @@ const state =
     JSON.stringify(DEFAULTS)
   );
 
-/*
-==================================================
-RULERS
-==================================================
-*/
+
+/* =========================================================
+   RULER SYSTEM
+========================================================= */
 
 const rulers = {};
+
 
 function buildRuler({
 
   key,
+
   trackId,
+
   min,
+
   max,
+
   step,
+
   majorStep,
+
   decimals,
+
   initial,
+
   formatter,
+
   onChange
 
 }){
@@ -1527,15 +2421,18 @@ function buildRuler({
   const ruler =
     track.parentElement;
 
-  const tickWidth = 8;
+  const tickWidth =
+    8;
 
   const count =
     Math.round(
       (max-min)/step
     ) + 1;
 
+
   const frag =
     document.createDocumentFragment();
+
 
   for(
     let idx=0;
@@ -1545,42 +2442,64 @@ function buildRuler({
 
     const val =
       +(
-        min + idx*step
+        min +
+        idx*step
       ).toFixed(decimals);
 
+
     const div =
-      document.createElement('div');
+      document.createElement(
+        'div'
+      );
+
 
     const nearestMajor =
-      Math.round(val/majorStep)
-      * majorStep;
+      Math.round(
+        val/majorStep
+      ) *
+      majorStep;
+
 
     const isMajor =
       Math.abs(
         nearestMajor-val
-      ) < step/2;
+      ) <
+      step/2;
+
 
     div.className =
       'tick' +
-      (isMajor ? ' major' : '');
+      (
+        isMajor
+          ? ' major'
+          : ''
+      );
+
 
     const bar =
-      document.createElement('div');
+      document.createElement(
+        'div'
+      );
 
     bar.className =
       'bar';
+
 
     bar.style.height =
       isMajor
         ? '22px'
         : '10px';
 
+
     div.appendChild(bar);
+
 
     if(isMajor){
 
       const num =
-        document.createElement('div');
+        document.createElement(
+          'div'
+        );
 
       num.className =
         'num';
@@ -1594,16 +2513,20 @@ function buildRuler({
 
     }
 
+
     frag.appendChild(div);
 
   }
+
 
   track.innerHTML='';
 
   track.appendChild(frag);
 
+
   let current =
     initial;
+
 
   function setPadding(){
 
@@ -1621,6 +2544,7 @@ function buildRuler({
 
   }
 
+
   function positionFor(val){
 
     const idx =
@@ -1629,11 +2553,12 @@ function buildRuler({
       );
 
     return (
-      idx*tickWidth
-      + tickWidth/2
+      idx*tickWidth +
+      tickWidth/2
     );
 
   }
+
 
   function jumpTo(val){
 
@@ -1644,6 +2569,7 @@ function buildRuler({
 
   }
 
+
   function set(
     val,
     silent
@@ -1652,7 +2578,10 @@ function buildRuler({
     current =
       Math.min(
         max,
-        Math.max(min,val)
+        Math.max(
+          min,
+          val
+        )
       );
 
     jumpTo(current);
@@ -1662,14 +2591,19 @@ function buildRuler({
 
   }
 
+
   let raf=null;
 
+
   ruler.addEventListener(
+
     'scroll',
+
     ()=>{
 
       if(raf)
         return;
+
 
       raf =
         requestAnimationFrame(
@@ -1677,17 +2611,24 @@ function buildRuler({
 
             raf=null;
 
+
             const idx =
               Math.round(
-                ruler.scrollLeft/
-                tickWidth - .5
+                ruler.scrollLeft /
+                tickWidth -
+                .5
               );
+
 
             const clamped =
               Math.min(
                 count-1,
-                Math.max(0,idx)
+                Math.max(
+                  0,
+                  idx
+                )
               );
+
 
             current =
               +(
@@ -1695,43 +2636,59 @@ function buildRuler({
                 clamped*step
               ).toFixed(decimals);
 
+
             onChange(current);
 
           }
         );
 
     },
-    {passive:true}
+
+    {
+      passive:true
+    }
+
   );
+
 
   window.addEventListener(
+
     'resize',
-    ()=>jumpTo(current)
+
+    ()=>{
+      jumpTo(current);
+    }
+
   );
+
 
   requestAnimationFrame(
-    ()=>requestAnimationFrame(
-      ()=>set(current,false)
-    )
+    ()=>{
+      requestAnimationFrame(
+        ()=>{
+          set(
+            current,
+            false
+          );
+        }
+      );
+    }
   );
 
-  rulers[key]={set};
+
+  rulers[key]={
+    set
+  };
+
 
   return rulers[key];
 
 }
 
-/*
-==================================================
-DOWN PAYMENT RULERS
-==================================================
 
-The maximum is $50,000 so the ruler has plenty of
-room for normal dealership use.
-
-$100 increments.
-==================================================
-*/
+/* =========================================================
+   DOWN PAYMENT RULERS
+========================================================= */
 
 buildRuler({
 
@@ -1751,16 +2708,19 @@ buildRuler({
 
   initial:state.a.down,
 
-  formatter:v =>
-    '$' +
-    Math.round(v/1000) +
-    'k',
+  formatter:
+    v =>
+      '$' +
+      Math.round(v/1000) +
+      'k',
 
   onChange:v=>{
 
-    state.a.down=v;
+    state.a.down =
+      v;
 
-    $('downA-val').textContent =
+    $('downA-val')
+      .textContent =
       money(v);
 
     calcAll();
@@ -1768,6 +2728,7 @@ buildRuler({
   }
 
 });
+
 
 buildRuler({
 
@@ -1787,16 +2748,19 @@ buildRuler({
 
   initial:state.b.down,
 
-  formatter:v =>
-    '$' +
-    Math.round(v/1000) +
-    'k',
+  formatter:
+    v =>
+      '$' +
+      Math.round(v/1000) +
+      'k',
 
   onChange:v=>{
 
-    state.b.down=v;
+    state.b.down =
+      v;
 
-    $('downB-val').textContent =
+    $('downB-val')
+      .textContent =
       money(v);
 
     calcAll();
@@ -1805,14 +2769,10 @@ buildRuler({
 
 });
 
-/*
-==================================================
-APR RULERS
-==================================================
 
-0% through 24%, in .25% increments.
-==================================================
-*/
+/* =========================================================
+   APR RULERS
+========================================================= */
 
 buildRuler({
 
@@ -1832,14 +2792,17 @@ buildRuler({
 
   initial:state.a.apr,
 
-  formatter:v =>
-    v.toFixed(0) + '%',
+  formatter:
+    v =>
+      v.toFixed(0)+'%',
 
   onChange:v=>{
 
-    state.a.apr=v;
+    state.a.apr =
+      v;
 
-    $('aprA-val').textContent =
+    $('aprA-val')
+      .textContent =
       v.toFixed(2)+'%';
 
     calcAll();
@@ -1847,6 +2810,7 @@ buildRuler({
   }
 
 });
+
 
 buildRuler({
 
@@ -1866,14 +2830,17 @@ buildRuler({
 
   initial:state.b.apr,
 
-  formatter:v =>
-    v.toFixed(0) + '%',
+  formatter:
+    v =>
+      v.toFixed(0)+'%',
 
   onChange:v=>{
 
-    state.b.apr=v;
+    state.b.apr =
+      v;
 
-    $('aprB-val').textContent =
+    $('aprB-val')
+      .textContent =
       v.toFixed(2)+'%';
 
     calcAll();
@@ -1882,11 +2849,10 @@ buildRuler({
 
 });
 
-/*
-==================================================
-TERM BUTTONS
-==================================================
-*/
+
+/* =========================================================
+   TERM BUTTONS
+========================================================= */
 
 function setActiveTerm(
   key,
@@ -1898,28 +2864,35 @@ function setActiveTerm(
       `.termrow[data-group="${key.toUpperCase()}"]`
     );
 
+
   row.querySelectorAll(
     '.termbtn'
   ).forEach(btn=>{
 
     btn.classList.toggle(
+
       'active',
+
       parseInt(
         btn.dataset.term,
         10
-      )===term
+      ) === term
+
     );
 
   });
 
 }
 
+
 document.querySelectorAll(
   '.termrow'
 ).forEach(row=>{
 
   const key =
-    row.dataset.group.toLowerCase();
+    row.dataset.group
+      .toLowerCase();
+
 
   row.querySelectorAll(
     '.termbtn'
@@ -1932,16 +2905,24 @@ document.querySelectorAll(
         row.querySelectorAll(
           '.termbtn'
         ).forEach(
-          b=>b.classList.remove('active')
+          b =>
+            b.classList.remove(
+              'active'
+            )
         );
 
-        btn.classList.add('active');
+
+        btn.classList.add(
+          'active'
+        );
+
 
         state[key].term =
           parseInt(
             btn.dataset.term,
             10
           );
+
 
         calcAll();
 
@@ -1952,60 +2933,64 @@ document.querySelectorAll(
 
 });
 
-/*
-==================================================
-CALCULATION
-==================================================
 
-Financed amount:
-
-Vehicle price
-+ Sales tax
-+ Fees
-- Trade allowance
-- Trade payoff
-- Down payment
-
-Sales tax is permanently locked at 7%.
-==================================================
-*/
+/* =========================================================
+   CALCULATION
+========================================================= */
 
 function calcOption(K){
 
   const key =
     K.toLowerCase();
 
+
   const price =
     Math.max(
+
       0,
+
       parseFloat(
         $('priceShared').value
       ) || 0
+
     );
+
 
   const trade =
     Math.max(
+
       0,
+
       parseFloat(
         $('tradeShared').value
       ) || 0
+
     );
+
 
   const payoff =
     Math.max(
+
       0,
+
       parseFloat(
         $('payoff'+K).value
       ) || 0
+
     );
+
 
   const fees =
     Math.max(
+
       0,
+
       parseFloat(
         $('fees'+K).value
       ) || 0
+
     );
+
 
   const down =
     Math.max(
@@ -2013,56 +2998,95 @@ function calcOption(K){
       state[key].down
     );
 
+
   state.price =
     price;
+
 
   state.trade =
     trade;
 
+
   state[key].payoff =
     payoff;
+
 
   state[key].fees =
     fees;
 
-  /*
-    LOCKED GEORGIA SALES TAX
-  */
+
+  /* TAX LOCKED AT 7% */
+
   state[key].tax =
-    7.0;
+    7;
+
 
   const taxRate =
     .07;
 
+
   const apr =
-    state[key].apr/100;
+    state[key].apr / 100;
+
 
   const n =
     state[key].term;
 
+
   const r =
-    apr/12;
+    apr / 12;
+
 
   const taxAmt =
-    price*taxRate;
+    price * taxRate;
+
+
+  /*
+    NET TRADE EQUITY
+
+    Example:
+
+    Trade value = $20,000
+    Payoff      = $22,000
+
+    Net equity = -$2,000
+  */
+
+  const netTradeEquity =
+    trade - payoff;
+
+
+  /*
+    AMOUNT FINANCED
+
+    Price
+    + Tax
+    + Fees
+    - Net trade equity
+    - Down payment
+  */
 
   const financed =
     Math.max(
+
       0,
+
       price +
       taxAmt +
       fees -
-      trade -
-      payoff -
+      netTradeEquity -
       down
+
     );
 
+
   let payment;
+
 
   if(r===0){
 
     payment =
-      financed/n;
+      financed / n;
 
   }else{
 
@@ -2070,40 +3094,59 @@ function calcOption(K){
       financed *
       (
         r *
-        Math.pow(1+r,n)
+        Math.pow(
+          1+r,
+          n
+        )
       ) /
       (
-        Math.pow(1+r,n)-1
+        Math.pow(
+          1+r,
+          n
+        ) - 1
       );
 
   }
 
+
   if(!isFinite(payment))
     payment=0;
+
 
   const totalPaid =
     payment*n;
 
+
   const totalInterest =
-    totalPaid-financed;
+    totalPaid -
+    financed;
 
-  $('payment'+K).textContent =
-    payment.toLocaleString(
-      'en-US',
-      {
-        style:'currency',
-        currency:'USD',
-        maximumFractionDigits:0
-      }
-    );
 
-  $('financed'+K).textContent =
+  $('payment'+K)
+    .textContent =
+
+      payment.toLocaleString(
+        'en-US',
+        {
+          style:'currency',
+          currency:'USD',
+          maximumFractionDigits:0
+        }
+      );
+
+
+  $('financed'+K)
+    .textContent =
     money(financed);
 
-  $('taxamt'+K).textContent =
+
+  $('taxamt'+K)
+    .textContent =
     money(taxAmt);
 
-  $('interest'+K).textContent =
+
+  $('interest'+K)
+    .textContent =
     money(
       Math.max(
         0,
@@ -2111,45 +3154,64 @@ function calcOption(K){
       )
     );
 
-  $('total'+K).textContent =
+
+  $('total'+K)
+    .textContent =
     money(totalPaid);
 
+
   buildSchedule(
+
     K,
+
     financed,
+
     r,
+
     n,
+
     payment
+
   );
+
 
   return payment;
 
 }
 
-/*
-==================================================
-AMORTIZATION
-==================================================
-*/
+
+/* =========================================================
+   AMORTIZATION
+========================================================= */
 
 function buildSchedule(
+
   K,
+
   principal,
+
   r,
+
   n,
+
   payment
+
 ){
 
   const body =
     $('scheduleBody'+K);
 
+
   body.innerHTML='';
+
 
   let balance =
     principal;
 
+
   const frag =
     document.createDocumentFragment();
+
 
   for(
     let m=1;
@@ -2160,11 +3222,15 @@ function buildSchedule(
     const interest =
       balance*r;
 
+
     let principalPortion =
       payment-interest;
 
+
     if(m===n)
-      principalPortion=balance;
+      principalPortion =
+        balance;
+
 
     balance =
       Math.max(
@@ -2172,88 +3238,115 @@ function buildSchedule(
         balance-principalPortion
       );
 
+
     const tr =
-      document.createElement('tr');
+      document.createElement(
+        'tr'
+      );
+
 
     tr.innerHTML=`
+
       <td>${m}</td>
+
       <td>${moneyC(payment)}</td>
+
       <td>${moneyC(principalPortion)}</td>
+
       <td>${moneyC(interest)}</td>
+
       <td>${moneyC(balance)}</td>
+
     `;
+
 
     frag.appendChild(tr);
 
   }
 
+
   body.appendChild(frag);
 
 }
 
-/*
-==================================================
-CALCULATE EVERYTHING
-==================================================
-*/
+
+/* =========================================================
+   CALCULATE ALL
+========================================================= */
 
 function calcAll(){
 
   const pa =
     calcOption('A');
 
+
   const pb =
     calcOption('B');
 
-  $('cmpA').textContent =
-    pa.toLocaleString(
-      'en-US',
-      {
-        style:'currency',
-        currency:'USD',
-        maximumFractionDigits:0
-      }
-    )+'/mo';
 
-  $('cmpB').textContent =
-    pb.toLocaleString(
-      'en-US',
-      {
-        style:'currency',
-        currency:'USD',
-        maximumFractionDigits:0
-      }
-    )+'/mo';
+  $('cmpA')
+    .textContent =
+
+      pa.toLocaleString(
+        'en-US',
+        {
+          style:'currency',
+          currency:'USD',
+          maximumFractionDigits:0
+        }
+      ) +
+      '/mo';
+
+
+  $('cmpB')
+    .textContent =
+
+      pb.toLocaleString(
+        'en-US',
+        {
+          style:'currency',
+          currency:'USD',
+          maximumFractionDigits:0
+        }
+      ) +
+      '/mo';
+
 
   const delta =
     pa-pb;
 
-  if(Math.abs(delta)<.5){
 
-    $('cmpDelta').textContent =
+  if(
+    Math.abs(delta)<.5
+  ){
+
+    $('cmpDelta')
+      .textContent =
       'Payments are about equal';
 
   }else if(delta>0){
 
-    $('cmpDelta').textContent =
+    $('cmpDelta')
+      .textContent =
       `Option B is ${money(delta)}/mo lower`;
 
   }else{
 
-    $('cmpDelta').textContent =
+    $('cmpDelta')
+      .textContent =
       `Option A is ${money(-delta)}/mo lower`;
 
   }
+
 
   saveState();
 
 }
 
-/*
-==================================================
-INPUT EVENTS
-==================================================
-*/
+
+/* =========================================================
+   INPUT EVENTS
+========================================================= */
 
 [
   'priceShared',
@@ -2271,15 +3364,15 @@ INPUT EVENTS
 
 });
 
-/*
-==================================================
-SCHEDULE TOGGLES
-==================================================
-*/
+
+/* =========================================================
+   SCHEDULE TOGGLES
+========================================================= */
 
 [
   ['scheduleToggleA','scheduleA'],
   ['scheduleToggleB','scheduleB']
+
 ].forEach(
   ([tId,sId])=>{
 
@@ -2289,6 +3382,7 @@ SCHEDULE TOGGLES
     const schedule =
       $(sId);
 
+
     toggle.addEventListener(
       'click',
       ()=>{
@@ -2297,6 +3391,7 @@ SCHEDULE TOGGLES
           schedule.classList.toggle(
             'open'
           );
+
 
         toggle.classList.toggle(
           'open',
@@ -2309,53 +3404,68 @@ SCHEDULE TOGGLES
   }
 );
 
-/*
-==================================================
-APPLY SAVED STATE
-==================================================
-*/
+
+/* =========================================================
+   APPLY STATE
+========================================================= */
 
 function applyStateToDOM(){
 
   $('priceShared').value =
     state.price;
 
+
   $('tradeShared').value =
     state.trade;
+
 
   $('payoffA').value =
     state.a.payoff;
 
+
   $('payoffB').value =
     state.b.payoff;
+
 
   $('feesA').value =
     state.a.fees;
 
+
   $('feesB').value =
     state.b.fees;
 
-  $('downA-val').textContent =
+
+  $('downA-val')
+    .textContent =
     money(state.a.down);
 
-  $('downB-val').textContent =
+
+  $('downB-val')
+    .textContent =
     money(state.b.down);
 
-  $('aprA-val').textContent =
+
+  $('aprA-val')
+    .textContent =
     state.a.apr.toFixed(2)+'%';
 
-  $('aprB-val').textContent =
+
+  $('aprB-val')
+    .textContent =
     state.b.apr.toFixed(2)+'%';
+
 
   setActiveTerm(
     'a',
     state.a.term
   );
 
+
   setActiveTerm(
     'b',
     state.b.term
   );
+
 
   if(rulers.downA)
     rulers.downA.set(
@@ -2363,17 +3473,20 @@ function applyStateToDOM(){
       true
     );
 
+
   if(rulers.downB)
     rulers.downB.set(
       state.b.down,
       true
     );
 
+
   if(rulers.aprA)
     rulers.aprA.set(
       state.a.apr,
       true
     );
+
 
   if(rulers.aprB)
     rulers.aprB.set(
@@ -2383,97 +3496,115 @@ function applyStateToDOM(){
 
 }
 
+
 applyStateToDOM();
 
-/*
-==================================================
-CLEAR
-==================================================
-*/
 
-$('clearBtn').addEventListener(
-  'click',
-  ()=>{
+/* =========================================================
+   CLEAR
+========================================================= */
 
-    state.price =
-      DEFAULTS.price;
+$('clearBtn')
+  .addEventListener(
+    'click',
+    ()=>{
 
-    state.trade =
-      DEFAULTS.trade;
+      state.price =
+        DEFAULTS.price;
 
-    state.a =
-      Object.assign(
-        {},
-        DEFAULTS.a
-      );
 
-    state.b =
-      Object.assign(
-        {},
-        DEFAULTS.b
-      );
+      state.trade =
+        DEFAULTS.trade;
 
-    applyStateToDOM();
 
-    calcAll();
+      state.a =
+        Object.assign(
+          {},
+          DEFAULTS.a
+        );
 
-  }
-);
 
-/*
-==================================================
-INITIAL CALCULATION
-==================================================
-*/
+      state.b =
+        Object.assign(
+          {},
+          DEFAULTS.b
+        );
+
+
+      applyStateToDOM();
+
+
+      calcAll();
+
+    }
+  );
+
+
+/* =========================================================
+   INITIAL CALCULATION
+========================================================= */
 
 calcAll();
 
-/*
-==================================================
-THEME
-==================================================
-*/
+
+/* =========================================================
+   THEME
+========================================================= */
 
 function isLight(){
 
   return document.documentElement
-    .classList.contains('light');
+    .classList.contains(
+      'light'
+    );
 
 }
+
 
 function syncThemeBtn(){
 
-  $('themeBtn').textContent =
-    isLight()
-      ? '☾'
-      : '☀';
+  $('themeBtn')
+    .textContent =
+      isLight()
+        ? '☾'
+        : '☀';
 
 }
 
+
 syncThemeBtn();
 
-$('themeBtn').addEventListener(
-  'click',
-  ()=>{
 
-    document.documentElement
-      .classList.toggle('light');
+$('themeBtn')
+  .addEventListener(
+    'click',
+    ()=>{
 
-    try{
+      document.documentElement
+        .classList.toggle(
+          'light'
+        );
 
-      localStorage.setItem(
-        'autoLoanCalculator.theme',
-        isLight()
-          ? 'light'
-          : 'dark'
-      );
 
-    }catch(e){}
+      try{
 
-    syncThemeBtn();
+        localStorage.setItem(
 
-  }
-);
+          'autoLoanCalculator.theme',
+
+          isLight()
+            ? 'light'
+            : 'dark'
+
+        );
+
+      }catch(e){}
+
+
+      syncThemeBtn();
+
+    }
+  );
 
 </script>
 
