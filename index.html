@@ -31,7 +31,7 @@ html.light{
   --ink:#EEF0F3;--panel:#FFF;--panel-2:#F3F4F6;--line:#DBE0E6;
   --white:#14171C;--slate:#5B6472;--table-head:#E8EAED;
 }
-*{box-sizing:border-box}
+*{box-sizing:border-box;font-weight:bold !important;}
 html,body{margin:0;padding:0}
 body{
   background:var(--ink);color:var(--white);font-family:var(--sans);
@@ -42,7 +42,7 @@ header{
   display:flex;align-items:flex-start;justify-content:space-between;
   margin-bottom:16px;flex-wrap:wrap;gap:10px
 }
-header h1{font-size:24px;font-weight:700;margin:0;color:var(--amber);letter-spacing:-.01em}
+header h1{font-size:24px;margin:0;color:var(--amber);letter-spacing:-.01em}
 header .byline{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--amber);margin-top:4px}
 .header-actions{display:flex;gap:8px}
 .clear-btn,.theme-btn{
@@ -88,7 +88,7 @@ header .byline{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color
   flex:0 0 auto;width:36px;height:36px;border-radius:50%;
   background:linear-gradient(160deg,#3a4250,#20252c);border:1px solid var(--line);
   display:flex;align-items:center;justify-content:center;font-family:var(--mono);
-  font-size:11px;font-weight:700;color:var(--slate);letter-spacing:.05em
+  font-size:11px;color:var(--slate);letter-spacing:.05em
 }
 .option{
   background:var(--panel);border:1px solid var(--line);border-radius:12px;
@@ -96,7 +96,7 @@ header .byline{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color
 }
 .option.a{--accent:var(--amber)}.option.b{--accent:var(--blue)}
 .option-title{
-  display:flex;align-items:center;gap:7px;font-size:13.5px;font-weight:700;
+  display:flex;align-items:center;gap:7px;font-size:13.5px;
   letter-spacing:.04em;text-transform:uppercase;color:var(--accent);margin-bottom:11px
 }
 .option-title .dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
@@ -110,7 +110,7 @@ header .byline{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color
 .fixed-tax{
   background:var(--panel-2);border:1px solid var(--line);border-radius:8px;
   padding:7px 10px;text-align:center;font-family:var(--mono);font-size:15px;
-  color:var(--white);font-weight:700
+  color:var(--white)
 }
 .tax-label{font-size:12.5px;color:var(--slate);text-align:center;margin-bottom:4px}
 
@@ -164,7 +164,7 @@ header .byline{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color
   background:repeating-linear-gradient(180deg,rgba(0,0,0,.05) 0,rgba(0,0,0,.05) 1px,transparent 1px,transparent 3px)
 }
 .ruler-lens .lcd-value{
-  position:relative;font-family:var(--mono);font-weight:800;font-size:17px;
+  position:relative;font-family:var(--mono);font-size:17px;
   letter-spacing:-.01em;color:#151515;text-shadow:0 1px 0 rgba(255,255,255,.5);
   font-variant-numeric:tabular-nums
 }
@@ -177,7 +177,7 @@ header .byline{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color
   border:1px solid var(--line);background:var(--panel-2);color:var(--slate);
   font-family:var(--mono);font-size:12.5px;cursor:pointer
 }
-.termbtn.active{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:700}
+.termbtn.active{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
 
 .sticker{border-radius:10px;overflow:hidden;margin-top:10px;color:var(--on-accent)}
 .option.a .sticker{background:var(--paper)}.option.b .sticker{background:var(--paper-b)}
@@ -186,17 +186,17 @@ header .byline{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color
   font-family:var(--mono);font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:#5B5340
 }
 .option.b .sticker .eyebrow2{color:#3E5A6E}
-.sticker .payment{font-size:34px;font-weight:800;letter-spacing:-.02em;line-height:1.05;margin:3px 0 0;font-variant-numeric:tabular-nums}
-.sticker .payment sub{font-size:12px;font-weight:600;color:#6B5A2E;font-family:var(--mono)}
+.sticker .payment{font-size:34px;letter-spacing:-.02em;line-height:1.05;margin:3px 0 0;font-variant-numeric:tabular-nums}
+.sticker .payment sub{font-size:12px;color:#6B5A2E;font-family:var(--mono)}
 .option.b .sticker .payment sub{color:#3E5A6E}
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:9px 14px 11px}
 .stat{text-align:center}.stat .k{font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:#6B5A2E;margin-bottom:2px}
 .option.b .stat .k{color:#3E5A6E}
-.stat .v{font-family:var(--mono);font-size:13px;font-weight:700}
+.stat .v{font-family:var(--mono);font-size:13px}
 .stat.warn .v{color:#9B4A2E}.stat.good .v{color:#2E6B47}
 .schedule-toggle{
   background:var(--ink);color:var(--white);border:0;width:100%;padding:8px;
-  font-family:var(--sans);font-size:12px;font-weight:600;cursor:pointer;
+  font-family:var(--sans);font-size:12px;cursor:pointer;
   display:flex;align-items:center;justify-content:center;gap:7px
 }
 .schedule-toggle .chev{transition:transform .15s;font-size:10px;color:var(--accent)}
@@ -215,7 +215,7 @@ header .byline{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color
 }
 .compare-side{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--slate)}
 .compare-side strong{font-family:var(--mono);color:var(--white);font-size:15px}
-.compare-mid{font-size:12.5px;color:var(--green);font-weight:600;text-align:center;flex:1;min-width:140px}
+.compare-mid{font-size:12.5px;color:var(--green);text-align:center;flex:1;min-width:140px}
 footer{margin-top:15px;font-size:11px;color:var(--slate);text-align:center}
 
 @media(max-width:859px){
@@ -244,7 +244,7 @@ footer{margin-top:15px;font-size:11px;color:var(--slate);text-align:center}
 </header>
 
 <div class="shared">
-  <div class="field" style="grid-column: 1 / -1; max-width: 50%; margin: 0 auto; width: 100%;">
+  <div class="field" style="grid-column: 1 / -1; display:none;">
     <label>Vehicle Price</label>
     <div class="inputrow"><span class="prefix">$</span><input type="number" id="priceShared" value="25000" min="0" step="100"></div>
   </div>
@@ -256,23 +256,23 @@ footer{margin-top:15px;font-size:11px;color:var(--slate);text-align:center}
 
   <div class="compact-row">
     <div class="field">
-      <label>Trade Payoff</label>
-      <div class="inputrow"><span class="prefix">$</span><input type="number" id="payoffA" value="0" min="0" step="100"></div>
+      <label>Vehicle Price</label>
+      <div class="inputrow"><span class="prefix">$</span><input type="number" id="priceA" value="25000" min="0" step="100"></div>
     </div>
     <div class="field">
-      <label>Trade Value</label>
-      <div class="inputrow"><span class="prefix">$</span><input type="number" id="tradeA" value="0" min="0" step="100"></div>
+      <label>Fees</label>
+      <div class="inputrow"><span class="prefix">$</span><input type="number" id="feesA" value="1307" min="0" step="1"></div>
     </div>
   </div>
 
   <div class="compact-row">
     <div class="field">
-      <label>Fees</label>
-      <div class="inputrow"><span class="prefix">$</span><input type="number" id="feesA" value="1307" min="0" step="1"></div>
+      <label>Trade Value</label>
+      <div class="inputrow"><span class="prefix">$</span><input type="number" id="tradeA" value="0" min="0" step="100"></div>
     </div>
-    <div class="field down-field">
-      <label>Down Payment</label>
-      <div class="inputrow"><span class="prefix">$</span><input type="number" id="downA" value="0" min="0" step="100"></div>
+    <div class="field">
+      <label>Trade Payoff</label>
+      <div class="inputrow"><span class="prefix">$</span><input type="number" id="payoffA" value="0" min="0" step="100"></div>
     </div>
   </div>
 
@@ -318,23 +318,23 @@ footer{margin-top:15px;font-size:11px;color:var(--slate);text-align:center}
 
   <div class="compact-row">
     <div class="field">
-      <label>Trade Payoff</label>
-      <div class="inputrow"><span class="prefix">$</span><input type="number" id="payoffB" value="0" min="0" step="100"></div>
+      <label>Vehicle Price</label>
+      <div class="inputrow"><span class="prefix">$</span><input type="number" id="priceB" value="25000" min="0" step="100"></div>
     </div>
-    <div class="field" style="display:none;">
-      <label>Trade Value</label>
-      <div class="inputrow"><span class="prefix">$</span><input type="number" id="tradeB" value="0" min="0" step="100"></div>
-    </div>
-  </div>
-
-  <div class="compact-row">
     <div class="field">
       <label>Fees</label>
       <div class="inputrow"><span class="prefix">$</span><input type="number" id="feesB" value="1307" min="0" step="1"></div>
     </div>
-    <div class="field down-field">
-      <label>Down Payment</label>
-      <div class="inputrow"><span class="prefix">$</span><input type="number" id="downB" value="0" min="0" step="100"></div>
+  </div>
+
+  <div class="compact-row">
+    <div class="field" style="display:none;">
+      <label>Trade Value</label>
+      <div class="inputrow"><span class="prefix">$</span><input type="number" id="tradeB" value="0" min="0" step="100"></div>
+    </div>
+    <div class="field">
+      <label>Trade Payoff</label>
+      <div class="inputrow"><span class="prefix">$</span><input type="number" id="payoffB" value="0" min="0" step="100"></div>
     </div>
   </div>
 
@@ -386,12 +386,10 @@ footer{margin-top:15px;font-size:11px;color:var(--slate);text-align:center}
 const $=id=>document.getElementById(id);
 const money=n=>'$'+n.toLocaleString('en-US',{maximumFractionDigits:0});
 const moneyC=n=>'$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-const STORAGE_KEY='autoLoanCalculator.state.v2';
+const STORAGE_KEY='autoLoanCalculator.state.v3';
 const DEFAULTS={
-  price:25000,
-  trade:0,
-  a:{trade:0,payoff:0,fees:1307,down:0,apr:8.9,term:60},
-  b:{trade:0,payoff:0,fees:1307,down:0,apr:8.9,term:60}
+  a:{price:25000,trade:0,payoff:0,fees:1307,down:0,apr:8.9,term:60},
+  b:{price:25000,trade:0,payoff:0,fees:1307,down:0,apr:8.9,term:60}
 };
 
 function loadSaved(){
@@ -400,8 +398,6 @@ function loadSaved(){
     if(!raw)return null;
     const p=JSON.parse(raw);
     return {
-      price:typeof p.price==='number'?p.price:DEFAULTS.price,
-      trade:typeof p.trade==='number'?p.trade:DEFAULTS.trade,
       a:Object.assign({},DEFAULTS.a,p.a||{}),
       b:Object.assign({},DEFAULTS.b,p.b||{})
     };
@@ -510,13 +506,13 @@ document.querySelectorAll('.termrow').forEach(row=>{
 
 function calcOption(K){
   const key=K.toLowerCase();
-  const price=Math.max(0,parseFloat($('priceShared').value)||0);
+  const price=Math.max(0,parseFloat($('price'+K).value)||0);
   const trade=Math.max(0,parseFloat($('trade'+K).value)||0);
   const payoff=Math.max(0,parseFloat($('payoff'+K).value)||0);
   const fees=Math.max(0,parseFloat($('fees'+K).value)||0);
   const down=Math.max(0,parseFloat($('down'+K).value)||0);
 
-  state.price=price;
+  state[key].price=price;
   state[key].trade=trade;
   state[key].payoff=payoff;
   state[key].fees=fees;
@@ -567,11 +563,7 @@ function calcAll(){
   try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(e){}
 }
 
-$('priceShared').addEventListener('input',()=>{
-  calcAll();
-});
-
-['tradeA','tradeB','payoffA','payoffB','feesA','feesB','downA','downB'].forEach(id=>{
+['priceA','priceB','tradeA','tradeB','payoffA','payoffB','feesA','feesB','downA','downB'].forEach(id=>{
   $(id).addEventListener('input',()=>{
     const K=id.slice(-1);
     if(id.startsWith('down')) {
@@ -592,9 +584,9 @@ $('priceShared').addEventListener('input',()=>{
 });
 
 function applyStateToDOM(){
-  $('priceShared').value=state.price;
   ['A','B'].forEach(K=>{
     const s=state[K.toLowerCase()];
+    $('price'+K).value=s.price;
     $('trade'+K).value=s.trade;
     $('payoff'+K).value=s.payoff;
     $('fees'+K).value=s.fees;
