@@ -1,155 +1,488 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0b1220">
-  <title>Auto Loan Calculator</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auto Loan Calculator</title>
+<style>
+  :root{
+    --ink:#0F1216;
+    --panel:#171B21;
+    --panel-2:#1E232B;
+    --line:#2A313B;
+    --amber:#E8A63A;
+    --amber-dim:#8A6423;
+    --paper:#F4EFE4;
+    --slate:#8B95A5;
+    --white:#F3F5F7;
+    --green:#5FAE7E;
+    --mono:'JetBrains Mono','SF Mono',Consolas,monospace;
+    --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--ink);
+    color:var(--white);
+    font-family:var(--sans);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    padding:32px 16px 64px;
+  }
+  .wrap{width:100%;max-width:960px;}
+
+  header{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    margin-bottom:28px;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  header .eyebrow{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--amber);
+  }
+  header h1{
+    font-size:22px;
+    font-weight:700;
+    margin:2px 0 0;
+    letter-spacing:-.01em;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:1.1fr 1fr;
+    gap:20px;
+  }
+  @media (max-width:760px){
+    .grid{grid-template-columns:1fr;}
+  }
+
+  /* ---- Inputs panel ---- */
+  .panel{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:22px;
+  }
+  .field{margin-bottom:18px;}
+  .field:last-child{margin-bottom:0;}
+  .field label{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    font-size:12.5px;
+    color:var(--slate);
+    margin-bottom:8px;
+    letter-spacing:.01em;
+  }
+  .field label .val{
+    font-family:var(--mono);
+    color:var(--white);
+    font-size:13px;
+  }
+  .inputrow{
+    display:flex;
+    align-items:center;
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:9px;
+    padding:0 12px;
+  }
+  .inputrow .prefix{
+    color:var(--slate);
+    font-family:var(--mono);
+    font-size:14px;
+    padding-right:6px;
+  }
+  .inputrow input[type=number]{
+    flex:1;
+    background:transparent;
+    border:none;
+    outline:none;
+    color:var(--white);
+    font-family:var(--mono);
+    font-size:16px;
+    padding:11px 0;
+    width:100%;
+    -moz-appearance:textfield;
+  }
+  .inputrow input[type=number]::-webkit-outer-spin-button,
+  .inputrow input[type=number]::-webkit-inner-spin-button{
+    -webkit-appearance:none;margin:0;
+  }
+  input[type=range]{
+    width:100%;
+    -webkit-appearance:none;
+    height:4px;
+    border-radius:2px;
+    background:var(--line);
+    outline:none;
+    margin-top:2px;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    width:16px;height:16px;
+    border-radius:50%;
+    background:var(--amber);
+    cursor:pointer;
+    border:2px solid var(--ink);
+    box-shadow:0 0 0 1px var(--amber-dim);
+  }
+  input[type=range]::-moz-range-thumb{
+    width:16px;height:16px;border-radius:50%;
+    background:var(--amber);cursor:pointer;
+    border:2px solid var(--ink);
+  }
+  .termrow{display:flex;gap:8px;flex-wrap:wrap;}
+  .termbtn{
+    flex:1;
+    min-width:56px;
+    text-align:center;
+    padding:9px 4px;
+    border-radius:8px;
+    border:1px solid var(--line);
+    background:var(--panel-2);
+    color:var(--slate);
+    font-family:var(--mono);
+    font-size:13px;
+    cursor:pointer;
+    transition:background .12s,color .12s,border-color .12s;
+  }
+  .termbtn.active{
+    background:var(--amber);
+    border-color:var(--amber);
+    color:var(--ink);
+    font-weight:700;
+  }
+
+  /* ---- Sticker / result panel ---- */
+  .sticker{
+    background:var(--paper);
+    color:var(--ink);
+    border-radius:14px;
+    padding:0;
+    overflow:hidden;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    height:fit-content;
+  }
+  .sticker .tag-top{
+    padding:20px 22px 0;
+  }
+  .sticker .eyebrow{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:#6B5A2E;
+  }
+  .sticker .payment{
+    font-size:56px;
+    font-weight:800;
+    letter-spacing:-.02em;
+    line-height:1.05;
+    margin:6px 0 0;
+    font-variant-numeric:tabular-nums;
+  }
+  .sticker .payment sub{
+    font-size:16px;
+    font-weight:600;
+    color:#6B5A2E;
+    font-family:var(--mono);
+  }
+  .perf{
+    display:flex;
+    justify-content:space-between;
+    padding:16px 0;
+    margin:18px 22px 0;
+    border-top:1px dashed #C9BF9E;
+  }
+  .perf::before{
+    content:'';
+  }
+  .stats{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    padding:0 22px 22px;
+  }
+  .stat .k{
+    font-size:10.5px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:#6B5A2E;
+    margin-bottom:4px;
+  }
+  .stat .v{
+    font-family:var(--mono);
+    font-size:17px;
+    font-weight:700;
+  }
+  .stat.warn .v{color:#9B4A2E;}
+  .stat.good .v{color:#2E6B47;}
+
+  .schedule-toggle{
+    background:var(--ink);
+    color:var(--white);
+    border:none;
+    width:100%;
+    padding:13px;
+    font-family:var(--sans);
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+  }
+  .schedule-toggle .chev{
+    transition:transform .15s;
+    font-size:11px;
+    color:var(--amber);
+  }
+  .schedule-toggle.open .chev{transform:rotate(180deg);}
+
+  .schedule{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .2s ease;
+    background:var(--panel);
+  }
+  .schedule.open{max-height:340px;overflow-y:auto;}
+  .schedule table{
+    width:100%;
+    border-collapse:collapse;
+    font-family:var(--mono);
+    font-size:12px;
+  }
+  .schedule th{
+    position:sticky;top:0;
+    background:var(--panel-2);
+    color:var(--slate);
+    text-align:right;
+    padding:8px 12px;
+    font-weight:600;
+    font-size:10.5px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+  }
+  .schedule th:first-child,.schedule td:first-child{text-align:left;}
+  .schedule td{
+    text-align:right;
+    padding:7px 12px;
+    color:var(--white);
+    border-top:1px solid var(--line);
+  }
+  .schedule tr:nth-child(even) td{background:rgba(255,255,255,.015);}
+
+  footer{
+    margin-top:22px;
+    font-size:11.5px;
+    color:var(--slate);
+    text-align:center;
+  }
+</style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">
-      <div class="brand-mark">$</div>
-      <div>
-        <div class="brand-name">Auto Loan Calculator</div>
-        <div class="brand-sub">Vehicle payment & financing estimator</div>
-      </div>
+<div class="wrap">
+
+  <header>
+    <div>
+      <div class="eyebrow">Finance / Estimate</div>
+      <h1>Auto Loan Calculator</h1>
     </div>
-    <button id="resetBtn" class="ghost-btn" type="button">Reset</button>
   </header>
 
-  <main class="container">
-    <section class="hero">
-      <div>
-        <h1>Calculate the deal.</h1>
-        <p>Enter the vehicle, trade, cash down, taxes and financing terms to see the estimated payment instantly.</p>
-      </div>
-    </section>
+  <div class="grid">
 
-    <section class="layout">
-      <div class="card inputs-card">
-        <div class="section-title">
-          <span class="step">1</span>
-          <div>
-            <h2>Deal information</h2>
-            <p>Use whole dollars or decimals where needed.</p>
-          </div>
-        </div>
-
-        <div class="field-grid">
-          <label class="field">
-            <span>Vehicle price</span>
-            <div class="input-wrap"><span>$</span><input id="vehiclePrice" inputmode="decimal" value="40000"></div>
-          </label>
-
-          <label class="field">
-            <span>Trade-in value</span>
-            <div class="input-wrap"><span>$</span><input id="tradeValue" inputmode="decimal" value="15000"></div>
-          </label>
-
-          <label class="field">
-            <span>Trade payoff</span>
-            <div class="input-wrap"><span>$</span><input id="tradePayoff" inputmode="decimal" value="12000"></div>
-          </label>
-
-          <label class="field">
-            <span>Cash down</span>
-            <div class="input-wrap"><span>$</span><input id="downPayment" inputmode="decimal" value="3000"></div>
-          </label>
-
-          <label class="field">
-            <span>Sales tax rate</span>
-            <div class="input-wrap"><input id="taxRate" inputmode="decimal" value="7"><span>%</span></div>
-          </label>
-
-          <label class="field">
-            <span>Taxes & fees</span>
-            <div class="input-wrap"><span>$</span><input id="fees" inputmode="decimal" value="1200"></div>
-          </label>
-        </div>
-
-        <div class="toggle-row">
-          <div>
-            <strong>Tax trade-in credit</strong>
-            <small>Subtract the trade value from the taxable vehicle price.</small>
-          </div>
-          <label class="switch">
-            <input id="taxTrade" type="checkbox" checked>
-            <span></span>
-          </label>
-        </div>
-
-        <div class="section-title financing-title">
-          <span class="step">2</span>
-          <div>
-            <h2>Financing</h2>
-            <p>Choose the APR and primary loan term.</p>
-          </div>
-        </div>
-
-        <div class="field-grid">
-          <label class="field">
-            <span>APR</span>
-            <div class="input-wrap"><input id="apr" inputmode="decimal" value="6.99"><span>%</span></div>
-          </label>
-
-          <label class="field">
-            <span>Primary term</span>
-            <select id="term">
-              <option value="36">36 months</option>
-              <option value="48">48 months</option>
-              <option value="60">60 months</option>
-              <option value="72" selected>72 months</option>
-              <option value="75">75 months</option>
-              <option value="84">84 months</option>
-              <option value="96">96 months</option>
-            </select>
-          </label>
-        </div>
-
-        <div class="info-box">
-          <strong>Note:</strong> This is an estimate. Actual lender payments can vary because of lender fees, registration/title charges, taxes, products, and lender-specific rules.
+    <!-- INPUTS -->
+    <div class="panel">
+      <div class="field">
+        <label>Vehicle price <span class="val" id="v-price">$28,500</span></label>
+        <div class="inputrow">
+          <span class="prefix">$</span>
+          <input type="number" id="price" value="28500" min="0" step="100">
         </div>
       </div>
 
-      <div class="card result-card">
-        <div class="result-label">Estimated monthly payment</div>
-        <div id="primaryPayment" class="primary-payment">$0.00</div>
-        <div id="primaryTermLabel" class="term-label">72 months</div>
-
-        <div class="summary-grid">
-          <div><span>Amount financed</span><strong id="amountFinanced">$0.00</strong></div>
-          <div><span>Total interest</span><strong id="totalInterest">$0.00</strong></div>
-          <div><span>Total of payments</span><strong id="totalPayments">$0.00</strong></div>
-          <div><span>Trade equity</span><strong id="tradeEquity">$0.00</strong></div>
-        </div>
-
-        <div class="breakdown">
-          <div class="breakdown-head"><span>Deal breakdown</span><span id="taxableLabel">Taxable amount</span></div>
-          <div class="bar"><div id="taxBar"></div><div id="principalBar"></div></div>
-          <div class="breakdown-row"><span>Estimated tax</span><strong id="estimatedTax">$0.00</strong></div>
-          <div class="breakdown-row"><span>Negative/positive equity</span><strong id="equityResult">$0.00</strong></div>
+      <div class="field">
+        <label>Down payment <span class="val" id="v-down">$3,000</span></label>
+        <div class="inputrow">
+          <span class="prefix">$</span>
+          <input type="number" id="down" value="3000" min="0" step="100">
         </div>
       </div>
-    </section>
 
-    <section class="card comparison-card">
-      <div class="section-title">
-        <span class="step">3</span>
-        <div>
-          <h2>Payment comparison</h2>
-          <p>See how the payment and interest change by term.</p>
+      <div class="field">
+        <label>Trade-in value <span class="val" id="v-trade">$0</span></label>
+        <div class="inputrow">
+          <span class="prefix">$</span>
+          <input type="number" id="trade" value="0" min="0" step="100">
         </div>
       </div>
-      <div class="comparison-grid" id="comparisonGrid"></div>
-    </section>
-  </main>
 
-  <footer>
-    Auto Loan Calculator • Version 1
-  </footer>
+      <div class="field">
+        <label>Sales tax rate <span class="val" id="v-tax">7.0%</span></label>
+        <input type="range" id="tax" min="0" max="12" step="0.1" value="7">
+      </div>
 
-  <script src="app.js"></script>
+      <div class="field">
+        <label>APR <span class="val" id="v-apr">6.5%</span></label>
+        <input type="range" id="apr" min="0" max="24" step="0.1" value="6.5">
+      </div>
+
+      <div class="field">
+        <label>Loan term</label>
+        <div class="termrow" id="termrow">
+          <div class="termbtn" data-term="24">24 mo</div>
+          <div class="termbtn" data-term="36">36 mo</div>
+          <div class="termbtn" data-term="48">48 mo</div>
+          <div class="termbtn active" data-term="60">60 mo</div>
+          <div class="termbtn" data-term="72">72 mo</div>
+          <div class="termbtn" data-term="84">84 mo</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULT STICKER -->
+    <div class="sticker">
+      <div class="tag-top">
+        <div class="eyebrow">Estimated payment</div>
+        <div class="payment"><span id="monthly">$0</span><sub>/mo</sub></div>
+      </div>
+
+      <div class="stats" style="margin-top:16px;">
+        <div class="stat">
+          <div class="k">Amount financed</div>
+          <div class="v" id="financed">$0</div>
+        </div>
+        <div class="stat">
+          <div class="k">Sales tax</div>
+          <div class="v" id="taxamt">$0</div>
+        </div>
+        <div class="stat warn">
+          <div class="k">Total interest</div>
+          <div class="v" id="interest">$0</div>
+        </div>
+        <div class="stat good">
+          <div class="k">Total of payments</div>
+          <div class="v" id="total">$0</div>
+        </div>
+      </div>
+
+      <button class="schedule-toggle" id="scheduleToggle">
+        Amortization schedule <span class="chev">▾</span>
+      </button>
+      <div class="schedule" id="schedule">
+        <table>
+          <thead>
+            <tr><th>Mo</th><th>Payment</th><th>Principal</th><th>Interest</th><th>Balance</th></tr>
+          </thead>
+          <tbody id="scheduleBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>Estimate only — actual APR, fees, and tax vary by lender and state.</footer>
+</div>
+
+<script>
+  const $ = id => document.getElementById(id);
+  const money = n => '$' + n.toLocaleString('en-US', {maximumFractionDigits:0});
+  const moneyC = n => '$' + n.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+
+  let term = 60;
+
+  const priceEl = $('price'), downEl = $('down'), tradeEl = $('trade'),
+        taxEl = $('tax'), aprEl = $('apr');
+
+  function calc(){
+    const price = Math.max(0, parseFloat(priceEl.value) || 0);
+    const down  = Math.max(0, parseFloat(downEl.value)  || 0);
+    const trade = Math.max(0, parseFloat(tradeEl.value) || 0);
+    const taxRate = parseFloat(taxEl.value) / 100;
+    const apr = parseFloat(aprEl.value) / 100;
+
+    $('v-price').textContent = money(price);
+    $('v-down').textContent = money(down);
+    $('v-trade').textContent = money(trade);
+    $('v-tax').textContent = taxEl.value + '%';
+    $('v-apr').textContent = aprEl.value + '%';
+
+    const taxAmt = price * taxRate;
+    const financed = Math.max(0, price + taxAmt - down - trade);
+    const n = term;
+    const r = apr / 12;
+
+    let payment;
+    if (r === 0) {
+      payment = financed / n;
+    } else {
+      payment = financed * (r * Math.pow(1+r, n)) / (Math.pow(1+r, n) - 1);
+    }
+    if (!isFinite(payment)) payment = 0;
+
+    const totalPaid = payment * n;
+    const totalInterest = totalPaid - financed;
+
+    $('monthly').textContent = moneyC(payment).replace(/\.00$/, '') === moneyC(payment) ? moneyC(payment) : moneyC(payment);
+    $('monthly').textContent = payment.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});
+    $('financed').textContent = money(financed);
+    $('taxamt').textContent = money(taxAmt);
+    $('interest').textContent = money(Math.max(0,totalInterest));
+    $('total').textContent = money(totalPaid);
+
+    buildSchedule(financed, r, n, payment);
+  }
+
+  function buildSchedule(principal, r, n, payment){
+    const body = $('scheduleBody');
+    body.innerHTML = '';
+    let balance = principal;
+    const frag = document.createDocumentFragment();
+    for (let m = 1; m <= n; m++){
+      const interest = balance * r;
+      let principalPortion = payment - interest;
+      if (m === n) principalPortion = balance;
+      balance = Math.max(0, balance - principalPortion);
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${m}</td><td>${moneyC(payment)}</td><td>${moneyC(principalPortion)}</td><td>${moneyC(interest)}</td><td>${moneyC(balance)}</td>`;
+      frag.appendChild(tr);
+    }
+    body.appendChild(frag);
+  }
+
+  [priceEl, downEl, tradeEl, taxEl, aprEl].forEach(el => {
+    el.addEventListener('input', calc);
+  });
+
+  document.querySelectorAll('.termbtn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.termbtn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      term = parseInt(btn.dataset.term, 10);
+      calc();
+    });
+  });
+
+  const toggle = $('scheduleToggle'), schedule = $('schedule');
+  toggle.addEventListener('click', () => {
+    const open = schedule.classList.toggle('open');
+    toggle.classList.toggle('open', open);
+  });
+
+  calc();
+</script>
 </body>
 </html>
