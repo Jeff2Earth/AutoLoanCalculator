@@ -10,6 +10,9 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0F1216">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&display=swap" rel="stylesheet">
 
 <script>
 (function(){
@@ -115,6 +118,7 @@ html.light .masthead{
 
 .masthead h1{
   margin:0;
+  font-family:'Barlow Condensed', var(--sans);
   font-size:38px;
   font-weight:800;
   letter-spacing:.06em;
@@ -135,6 +139,10 @@ html.light .masthead{
   font-size:13px;
   color:var(--slate);
   letter-spacing:.02em;
+}
+
+.masthead .byline-lead{
+  font-size:.8em;
 }
 
 .masthead .byline strong{
@@ -900,7 +908,7 @@ footer{
   }
 
   .masthead h1{
-    font-size:20px;
+    font-size:27px;
     letter-spacing:.04em;
   }
 
@@ -1020,7 +1028,7 @@ footer{
   </div>
 
   <div class="byline">
-    Designed by <strong>Jeff Patrick</strong>
+    <span class="byline-lead">Designed by</span> <strong>Jeff Patrick</strong>
   </div>
 
   <!-- MOVED INSIDE MASTHEAD -->
