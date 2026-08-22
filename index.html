@@ -692,6 +692,7 @@ html.light .masthead .byline strong{
 
 .stat{
   text-align:center;
+  position:relative;
 }
 
 .stat .k{
@@ -709,6 +710,36 @@ html.light .masthead .byline strong{
 .stat .v{
   font-family:var(--mono);
   font-size:13px;
+}
+
+.tax-touch{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:130%;
+  height:90px;
+  margin:0;
+  padding:0;
+  background:transparent;
+  border:0;
+  outline:0;
+  text-align:center;
+  font-family:var(--mono);
+  font-size:11px;
+  color:transparent;
+  caret-color:transparent;
+  -webkit-appearance:none;
+  -moz-appearance:textfield;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+  z-index:5;
+}
+
+.tax-touch::-webkit-outer-spin-button,
+.tax-touch::-webkit-inner-spin-button{
+  -webkit-appearance:none;
+  margin:0;
 }
 
 .stat.warn .v{
@@ -1246,13 +1277,22 @@ footer{
       <div class="stat">
 
         <div class="k">
-          Sales Tax (7%)
+          Sales Tax (<span id="taxPctA">7</span>%)
         </div>
 
         <div class="v"
              id="taxamtA">
           $0
         </div>
+
+        <input type="number"
+               class="tax-touch"
+               id="taxTouchA"
+               data-key="A"
+               step="0.25"
+               min="0"
+               max="50"
+               aria-label="Edit sales tax rate">
 
       </div>
 
@@ -1571,13 +1611,22 @@ footer{
       <div class="stat">
 
         <div class="k">
-          Sales Tax (7%)
+          Sales Tax (<span id="taxPctB">7</span>%)
         </div>
 
         <div class="v"
              id="taxamtB">
           $0
         </div>
+
+        <input type="number"
+               class="tax-touch"
+               id="taxTouchB"
+               data-key="B"
+               step="0.25"
+               min="0"
+               max="50"
+               aria-label="Edit sales tax rate">
 
       </div>
 
@@ -1724,13 +1773,6 @@ const STORAGE_KEY=
 
 
 /* =====================================================
-   FIXED SALES TAX
-   ===================================================== */
-
-const SALES_TAX_RATE=0.07;
-
-
-/* =====================================================
    DEFAULTS
    ===================================================== */
 
@@ -1743,7 +1785,8 @@ const DEFAULTS={
     fees:1307,
     down:0,
     apr:8.9,
-    term:60
+    term:60,
+    taxRate:7
   },
 
   b:{
@@ -1753,7 +1796,8 @@ const DEFAULTS={
     fees:1307,
     down:0,
     apr:8.9,
-    term:60
+    term:60,
+    taxRate:7
   }
 
 };
@@ -2510,7 +2554,7 @@ function calcOption(K){
 
 
   /* ==================================================
-     FIXED 7% SALES TAX
+     PER-OPTION SALES TAX (editable, persists through Clear)
      ================================================== */
 
   const taxableBase=
@@ -2522,7 +2566,7 @@ function calcOption(K){
 
   const taxAmt=
     taxableBase*
-    SALES_TAX_RATE;
+    (state[key].taxRate/100);
 
 
   const netTrade=
@@ -2595,6 +2639,13 @@ function calcOption(K){
   $('taxamt'+K)
     .textContent=
     money(taxAmt);
+
+
+  $('taxPct'+K)
+    .textContent=
+    state[key].taxRate % 1 === 0
+      ? state[key].taxRate
+      : state[key].taxRate.toFixed(2);
 
 
   $('interest'+K)
@@ -2772,6 +2823,47 @@ function calcAll(){
 
 
 /* =====================================================
+   TAX RATE TOUCH ZONE (hidden input, no native dialogs)
+   ===================================================== */
+
+document.querySelectorAll('.tax-touch')
+.forEach(inp=>{
+
+  const K=inp.dataset.key;
+  const key=K.toLowerCase();
+
+  inp.addEventListener(
+    'focus',
+    function(){
+      this.value='';
+    }
+  );
+
+  inp.addEventListener(
+    'keydown',
+    function(e){
+      if(e.key==='Enter'){
+        this.blur();
+      }
+    }
+  );
+
+  inp.addEventListener(
+    'blur',
+    function(){
+      const val=parseFloat(this.value);
+      if(!isNaN(val) && val>=0){
+        state[key].taxRate=val;
+        calcAll();
+      }
+      this.value='';
+    }
+  );
+
+});
+
+
+/* =====================================================
    ENTERABLE INPUTS
    ===================================================== */
 
@@ -2946,12 +3038,22 @@ $('clearBtn')
   'click',
   ()=>{
 
+    const keep={
+      a:{ fees:state.a.fees, taxRate:state.a.taxRate },
+      b:{ fees:state.b.fees, taxRate:state.b.taxRate }
+    };
+
     Object.assign(
       state,
       JSON.parse(
         JSON.stringify(DEFAULTS)
       )
     );
+
+    state.a.fees=keep.a.fees;
+    state.a.taxRate=keep.a.taxRate;
+    state.b.fees=keep.b.fees;
+    state.b.taxRate=keep.b.taxRate;
 
 
     applyStateToDOM();
