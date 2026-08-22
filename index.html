@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Auto Loan Calculator</title>
+
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
@@ -38,7 +39,6 @@
   --mono:'JetBrains Mono','SF Mono',Consolas,monospace;
   --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 
-  /* Dark-mode ruler */
   --ruler-bg-top:#20252C;
   --ruler-bg-bottom:#111419;
   --ruler-mark:#8E98A6;
@@ -55,7 +55,6 @@ html.light{
   --slate:#5B6472;
   --table-head:#E8EAED;
 
-  /* Light-mode ruler */
   --ruler-bg-top:#E8E8E4;
   --ruler-bg-bottom:#D6D6D1;
   --ruler-mark:#202020;
@@ -70,7 +69,7 @@ html.light{
 
 html,body{
   margin:0;
-  padding:0
+  padding:0;
 }
 
 body{
@@ -84,13 +83,23 @@ body{
   width:100%;
   max-width:1180px;
   margin:0 auto;
-  padding:14px 16px 48px
+  padding:8px 16px 40px;
 }
 
+/* =========================================================
+   MASTHEAD
+   ========================================================= */
+
 .masthead{
+  position:relative;
   background:#000;
-  padding:24px 16px 20px;
+  padding:18px 70px 16px;
   text-align:center;
+  min-height:96px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
 }
 
 html.light .masthead{
@@ -101,7 +110,7 @@ html.light .masthead{
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:10px
+  gap:10px;
 }
 
 .masthead h1{
@@ -110,91 +119,197 @@ html.light .masthead{
   font-weight:800;
   letter-spacing:.06em;
   text-transform:uppercase;
-  background:linear-gradient(180deg,#F7DFA5,#E8A63A 55%,#C98B2E);
+  background:linear-gradient(
+    180deg,
+    #F7DFA5,
+    #E8A63A 55%,
+    #C98B2E
+  );
   -webkit-background-clip:text;
   background-clip:text;
-  color:transparent
+  color:transparent;
 }
 
 .masthead .byline{
-  margin-top:6px;
+  margin-top:4px;
   font-size:13px;
   color:var(--slate);
-  letter-spacing:.02em
+  letter-spacing:.02em;
 }
 
 .masthead .byline strong{
-  color:var(--amber)
+  color:var(--amber);
 }
 
 html.light .masthead h1{
-  background:linear-gradient(180deg,#E8A63A,#C2680A 55%,#9C4F06);
+  background:linear-gradient(
+    180deg,
+    #E8A63A,
+    #C2680A 55%,
+    #9C4F06
+  );
   -webkit-background-clip:text;
   background-clip:text;
-  color:transparent
+  color:transparent;
 }
 
 html.light .masthead .byline strong{
-  color:#C2680A
+  color:#C2680A;
 }
 
-.toolbar{
-  display:flex;
-  justify-content:flex-end;
-  margin-bottom:14px
-}
+/* Buttons now live INSIDE the masthead */
 
 .header-actions{
+  position:absolute;
+  right:18px;
+  top:50%;
+  transform:translateY(-50%);
   display:flex;
-  gap:8px
+  gap:7px;
 }
 
-.clear-btn,.theme-btn{
+.clear-btn,
+.theme-btn{
   background:var(--panel);
   border:1px solid var(--line);
   color:var(--slate);
   border-radius:8px;
   cursor:pointer;
-  transition:.15s
+  transition:.15s;
 }
 
 .clear-btn{
   font-family:var(--mono);
   font-size:12px;
-  padding:8px 14px
+  padding:7px 12px;
 }
 
 .theme-btn{
   font-size:15px;
-  width:36px;
+  width:34px;
+  height:34px;
   display:flex;
   align-items:center;
-  justify-content:center
+  justify-content:center;
 }
 
-.clear-btn:hover,.theme-btn:hover{
+.clear-btn:hover,
+.theme-btn:hover{
   border-color:var(--amber);
-  color:var(--amber)
+  color:var(--amber);
 }
+
+/* =========================================================
+   HIDDEN OLD TOOLBAR
+   ========================================================= */
+
+.toolbar{
+  display:none;
+}
+
+/* =========================================================
+   UNUSED SHARED AREA
+   ========================================================= */
 
 .shared{
+  display:none !important;
+}
+
+/* =========================================================
+   OPTION GRID
+   ========================================================= */
+
+.split-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  gap:10px;
+  margin-top:8px;
+}
+
+@media(min-width:860px){
+  .split-grid{
+    grid-template-columns:minmax(0,1fr) 46px minmax(0,1fr);
+    align-items:start;
+    gap:10px;
+  }
+}
+
+/* =========================================================
+   OPTION CARDS
+   ========================================================= */
+
+.option{
   background:var(--panel);
   border:1px solid var(--line);
   border-radius:12px;
-  padding:12px 18px;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px
+  padding:12px 15px;
+  min-width:0;
 }
 
-.field label{
-  display:block;
-  text-align:center;
-  font-size:13px;
-  color:var(--slate);
-  margin-bottom:5px;
-  letter-spacing:.01em
+.option.a{
+  --accent:var(--amber);
 }
+
+.option.b{
+  --accent:var(--blue);
+}
+
+/* CENTER OPTION A / OPTION B */
+
+.option-title{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  font-size:13.5px;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:8px;
+  text-align:center;
+}
+
+.option-title .dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--accent);
+}
+
+/* =========================================================
+   INPUT ROWS
+   ========================================================= */
+
+.option .field{
+  margin-bottom:7px;
+}
+
+.compact-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-bottom:7px;
+}
+
+.compact-row .field{
+  margin-bottom:0;
+}
+
+.compact-row .field label,
+.down-field label{
+  font-size:12.5px;
+  margin-bottom:3px;
+}
+
+/* WIDER TOP TWO DATA ENTRY WINDOWS */
+
+.top-entry-row .inputrow{
+  max-width:205px;
+  width:100%;
+  min-height:40px;
+}
+
+/* Other input boxes */
 
 .inputrow{
   display:flex;
@@ -203,21 +318,22 @@ html.light .masthead .byline strong{
   background:var(--panel-2);
   border:1px solid var(--line);
   border-radius:8px;
-  padding:0 10px;
-  max-width:150px;
-  margin:0 auto
+  padding:0 9px;
+  max-width:175px;
+  width:100%;
+  margin:0 auto;
 }
 
 .inputrow .prefix{
   color:var(--slate);
   font-family:var(--mono);
   font-size:15px;
-  padding-right:4px
+  padding-right:4px;
 }
 
 .inputrow input[type=number]{
   flex:0 0 auto;
-  width:6ch;
+  width:7ch;
   min-width:0;
   background:transparent;
   border:0;
@@ -227,128 +343,66 @@ html.light .masthead .byline strong{
   font-size:16px;
   text-align:center;
   padding:6px 0;
-  -moz-appearance:textfield
+  -moz-appearance:textfield;
 }
 
 .inputrow input[type=number]::-webkit-outer-spin-button,
 .inputrow input[type=number]::-webkit-inner-spin-button{
   -webkit-appearance:none;
-  margin:0
+  margin:0;
 }
 
-.split-grid{
-  display:grid;
-  grid-template-columns:minmax(0,1fr);
-  gap:14px;
-  margin-top:14px
-}
-
-@media(min-width:860px){
-  .split-grid{
-    grid-template-columns:minmax(0,1fr) 54px minmax(0,1fr);
-    align-items:start
-  }
-}
+/* =========================================================
+   DIVIDER
+   ========================================================= */
 
 .divider{
   display:flex;
   flex-direction:row;
   align-items:center;
   justify-content:center;
-  gap:8px
+  gap:7px;
 }
 
 @media(min-width:860px){
   .divider{
     flex-direction:column;
     height:100%;
-    gap:10px
+    gap:8px;
   }
 }
 
 .divider .line{
   background:var(--line);
   flex:1;
-  height:1px
+  height:1px;
 }
 
 @media(min-width:860px){
   .divider .line{
     width:1px;
-    height:auto
+    height:auto;
   }
 }
 
 .divider .badge{
   flex:0 0 auto;
-  width:36px;
-  height:36px;
+  width:34px;
+  height:34px;
   border-radius:50%;
-  background:linear-gradient(160deg,#3a4250,#20252c);
+  background:linear-gradient(
+    160deg,
+    #3a4250,
+    #20252c
+  );
   border:1px solid var(--line);
   display:flex;
   align-items:center;
   justify-content:center;
   font-family:var(--mono);
-  font-size:11px;
+  font-size:10px;
   color:var(--slate);
-  letter-spacing:.05em
-}
-
-.option{
-  background:var(--panel);
-  border:1px solid var(--line);
-  border-radius:12px;
-  padding:15px 17px;
-  min-width:0
-}
-
-.option.a{--accent:var(--amber)}
-.option.b{--accent:var(--blue)}
-
-.option-title{
-  display:flex;
-  align-items:center;
-  gap:7px;
-  font-size:13.5px;
-  letter-spacing:.04em;
-  text-transform:uppercase;
-  color:var(--accent);
-  margin-bottom:11px
-}
-
-.option-title .dot{
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  background:var(--accent)
-}
-
-.option .field{
-  margin-bottom:10px
-}
-
-.compact-row{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:9px;
-  margin-bottom:10px
-}
-
-.compact-row .field{
-  margin-bottom:0
-}
-
-.compact-row .field label,
-.down-field label{
-  font-size:12.5px;
-  margin-bottom:4px
-}
-
-.compact-row .inputrow input[type=number],
-.down-field .inputrow input[type=number]{
-  font-size:15px;
-  padding:5px 0
+  letter-spacing:.05em;
 }
 
 /* =========================================================
@@ -356,26 +410,25 @@ html.light .masthead .byline strong{
    ========================================================= */
 
 .ruler-block{
-  margin-bottom:10px;
-  min-width:0
+  margin-bottom:7px;
+  min-width:0;
 }
 
 .ruler-label{
-  margin-bottom:4px;
-  text-align:center
+  margin-bottom:3px;
+  text-align:center;
 }
 
 .ruler-label .name{
   font-size:12.5px;
-  color:var(--slate)
+  color:var(--slate);
 }
 
 .ruler-shell{
   position:relative;
-  height:47px;
+  height:44px;
   min-width:0;
 
-  /* No side fade */
   background:linear-gradient(
     180deg,
     var(--ruler-bg-top) 0%,
@@ -392,24 +445,23 @@ html.light .masthead .byline strong{
   overflow:hidden;
 }
 
-/* Important: NO mask/fade here */
 .ruler-scroll{
   height:100%;
   width:100%;
   overflow-x:auto;
   overflow-y:hidden;
   -webkit-overflow-scrolling:touch;
-  scrollbar-width:none
+  scrollbar-width:none;
 }
 
 .ruler-scroll::-webkit-scrollbar{
-  display:none
+  display:none;
 }
 
 .ruler-track{
   display:flex;
   align-items:flex-end;
-  height:100%
+  height:100%;
 }
 
 .tick{
@@ -420,22 +472,22 @@ html.light .masthead .byline strong{
   flex-direction:column;
   align-items:center;
   justify-content:flex-end;
-  position:relative
+  position:relative;
 }
 
 .tick .bar{
   width:1.5px;
   background:var(--ruler-mark);
-  border-radius:1px
+  border-radius:1px;
 }
 
 .tick.major .bar{
   width:2px;
-  background:var(--ruler-major)
+  background:var(--ruler-major);
 }
 
 .tick.ghost .bar{
-  opacity:.3
+  opacity:.3;
 }
 
 .tick .num{
@@ -446,7 +498,7 @@ html.light .masthead .byline strong{
   font-size:9px;
   font-family:var(--mono);
   color:var(--ruler-number);
-  white-space:nowrap
+  white-space:nowrap;
 }
 
 .ruler-lens{
@@ -455,7 +507,7 @@ html.light .masthead .byline strong{
   top:50%;
   transform:translate(-50%,-50%);
   width:82px;
-  height:43px;
+  height:40px;
   border-radius:4px;
 
   background:
@@ -490,7 +542,7 @@ html.light .masthead .byline strong{
   align-items:center;
   justify-content:center;
   pointer-events:none;
-  overflow:hidden
+  overflow:hidden;
 }
 
 .ruler-lens::before{
@@ -505,7 +557,7 @@ html.light .masthead .byline strong{
     180deg,
     rgba(255,255,255,.75),
     rgba(255,255,255,0)
-  )
+  );
 }
 
 .ruler-lens::after{
@@ -519,7 +571,7 @@ html.light .masthead .byline strong{
       rgba(0,0,0,.05) 1px,
       transparent 1px,
       transparent 3px
-    )
+    );
 }
 
 .ruler-lens .lcd-value{
@@ -529,7 +581,7 @@ html.light .masthead .byline strong{
   letter-spacing:-.01em;
   color:#151515;
   text-shadow:0 1px 0 rgba(255,255,255,.5);
-  font-variant-numeric:tabular-nums
+  font-variant-numeric:tabular-nums;
 }
 
 /* =========================================================
@@ -537,39 +589,39 @@ html.light .masthead .byline strong{
    ========================================================= */
 
 .term-field{
-  margin-top:1px
+  margin-top:0;
 }
 
 .term-label{
   text-align:center;
   font-size:12.5px;
   color:var(--slate);
-  margin-bottom:5px
+  margin-bottom:4px;
 }
 
 .termrow{
   display:flex;
-  gap:6px
+  gap:5px;
 }
 
 .termbtn{
   flex:1;
   min-width:0;
   text-align:center;
-  padding:7px 2px;
+  padding:6px 2px;
   border-radius:7px;
   border:1px solid var(--line);
   background:var(--panel-2);
   color:var(--slate);
   font-family:var(--mono);
-  font-size:12.5px;
-  cursor:pointer
+  font-size:12px;
+  cursor:pointer;
 }
 
 .termbtn.active{
   background:var(--accent);
   border-color:var(--accent);
-  color:var(--on-accent)
+  color:var(--on-accent);
 }
 
 /* =========================================================
@@ -579,21 +631,21 @@ html.light .masthead .byline strong{
 .sticker{
   border-radius:10px;
   overflow:hidden;
-  margin-top:10px;
-  color:var(--on-accent)
+  margin-top:8px;
+  color:var(--on-accent);
 }
 
 .option.a .sticker{
-  background:var(--paper)
+  background:var(--paper);
 }
 
 .option.b .sticker{
-  background:var(--paper-b)
+  background:var(--paper-b);
 }
 
 .sticker .tag-top{
-  padding:10px 14px 0;
-  text-align:center
+  padding:8px 14px 0;
+  text-align:center;
 }
 
 .sticker .eyebrow2{
@@ -601,41 +653,41 @@ html.light .masthead .byline strong{
   font-size:10px;
   letter-spacing:.11em;
   text-transform:uppercase;
-  color:#5B5340
+  color:#5B5340;
 }
 
 .option.b .sticker .eyebrow2{
-  color:#3E5A6E
+  color:#3E5A6E;
 }
 
 .sticker .payment{
-  font-size:34px;
+  font-size:32px;
   letter-spacing:-.02em;
   line-height:1.05;
-  margin:3px 0 0;
+  margin:2px 0 0;
   font-variant-numeric:tabular-nums;
-  text-align:center
+  text-align:center;
 }
 
 .sticker .payment sub{
   font-size:12px;
   color:#6B5A2E;
-  font-family:var(--mono)
+  font-family:var(--mono);
 }
 
 .option.b .sticker .payment sub{
-  color:#3E5A6E
+  color:#3E5A6E;
 }
 
 .stats{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:7px;
-  padding:9px 14px 11px
+  gap:6px;
+  padding:8px 14px 9px;
 }
 
 .stat{
-  text-align:center
+  text-align:center;
 }
 
 .stat .k{
@@ -643,24 +695,24 @@ html.light .masthead .byline strong{
   letter-spacing:.07em;
   text-transform:uppercase;
   color:#6B5A2E;
-  margin-bottom:2px
+  margin-bottom:2px;
 }
 
 .option.b .stat .k{
-  color:#3E5A6E
+  color:#3E5A6E;
 }
 
 .stat .v{
   font-family:var(--mono);
-  font-size:13px
+  font-size:13px;
 }
 
 .stat.warn .v{
-  color:#9B4A2E
+  color:#9B4A2E;
 }
 
 .stat.good .v{
-  color:#2E6B47
+  color:#2E6B47;
 }
 
 .schedule-toggle{
@@ -668,43 +720,43 @@ html.light .masthead .byline strong{
   color:var(--white);
   border:0;
   width:100%;
-  padding:8px;
+  padding:7px;
   font-family:var(--sans);
   font-size:12px;
   cursor:pointer;
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:7px
+  gap:7px;
 }
 
 .schedule-toggle .chev{
   transition:transform .15s;
   font-size:10px;
-  color:var(--accent)
+  color:var(--accent);
 }
 
 .schedule-toggle.open .chev{
-  transform:rotate(180deg)
+  transform:rotate(180deg);
 }
 
 .schedule{
   max-height:0;
   overflow:hidden;
   transition:max-height .2s ease;
-  background:var(--panel-2)
+  background:var(--panel-2);
 }
 
 .schedule.open{
   max-height:230px;
-  overflow-y:auto
+  overflow-y:auto;
 }
 
 .schedule table{
   width:100%;
   border-collapse:collapse;
   font-family:var(--mono);
-  font-size:11px
+  font-size:11px;
 }
 
 .schedule th{
@@ -714,32 +766,36 @@ html.light .masthead .byline strong{
   color:var(--slate);
   text-align:right;
   padding:6px 8px;
-  font-size:9.5px
+  font-size:9.5px;
 }
 
 .schedule th:first-child,
 .schedule td:first-child{
-  text-align:left
+  text-align:left;
 }
 
 .schedule td{
   text-align:right;
   padding:5px 8px;
   color:var(--white);
-  border-top:1px solid var(--line)
+  border-top:1px solid var(--line);
 }
 
+/* =========================================================
+   COMPARISON
+   ========================================================= */
+
 .compare-bar{
-  margin-top:12px;
+  margin-top:9px;
   background:var(--panel);
   border:1px solid var(--line);
   border-radius:12px;
-  padding:10px 15px;
+  padding:8px 14px;
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:10px;
-  flex-wrap:wrap
+  flex-wrap:wrap;
 }
 
 .compare-side{
@@ -747,13 +803,13 @@ html.light .masthead .byline strong{
   align-items:center;
   gap:7px;
   font-size:12.5px;
-  color:var(--slate)
+  color:var(--slate);
 }
 
 .compare-side strong{
   font-family:var(--mono);
   color:var(--white);
-  font-size:15px
+  font-size:15px;
 }
 
 .compare-mid{
@@ -761,41 +817,134 @@ html.light .masthead .byline strong{
   color:var(--green);
   text-align:center;
   flex:1;
-  min-width:140px
+  min-width:140px;
 }
 
 footer{
-  margin-top:15px;
+  margin-top:11px;
   font-size:11px;
   color:var(--slate);
-  text-align:center
+  text-align:center;
 }
 
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
 @media(max-width:859px){
+
+  .masthead{
+    padding-left:55px;
+    padding-right:55px;
+  }
+
+  .masthead h1{
+    font-size:22px;
+  }
+
   .option{
-    padding:14px
+    padding:12px 14px;
   }
 }
 
 @media(max-width:560px){
+
   body{
-    padding:16px 10px 38px
+    padding:0 8px 30px;
   }
 
-  .shared{
-    padding:10px 12px
+  .wrap{
+    padding:6px 4px 30px;
+  }
+
+  .masthead{
+    min-height:88px;
+    padding:15px 52px 13px;
+  }
+
+  .masthead h1{
+    font-size:19px;
+    letter-spacing:.04em;
+  }
+
+  .masthead .brand{
+    gap:7px;
+  }
+
+  .masthead .brand svg{
+    width:21px;
+    height:21px;
+  }
+
+  .masthead .byline{
+    font-size:12px;
+  }
+
+  .header-actions{
+    right:8px;
+    gap:5px;
+  }
+
+  .theme-btn{
+    width:31px;
+    height:31px;
+    font-size:14px;
+  }
+
+  .clear-btn{
+    font-size:11px;
+    padding:6px 9px;
+  }
+
+  .split-grid{
+    margin-top:6px;
+    gap:7px;
+  }
+
+  .option{
+    padding:11px;
+  }
+
+  .option-title{
+    margin-bottom:7px;
   }
 
   .compact-row{
-    gap:7px
+    gap:6px;
+    margin-bottom:6px;
+  }
+
+  .top-entry-row .inputrow{
+    max-width:none;
+  }
+
+  .inputrow{
+    max-width:none;
   }
 
   .termrow{
-    gap:4px
+    gap:3px;
   }
 
   .termbtn{
-    font-size:11.5px
+    font-size:10.5px;
+    padding:6px 1px;
+  }
+
+  .ruler-shell{
+    height:43px;
+  }
+
+  .ruler-lens{
+    height:39px;
+  }
+
+  .sticker{
+    margin-top:7px;
+  }
+
+  .compare-bar{
+    margin-top:7px;
   }
 }
 </style>
@@ -803,41 +952,68 @@ footer{
 
 <body>
 
+<!-- =====================================================
+     MASTHEAD
+     ===================================================== -->
+
 <div class="masthead">
+
   <div class="brand">
+
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
          stroke="#E8A63A" stroke-width="2"
          stroke-linecap="round" stroke-linejoin="round">
+
       <circle cx="12" cy="12" r="10"/>
       <line x1="8" y1="16" x2="16" y2="8"/>
-      <circle cx="8.5" cy="8.5" r="0.6" fill="#E8A63A" stroke="none"/>
-      <circle cx="15.5" cy="15.5" r="0.6" fill="#E8A63A" stroke="none"/>
+
+      <circle cx="8.5" cy="8.5" r="0.6"
+              fill="#E8A63A"
+              stroke="none"/>
+
+      <circle cx="15.5" cy="15.5" r="0.6"
+              fill="#E8A63A"
+              stroke="none"/>
+
     </svg>
 
     <h1>Auto Loan Calculator</h1>
+
   </div>
 
   <div class="byline">
     designed by <strong>Jeff Patrick</strong>
   </div>
-</div>
 
-<div class="wrap">
+  <!-- MOVED INSIDE MASTHEAD -->
 
-<div class="toolbar">
   <div class="header-actions">
+
     <button class="theme-btn"
             id="themeBtn"
             aria-label="Toggle light/dark theme"
-            title="Toggle light/dark theme">☀</button>
+            title="Toggle light/dark theme">
+      ☀
+    </button>
 
-    <button class="clear-btn" id="clearBtn">Clear</button>
+    <button class="clear-btn" id="clearBtn">
+      Clear
+    </button>
+
   </div>
+
 </div>
 
-<div class="shared" style="display:none;"></div>
+
+<div class="wrap">
+
+
+<!-- =====================================================
+     OPTION GRID
+     ===================================================== -->
 
 <div class="split-grid">
+
 
 <!-- =====================================================
      OPTION A
@@ -850,65 +1026,95 @@ footer{
     Option A
   </div>
 
-  <div class="compact-row">
+  <!-- TOP ENTRY ROW -->
+
+  <div class="compact-row top-entry-row">
 
     <div class="field">
+
       <label>Vehicle Price</label>
 
       <div class="inputrow">
+
         <span class="prefix">$</span>
+
         <input type="number"
                id="priceA"
                value="25000"
                min="0"
                step="100">
+
       </div>
+
     </div>
 
+
     <div class="field">
+
       <label>Fees</label>
 
       <div class="inputrow">
+
         <span class="prefix">$</span>
+
         <input type="number"
                id="feesA"
                value="1307"
                min="0"
                step="1">
+
       </div>
+
     </div>
 
   </div>
 
+
+  <!-- SECOND ENTRY ROW -->
+
   <div class="compact-row">
 
     <div class="field">
+
       <label>Trade Value</label>
 
       <div class="inputrow">
+
         <span class="prefix">$</span>
+
         <input type="number"
                id="tradeA"
                value="0"
                min="0"
                step="100">
+
       </div>
+
     </div>
 
+
     <div class="field">
+
       <label>Trade Payoff</label>
 
       <div class="inputrow">
+
         <span class="prefix">$</span>
+
         <input type="number"
                id="payoffA"
                value="0"
                min="0"
                step="100">
+
       </div>
+
     </div>
 
   </div>
+
+
+  <!-- DOWN PAYMENT -->
 
   <div class="ruler-block">
 
@@ -919,15 +1125,28 @@ footer{
     <div class="ruler-shell">
 
       <div class="ruler-scroll">
-        <div class="ruler-track" id="downA-track"></div>
+
+        <div class="ruler-track"
+             id="downA-track">
+        </div>
+
       </div>
 
       <div class="ruler-lens">
-        <span class="lcd-value" id="downA-val">$0</span>
+
+        <span class="lcd-value"
+              id="downA-val">
+          $0
+        </span>
+
       </div>
 
     </div>
+
   </div>
+
+
+  <!-- APR -->
 
   <div class="ruler-block">
 
@@ -938,17 +1157,28 @@ footer{
     <div class="ruler-shell">
 
       <div class="ruler-scroll">
-        <div class="ruler-track" id="aprA-track"></div>
+
+        <div class="ruler-track"
+             id="aprA-track">
+        </div>
+
       </div>
 
       <div class="ruler-lens">
-        <span class="lcd-value" id="aprA-val">8.90%</span>
+
+        <span class="lcd-value"
+              id="aprA-val">
+          8.90%
+        </span>
+
       </div>
 
     </div>
+
   </div>
 
-  <!-- NO SEPARATE SALES TAX RATE BOX -->
+
+  <!-- TERM -->
 
   <div class="term-field">
 
@@ -956,7 +1186,8 @@ footer{
       Loan Term
     </div>
 
-    <div class="termrow" data-group="A">
+    <div class="termrow"
+         data-group="A">
 
       <div class="termbtn" data-term="24">24 mo</div>
       <div class="termbtn" data-term="36">36 mo</div>
@@ -966,7 +1197,11 @@ footer{
       <div class="termbtn" data-term="84">84 mo</div>
 
     </div>
+
   </div>
+
+
+  <!-- PAYMENT -->
 
   <div class="sticker">
 
@@ -977,46 +1212,95 @@ footer{
       </div>
 
       <div class="payment">
+
         <span id="paymentA">$0</span>
+
         <sub>/mo</sub>
+
       </div>
 
     </div>
+
 
     <div class="stats">
 
       <div class="stat">
-        <div class="k">Financed</div>
-        <div class="v" id="financedA">$0</div>
+
+        <div class="k">
+          Financed
+        </div>
+
+        <div class="v"
+             id="financedA">
+          $0
+        </div>
+
       </div>
+
 
       <div class="stat">
-        <div class="k">Sales Tax (7%)</div>
-        <div class="v" id="taxamtA">$0</div>
+
+        <div class="k">
+          Sales Tax (7%)
+        </div>
+
+        <div class="v"
+             id="taxamtA">
+          $0
+        </div>
+
       </div>
+
 
       <div class="stat warn">
-        <div class="k">Total Interest</div>
-        <div class="v" id="interestA">$0</div>
+
+        <div class="k">
+          Total Interest
+        </div>
+
+        <div class="v"
+             id="interestA">
+          $0
+        </div>
+
       </div>
 
+
       <div class="stat good">
-        <div class="k">Total of Payments</div>
-        <div class="v" id="totalA">$0</div>
+
+        <div class="k">
+          Total of Payments
+        </div>
+
+        <div class="v"
+             id="totalA">
+          $0
+        </div>
+
       </div>
 
     </div>
 
-    <button class="schedule-toggle" id="scheduleToggleA">
+
+    <button class="schedule-toggle"
+            id="scheduleToggleA">
+
       Amortization Schedule
-      <span class="chev">▾</span>
+
+      <span class="chev">
+        ▾
+      </span>
+
     </button>
 
-    <div class="schedule" id="scheduleA">
+
+    <div class="schedule"
+         id="scheduleA">
 
       <table>
 
         <thead>
+
           <tr>
             <th>Mo</th>
             <th>Payment</th>
@@ -1024,6 +1308,7 @@ footer{
             <th>Interest</th>
             <th>Balance</th>
           </tr>
+
         </thead>
 
         <tbody id="scheduleBodyA"></tbody>
@@ -1036,17 +1321,23 @@ footer{
 
 </div>
 
-<!-- DIVIDER -->
+
+<!-- =====================================================
+     DIVIDER
+     ===================================================== -->
 
 <div class="divider">
 
   <div class="line"></div>
 
-  <div class="badge">VS</div>
+  <div class="badge">
+    VS
+  </div>
 
   <div class="line"></div>
 
 </div>
+
 
 <!-- =====================================================
      OPTION B
@@ -1059,65 +1350,96 @@ footer{
     Option B
   </div>
 
-  <div class="compact-row">
+
+  <!-- TOP ENTRY ROW -->
+
+  <div class="compact-row top-entry-row">
 
     <div class="field">
+
       <label>Vehicle Price</label>
 
       <div class="inputrow">
+
         <span class="prefix">$</span>
+
         <input type="number"
                id="priceB"
                value="25000"
                min="0"
                step="100">
+
       </div>
+
     </div>
 
+
     <div class="field">
+
       <label>Fees</label>
 
       <div class="inputrow">
+
         <span class="prefix">$</span>
+
         <input type="number"
                id="feesB"
                value="1307"
                min="0"
                step="1">
+
       </div>
+
     </div>
 
   </div>
 
+
+  <!-- SECOND ENTRY ROW -->
+
   <div class="compact-row">
 
     <div class="field">
+
       <label>Trade Value</label>
 
       <div class="inputrow">
+
         <span class="prefix">$</span>
+
         <input type="number"
                id="tradeB"
                value="0"
                min="0"
                step="100">
+
       </div>
+
     </div>
 
+
     <div class="field">
+
       <label>Trade Payoff</label>
 
       <div class="inputrow">
+
         <span class="prefix">$</span>
+
         <input type="number"
                id="payoffB"
                value="0"
                min="0"
                step="100">
+
       </div>
+
     </div>
 
   </div>
+
+
+  <!-- DOWN PAYMENT -->
 
   <div class="ruler-block">
 
@@ -1128,15 +1450,28 @@ footer{
     <div class="ruler-shell">
 
       <div class="ruler-scroll">
-        <div class="ruler-track" id="downB-track"></div>
+
+        <div class="ruler-track"
+             id="downB-track">
+        </div>
+
       </div>
 
       <div class="ruler-lens">
-        <span class="lcd-value" id="downB-val">$0</span>
+
+        <span class="lcd-value"
+              id="downB-val">
+          $0
+        </span>
+
       </div>
 
     </div>
+
   </div>
+
+
+  <!-- APR -->
 
   <div class="ruler-block">
 
@@ -1147,17 +1482,28 @@ footer{
     <div class="ruler-shell">
 
       <div class="ruler-scroll">
-        <div class="ruler-track" id="aprB-track"></div>
+
+        <div class="ruler-track"
+             id="aprB-track">
+        </div>
+
       </div>
 
       <div class="ruler-lens">
-        <span class="lcd-value" id="aprB-val">8.90%</span>
+
+        <span class="lcd-value"
+              id="aprB-val">
+          8.90%
+        </span>
+
       </div>
 
     </div>
+
   </div>
 
-  <!-- NO SEPARATE SALES TAX RATE BOX -->
+
+  <!-- TERM -->
 
   <div class="term-field">
 
@@ -1165,7 +1511,8 @@ footer{
       Loan Term
     </div>
 
-    <div class="termrow" data-group="B">
+    <div class="termrow"
+         data-group="B">
 
       <div class="termbtn" data-term="24">24 mo</div>
       <div class="termbtn" data-term="36">36 mo</div>
@@ -1175,7 +1522,11 @@ footer{
       <div class="termbtn" data-term="84">84 mo</div>
 
     </div>
+
   </div>
+
+
+  <!-- PAYMENT -->
 
   <div class="sticker">
 
@@ -1186,46 +1537,95 @@ footer{
       </div>
 
       <div class="payment">
+
         <span id="paymentB">$0</span>
+
         <sub>/mo</sub>
+
       </div>
 
     </div>
+
 
     <div class="stats">
 
       <div class="stat">
-        <div class="k">Financed</div>
-        <div class="v" id="financedB">$0</div>
+
+        <div class="k">
+          Financed
+        </div>
+
+        <div class="v"
+             id="financedB">
+          $0
+        </div>
+
       </div>
+
 
       <div class="stat">
-        <div class="k">Sales Tax (7%)</div>
-        <div class="v" id="taxamtB">$0</div>
+
+        <div class="k">
+          Sales Tax (7%)
+        </div>
+
+        <div class="v"
+             id="taxamtB">
+          $0
+        </div>
+
       </div>
+
 
       <div class="stat warn">
-        <div class="k">Total Interest</div>
-        <div class="v" id="interestB">$0</div>
+
+        <div class="k">
+          Total Interest
+        </div>
+
+        <div class="v"
+             id="interestB">
+          $0
+        </div>
+
       </div>
 
+
       <div class="stat good">
-        <div class="k">Total of Payments</div>
-        <div class="v" id="totalB">$0</div>
+
+        <div class="k">
+          Total of Payments
+        </div>
+
+        <div class="v"
+             id="totalB">
+          $0
+        </div>
+
       </div>
 
     </div>
 
-    <button class="schedule-toggle" id="scheduleToggleB">
+
+    <button class="schedule-toggle"
+            id="scheduleToggleB">
+
       Amortization Schedule
-      <span class="chev">▾</span>
+
+      <span class="chev">
+        ▾
+      </span>
+
     </button>
 
-    <div class="schedule" id="scheduleB">
+
+    <div class="schedule"
+         id="scheduleB">
 
       <table>
 
         <thead>
+
           <tr>
             <th>Mo</th>
             <th>Payment</th>
@@ -1233,6 +1633,7 @@ footer{
             <th>Interest</th>
             <th>Balance</th>
           </tr>
+
         </thead>
 
         <tbody id="scheduleBodyB"></tbody>
@@ -1247,52 +1648,89 @@ footer{
 
 </div>
 
+
+<!-- =====================================================
+     COMPARISON
+     ===================================================== -->
+
 <div class="compare-bar">
 
   <div class="compare-side">
+
     Option A
-    <strong id="cmpA">$0/mo</strong>
+
+    <strong id="cmpA">
+      $0/mo
+    </strong>
+
   </div>
 
-  <div class="compare-mid" id="cmpDelta">—</div>
+
+  <div class="compare-mid"
+       id="cmpDelta">
+    —
+  </div>
+
 
   <div class="compare-side">
+
     Option B
-    <strong id="cmpB">$0/mo</strong>
+
+    <strong id="cmpB">
+      $0/mo
+    </strong>
+
   </div>
 
 </div>
 
+
 <footer>
+
   Estimate only — actual APR, fees, and tax vary by lender and state.
   Your inputs are saved on this device.
+
 </footer>
 
 </div>
+
 
 <script>
 
 const $=id=>document.getElementById(id);
 
 const money=n =>
-  '$'+n.toLocaleString('en-US',{maximumFractionDigits:0});
+  '$'+n.toLocaleString(
+    'en-US',
+    {maximumFractionDigits:0}
+  );
 
 const moneyC=n =>
-  '$'+n.toLocaleString('en-US',{
-    minimumFractionDigits:2,
-    maximumFractionDigits:2
-  });
+  '$'+n.toLocaleString(
+    'en-US',
+    {
+      minimumFractionDigits:2,
+      maximumFractionDigits:2
+    }
+  );
 
-const STORAGE_KEY='autoLoanCalculator.state.v4';
+const STORAGE_KEY=
+  'autoLoanCalculator.state.v4';
 
-/*
-=========================================================
-FIXED SALES TAX
-=========================================================
-*/
+
+/* =====================================================
+   FIXED SALES TAX
+   ===================================================== */
+
 const SALES_TAX_RATE=0.07;
 
+
+/* =====================================================
+   DEFAULTS
+   ===================================================== */
+
 const DEFAULTS={
+
   a:{
     price:25000,
     trade:0,
@@ -1312,21 +1750,37 @@ const DEFAULTS={
     apr:8.9,
     term:60
   }
+
 };
+
 
 function loadSaved(){
 
   try{
 
-    const raw=localStorage.getItem(STORAGE_KEY);
+    const raw=
+      localStorage.getItem(STORAGE_KEY);
 
-    if(!raw)return null;
+    if(!raw)
+      return null;
 
-    const p=JSON.parse(raw);
+    const p=
+      JSON.parse(raw);
 
     return {
-      a:Object.assign({},DEFAULTS.a,p.a||{}),
-      b:Object.assign({},DEFAULTS.b,p.b||{})
+
+      a:Object.assign(
+        {},
+        DEFAULTS.a,
+        p.a||{}
+      ),
+
+      b:Object.assign(
+        {},
+        DEFAULTS.b,
+        p.b||{}
+      )
+
     };
 
   }catch(e){
@@ -1334,21 +1788,27 @@ function loadSaved(){
     return null;
 
   }
+
 }
+
 
 const saved=loadSaved();
 
 const state=
   saved ||
-  JSON.parse(JSON.stringify(DEFAULTS));
+  JSON.parse(
+    JSON.stringify(DEFAULTS)
+  );
 
 const rulers={};
+
 
 /* =====================================================
    RULER BUILDER
    ===================================================== */
 
 function buildRuler({
+
   key,
   trackId,
   min,
@@ -1360,46 +1820,72 @@ function buildRuler({
   tickPx,
   format,
   onChange
+
 }){
 
   const track=$(trackId);
 
-  const scroll=track.parentElement;
+  const scroll=
+    track.parentElement;
 
-  const shell=scroll.parentElement;
+  const shell=
+    scroll.parentElement;
 
-  const tickWidth=tickPx||8;
+  const tickWidth=
+    tickPx||8;
 
-  const count=Math.round((max-min)/step)+1;
+  const count=
+    Math.round(
+      (max-min)/step
+    )+1;
 
   track.innerHTML='';
 
-  track.style.position='relative';
+  track.style.position=
+    'relative';
 
-  const startSpacer=document.createElement('div');
+
+  const startSpacer=
+    document.createElement('div');
 
   startSpacer.style.cssText=
     'flex:0 0 auto;align-self:stretch';
 
-  track.appendChild(startSpacer);
+  track.appendChild(
+    startSpacer
+  );
 
-  for(let i=0;i<count;i++){
+
+  for(
+    let i=0;
+    i<count;
+    i++
+  ){
 
     const val=
-      +(min+i*step).toFixed(decimals);
+      +(min+i*step)
+        .toFixed(decimals);
 
-    const d=document.createElement('div');
+    const d=
+      document.createElement('div');
 
     const major=
       Math.abs(
-        Math.round(val/majorStep)*majorStep-val
+        Math.round(
+          val/majorStep
+        )*majorStep-val
       )<step/2;
 
-    d.className='tick'+(major?' major':'');
+    d.className=
+      'tick'+
+      (major?' major':'');
 
-    d.style.width=tickWidth+'px';
+    d.style.width=
+      tickWidth+'px';
 
-    const bar=document.createElement('div');
+
+    const bar=
+      document.createElement('div');
 
     bar.className='bar';
 
@@ -1408,9 +1894,11 @@ function buildRuler({
 
     d.appendChild(bar);
 
+
     if(major){
 
-      const num=document.createElement('div');
+      const num=
+        document.createElement('div');
 
       num.className='num';
 
@@ -1420,42 +1908,62 @@ function buildRuler({
           : Math.round(val);
 
       d.appendChild(num);
+
     }
 
+
     track.appendChild(d);
+
   }
 
-  const endSpacer=document.createElement('div');
+
+  const endSpacer=
+    document.createElement('div');
 
   endSpacer.style.cssText=
     'flex:0 0 auto;align-self:stretch';
 
-  track.appendChild(endSpacer);
+  track.appendChild(
+    endSpacer
+  );
+
 
   const ghostCount=4;
 
   const rightGhosts=[];
-
   const leftGhosts=[];
 
-  for(let g=1;g<=ghostCount;g++){
 
-    const isOuter=g===ghostCount;
+  for(
+    let g=1;
+    g<=ghostCount;
+    g++
+  ){
+
+    const isOuter=
+      g===ghostCount;
+
 
     const rVal=
-      +(max+g*step).toFixed(decimals);
+      +(max+g*step)
+        .toFixed(decimals);
 
-    const rg=document.createElement('div');
+
+    const rg=
+      document.createElement('div');
 
     rg.className=
-      'tick ghost'+(isOuter?' major':'');
+      'tick ghost'+
+      (isOuter?' major':'');
 
     rg.style.cssText=
       'position:absolute;top:0;bottom:0;width:'+
       tickWidth+
       'px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end';
 
-    const rbar=document.createElement('div');
+
+    const rbar=
+      document.createElement('div');
 
     rbar.className='bar';
 
@@ -1464,9 +1972,11 @@ function buildRuler({
 
     rg.appendChild(rbar);
 
+
     if(isOuter){
 
-      const rnum=document.createElement('div');
+      const rnum=
+        document.createElement('div');
 
       rnum.className='num';
 
@@ -1476,7 +1986,9 @@ function buildRuler({
           : Math.round(rVal);
 
       rg.appendChild(rnum);
+
     }
+
 
     track.appendChild(rg);
 
@@ -1485,20 +1997,27 @@ function buildRuler({
       g
     });
 
-    const lVal=
-      +(min-g*step).toFixed(decimals);
 
-    const lg=document.createElement('div');
+    const lVal=
+      +(min-g*step)
+        .toFixed(decimals);
+
+
+    const lg=
+      document.createElement('div');
 
     lg.className=
-      'tick ghost'+(isOuter?' major':'');
+      'tick ghost'+
+      (isOuter?' major':'');
 
     lg.style.cssText=
       'position:absolute;top:0;bottom:0;width:'+
       tickWidth+
       'px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end';
 
-    const lbar=document.createElement('div');
+
+    const lbar=
+      document.createElement('div');
 
     lbar.className='bar';
 
@@ -1507,9 +2026,11 @@ function buildRuler({
 
     lg.appendChild(lbar);
 
+
     if(isOuter && lVal>=0){
 
-      const lnum=document.createElement('div');
+      const lnum=
+        document.createElement('div');
 
       lnum.className='num';
 
@@ -1519,7 +2040,9 @@ function buildRuler({
           : Math.round(lVal);
 
       lg.appendChild(lnum);
+
     }
+
 
     track.appendChild(lg);
 
@@ -1527,16 +2050,23 @@ function buildRuler({
       el:lg,
       g
     });
+
   }
+
 
   let current=initial;
 
+
   function updateSpacers(){
 
-    const w=shell.clientWidth;
+    const w=
+      shell.clientWidth;
 
     const spacerWidth=
-      Math.max(0,w/2-tickWidth/2);
+      Math.max(
+        0,
+        w/2-tickWidth/2
+      );
 
     startSpacer.style.width=
       spacerWidth+'px';
@@ -1544,27 +2074,35 @@ function buildRuler({
     endSpacer.style.width=
       spacerWidth+'px';
 
-    rightGhosts.forEach(({el,g})=>{
 
-      el.style.left=
-        (
-          spacerWidth+
-          count*tickWidth+
-          g*tickWidth
-        )+'px';
+    rightGhosts.forEach(
+      ({el,g})=>{
 
-    });
+        el.style.left=
+          (
+            spacerWidth+
+            count*tickWidth+
+            g*tickWidth
+          )+'px';
 
-    leftGhosts.forEach(({el,g})=>{
+      }
+    );
 
-      el.style.left=
-        (
-          spacerWidth-
-          g*tickWidth
-        )+'px';
 
-    });
+    leftGhosts.forEach(
+      ({el,g})=>{
+
+        el.style.left=
+          (
+            spacerWidth-
+            g*tickWidth
+          )+'px';
+
+      }
+    );
+
   }
+
 
   function pos(val){
 
@@ -1574,11 +2112,14 @@ function buildRuler({
 
   }
 
+
   function jump(val){
 
-    scroll.scrollLeft=pos(val);
+    scroll.scrollLeft=
+      pos(val);
 
   }
+
 
   function set(val,silent){
 
@@ -1595,27 +2136,36 @@ function buildRuler({
       onChange(current);
 
     }
+
   }
+
 
   function readValue(){
 
     const trueMax=
-      scroll.scrollWidth-scroll.clientWidth;
+      scroll.scrollWidth-
+      scroll.clientWidth;
 
-    if(trueMax<=0)return min;
+    if(trueMax<=0)
+      return min;
+
 
     const proportion=
       Math.min(
         1,
         Math.max(
           0,
-          scroll.scrollLeft/trueMax
+          scroll.scrollLeft/
+          trueMax
         )
       );
 
+
     const raw=
       min+
-      proportion*(max-min);
+      proportion*
+      (max-min);
+
 
     const snapped=
       Math.round(
@@ -1623,44 +2173,60 @@ function buildRuler({
       )*step+
       min;
 
+
     return +Math.min(
       max,
-      Math.max(min,snapped)
+      Math.max(
+        min,
+        snapped
+      )
     ).toFixed(decimals);
+
   }
 
+
   let raf=null;
+
 
   scroll.addEventListener(
     'scroll',
     ()=>{
 
-      if(raf)return;
+      if(raf)
+        return;
 
-      raf=requestAnimationFrame(()=>{
 
-        raf=null;
+      raf=
+        requestAnimationFrame(
+          ()=>{
 
-        current=readValue();
+            raf=null;
 
-        onChange(current);
+            current=
+              readValue();
 
-      });
+            onChange(current);
+
+          }
+        );
 
     },
     {passive:true}
   );
 
+
   if(window.ResizeObserver){
 
     const ro=
-      new ResizeObserver(()=>{
+      new ResizeObserver(
+        ()=>{
 
-        updateSpacers();
+          updateSpacers();
 
-        jump(current);
+          jump(current);
 
-      });
+        }
+      );
 
     ro.observe(shell);
 
@@ -1676,22 +2242,33 @@ function buildRuler({
 
       }
     );
+
   }
 
+
   updateSpacers();
+
 
   requestAnimationFrame(
     ()=>requestAnimationFrame(
       ()=>{
+
         updateSpacers();
-        set(current,false);
+
+        set(
+          current,
+          false
+        );
+
       }
     )
   );
 
+
   rulers[key]={set};
 
 }
+
 
 /* =====================================================
    RULER UPDATES
@@ -1699,27 +2276,35 @@ function buildRuler({
 
 function updateDown(K,v){
 
-  const key=K.toLowerCase();
+  const key=
+    K.toLowerCase();
 
   state[key].down=v;
 
-  $('down'+K+'-val').textContent=
+  $('down'+K+'-val')
+    .textContent=
     money(v);
 
   calcAll();
+
 }
+
 
 function updateApr(K,v){
 
-  const key=K.toLowerCase();
+  const key=
+    K.toLowerCase();
 
   state[key].apr=v;
 
-  $('apr'+K+'-val').textContent=
+  $('apr'+K+'-val')
+    .textContent=
     v.toFixed(2)+'%';
 
   calcAll();
+
 }
+
 
 ['A','B'].forEach(K=>{
 
@@ -1727,7 +2312,8 @@ function updateApr(K,v){
 
     key:'down'+K,
 
-    trackId:'down'+K+'-track',
+    trackId:
+      'down'+K+'-track',
 
     min:0,
 
@@ -1740,7 +2326,9 @@ function updateApr(K,v){
     decimals:0,
 
     initial:
-      state[K.toLowerCase()].down,
+      state[
+        K.toLowerCase()
+      ].down,
 
     format:money,
 
@@ -1749,11 +2337,13 @@ function updateApr(K,v){
 
   });
 
+
   buildRuler({
 
     key:'apr'+K,
 
-    trackId:'apr'+K+'-track',
+    trackId:
+      'apr'+K+'-track',
 
     min:0,
 
@@ -1768,7 +2358,11 @@ function updateApr(K,v){
     tickPx:16,
 
     initial:
-      state[K.toLowerCase()].apr,
+      state[
+        K.toLowerCase()
+      ].apr,
+
+    format:null,
 
     onChange:v=>
       updateApr(K,v)
@@ -1777,50 +2371,69 @@ function updateApr(K,v){
 
 });
 
+
 /* =====================================================
    TERMS
    ===================================================== */
 
-function setActiveTerm(key,term){
+function setActiveTerm(
+  key,
+  term
+){
 
   const row=
     document.querySelector(
       `.termrow[data-group="${key.toUpperCase()}"]`
     );
 
-  row.querySelectorAll('.termbtn')
-    .forEach(b=>{
+  row.querySelectorAll(
+    '.termbtn'
+  ).forEach(b=>{
 
-      b.classList.toggle(
-        'active',
-        +b.dataset.term===term
-      );
+    b.classList.toggle(
+      'active',
+      +b.dataset.term===term
+    );
 
-    });
+  });
+
 }
 
-document.querySelectorAll('.termrow')
-.forEach(row=>{
+
+document.querySelectorAll(
+  '.termrow'
+).forEach(row=>{
 
   const key=
-    row.dataset.group.toLowerCase();
+    row.dataset.group
+      .toLowerCase();
 
-  row.querySelectorAll('.termbtn')
-  .forEach(btn=>{
+
+  row.querySelectorAll(
+    '.termbtn'
+  ).forEach(btn=>{
 
     btn.addEventListener(
       'click',
       ()=>{
 
-        row.querySelectorAll('.termbtn')
-          .forEach(b=>
-            b.classList.remove('active')
-          );
+        row.querySelectorAll(
+          '.termbtn'
+        ).forEach(b=>
+          b.classList.remove(
+            'active'
+          )
+        );
 
-        btn.classList.add('active');
+
+        btn.classList.add(
+          'active'
+        );
+
 
         state[key].term=
           +btn.dataset.term;
+
 
         calcAll();
 
@@ -1831,13 +2444,16 @@ document.querySelectorAll('.termrow')
 
 });
 
+
 /* =====================================================
    CALCULATE OPTION
    ===================================================== */
 
 function calcOption(K){
 
-  const key=K.toLowerCase();
+  const key=
+    K.toLowerCase();
+
 
   const price=
     Math.max(
@@ -1847,6 +2463,7 @@ function calcOption(K){
       )||0
     );
 
+
   const trade=
     Math.max(
       0,
@@ -1854,6 +2471,7 @@ function calcOption(K){
         $('trade'+K).value
       )||0
     );
+
 
   const payoff=
     Math.max(
@@ -1863,6 +2481,7 @@ function calcOption(K){
       )||0
     );
 
+
   const fees=
     Math.max(
       0,
@@ -1871,25 +2490,23 @@ function calcOption(K){
       )||0
     );
 
+
   const down=
     Math.max(
       0,
       state[key].down||0
     );
 
+
   state[key].price=price;
-
   state[key].trade=trade;
-
   state[key].payoff=payoff;
-
   state[key].fees=fees;
 
-  /*
-  ======================================================
-  FIXED 7% SALES TAX
-  ======================================================
-  */
+
+  /* ==================================================
+     FIXED 7% SALES TAX
+     ================================================== */
 
   const taxableBase=
     Math.max(
@@ -1897,11 +2514,15 @@ function calcOption(K){
       price-trade
     )+fees;
 
+
   const taxAmt=
-    taxableBase*SALES_TAX_RATE;
+    taxableBase*
+    SALES_TAX_RATE;
+
 
   const netTrade=
     trade-payoff;
+
 
   const financed=
     Math.max(
@@ -1913,14 +2534,18 @@ function calcOption(K){
       down
     );
 
+
   const apr=
     state[key].apr/100;
+
 
   const n=
     state[key].term;
 
+
   const r=
     apr/12;
+
 
   let payment=
     r===0
@@ -1929,11 +2554,14 @@ function calcOption(K){
         (r*Math.pow(1+r,n))/
         (Math.pow(1+r,n)-1);
 
+
   if(!isFinite(payment))
     payment=0;
 
+
   const totalPaid=
     payment*n;
+
 
   const totalInterest=
     Math.max(
@@ -1941,7 +2569,9 @@ function calcOption(K){
       totalPaid-financed
     );
 
-  $('payment'+K).textContent=
+
+  $('payment'+K)
+    .textContent=
     payment.toLocaleString(
       'en-US',
       {
@@ -1951,23 +2581,37 @@ function calcOption(K){
       }
     );
 
-  $('financed'+K).textContent=
+
+  $('financed'+K)
+    .textContent=
     money(financed);
 
-  $('taxamt'+K).textContent=
+
+  $('taxamt'+K)
+    .textContent=
     money(taxAmt);
 
-  $('interest'+K).textContent=
+
+  $('interest'+K)
+    .textContent=
     money(totalInterest);
 
-  $('total'+K).textContent=
+
+  $('total'+K)
+    .textContent=
     money(totalPaid);
 
-  $('down'+K+'-val').textContent=
+
+  $('down'+K+'-val')
+    .textContent=
     money(down);
 
-  $('apr'+K+'-val').textContent=
-    state[key].apr.toFixed(2)+'%';
+
+  $('apr'+K+'-val')
+    .textContent=
+    state[key].apr
+      .toFixed(2)+'%';
+
 
   buildSchedule(
     K,
@@ -1977,8 +2621,11 @@ function calcOption(K){
     payment
   );
 
+
   return payment;
+
 }
+
 
 /* =====================================================
    AMORTIZATION
@@ -1997,21 +2644,32 @@ function buildSchedule(
 
   body.innerHTML='';
 
-  let balance=principal;
+
+  let balance=
+    principal;
+
 
   const frag=
     document.createDocumentFragment();
 
-  for(let m=1;m<=n;m++){
+
+  for(
+    let m=1;
+    m<=n;
+    m++
+  ){
 
     const interest=
       balance*r;
 
+
     let pp=
       payment-interest;
 
+
     if(m===n)
       pp=balance;
+
 
     balance=
       Math.max(
@@ -2019,8 +2677,10 @@ function buildSchedule(
         balance-pp
       );
 
+
     const tr=
       document.createElement('tr');
+
 
     tr.innerHTML=
       `<td>${m}</td>
@@ -2029,12 +2689,16 @@ function buildSchedule(
        <td>${moneyC(interest)}</td>
        <td>${moneyC(balance)}</td>`;
 
+
     frag.appendChild(tr);
 
   }
 
+
   body.appendChild(frag);
+
 }
+
 
 /* =====================================================
    CALCULATE EVERYTHING
@@ -2048,7 +2712,9 @@ function calcAll(){
   const pb=
     calcOption('B');
 
-  $('cmpA').textContent=
+
+  $('cmpA')
+    .textContent=
     pa.toLocaleString(
       'en-US',
       {
@@ -2058,7 +2724,9 @@ function calcAll(){
       }
     )+'/mo';
 
-  $('cmpB').textContent=
+
+  $('cmpB')
+    .textContent=
     pb.toLocaleString(
       'en-US',
       {
@@ -2068,14 +2736,23 @@ function calcAll(){
       }
     )+'/mo';
 
-  const delta=pa-pb;
 
-  $('cmpDelta').textContent=
+  const delta=
+    pa-pb;
+
+
+  $('cmpDelta')
+    .textContent=
     Math.abs(delta)<.5
+
       ? 'Payments are about equal'
+
       : delta>0
+
         ? `Option B is ${money(delta)}/mo lower`
+
         : `Option A is ${money(-delta)}/mo lower`;
+
 
   try{
 
@@ -2088,9 +2765,9 @@ function calcAll(){
 
 }
 
+
 /* =====================================================
    ENTERABLE INPUTS
-   CLEAR CONTENT WHEN CLICKED
    ===================================================== */
 
 [
@@ -2106,14 +2783,11 @@ function calcAll(){
 
   const input=$(id);
 
+
   input.addEventListener(
     'focus',
     function(){
 
-      /*
-       Only clear the existing value the first
-       time the field receives focus.
-      */
       if(!this.dataset.cleared){
 
         this.dataset.cleared='1';
@@ -2125,18 +2799,16 @@ function calcAll(){
     }
   );
 
+
   input.addEventListener(
     'click',
     function(){
 
-      /*
-       Selecting the existing number lets the
-       next typing replace it immediately.
-      */
       this.select();
 
     }
   );
+
 
   input.addEventListener(
     'input',
@@ -2144,6 +2816,7 @@ function calcAll(){
       calcAll();
     }
   );
+
 
   input.addEventListener(
     'blur',
@@ -2156,6 +2829,7 @@ function calcAll(){
 
 });
 
+
 /* =====================================================
    SCHEDULE BUTTONS
    ===================================================== */
@@ -2163,24 +2837,33 @@ function calcAll(){
 [
   ['scheduleToggleA','scheduleA'],
   ['scheduleToggleB','scheduleB']
-].forEach(([tId,sId])=>{
 
-  $(tId).addEventListener(
-    'click',
-    ()=>{
+].forEach(
+  ([tId,sId])=>{
 
-      const open=
-        $(sId).classList.toggle('open');
+    $(tId).addEventListener(
+      'click',
+      ()=>{
 
-      $(tId).classList.toggle(
-        'open',
-        open
-      );
+        const open=
+          $(sId)
+            .classList
+            .toggle('open');
 
-    }
-  );
 
-});
+        $(tId)
+          .classList
+          .toggle(
+            'open',
+            open
+          );
+
+      }
+    );
+
+  }
+);
+
 
 /* =====================================================
    APPLY SAVED STATE
@@ -2191,36 +2874,49 @@ function applyStateToDOM(){
   ['A','B'].forEach(K=>{
 
     const s=
-      state[K.toLowerCase()];
+      state[
+        K.toLowerCase()
+      ];
+
 
     $('price'+K).value=
       s.price;
 
+
     $('trade'+K).value=
       s.trade;
+
 
     $('payoff'+K).value=
       s.payoff;
 
+
     $('fees'+K).value=
       s.fees;
 
-    $('down'+K+'-val').textContent=
+
+    $('down'+K+'-val')
+      .textContent=
       money(s.down);
 
-    $('apr'+K+'-val').textContent=
+
+    $('apr'+K+'-val')
+      .textContent=
       s.apr.toFixed(2)+'%';
+
 
     setActiveTerm(
       K.toLowerCase(),
       s.term
     );
 
+
     if(rulers['down'+K])
       rulers['down'+K].set(
         s.down,
         true
       );
+
 
     if(rulers['apr'+K])
       rulers['apr'+K].set(
@@ -2232,13 +2928,16 @@ function applyStateToDOM(){
 
 }
 
+
 applyStateToDOM();
+
 
 /* =====================================================
    CLEAR
    ===================================================== */
 
-$('clearBtn').addEventListener(
+$('clearBtn')
+.addEventListener(
   'click',
   ()=>{
 
@@ -2249,6 +2948,7 @@ $('clearBtn').addEventListener(
       )
     );
 
+
     applyStateToDOM();
 
     calcAll();
@@ -2256,7 +2956,9 @@ $('clearBtn').addEventListener(
   }
 );
 
+
 calcAll();
+
 
 /* =====================================================
    THEME
@@ -2270,16 +2972,23 @@ function isLight(){
 
 }
 
+
 function syncThemeBtn(){
 
-  $('themeBtn').textContent=
-    isLight()?'☾':'☀';
+  $('themeBtn')
+    .textContent=
+    isLight()
+      ? '☾'
+      : '☀';
 
 }
 
+
 syncThemeBtn();
 
-$('themeBtn').addEventListener(
+
+$('themeBtn')
+.addEventListener(
   'click',
   ()=>{
 
@@ -2287,14 +2996,18 @@ $('themeBtn').addEventListener(
       .classList
       .toggle('light');
 
+
     try{
 
       localStorage.setItem(
         'autoLoanCalculator.theme',
-        isLight()?'light':'dark'
+        isLight()
+          ? 'light'
+          : 'dark'
       );
 
     }catch(e){}
+
 
     syncThemeBtn();
 
