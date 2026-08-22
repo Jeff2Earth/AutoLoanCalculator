@@ -335,9 +335,10 @@ html.light .masthead .byline strong{
   padding-right:4px;
 }
 
-.inputrow input[type=number]{
+.inputrow input[type=number],
+.inputrow input[type=text]{
   flex:0 0 auto;
-  width:7ch;
+  width:8ch;
   min-width:0;
   background:transparent;
   border:0;
@@ -1074,11 +1075,10 @@ footer{
 
         <span class="prefix">$</span>
 
-        <input type="number"
+        <input type="text"
+               inputmode="numeric"
                id="priceA"
-               value="25000"
-               min="0"
-               step="100">
+               value="25,000">
 
       </div>
 
@@ -1093,11 +1093,10 @@ footer{
 
         <span class="prefix">$</span>
 
-        <input type="number"
+        <input type="text"
+               inputmode="numeric"
                id="feesA"
-               value="1307"
-               min="0"
-               step="1">
+               value="1,307">
 
       </div>
 
@@ -1118,11 +1117,10 @@ footer{
 
         <span class="prefix">$</span>
 
-        <input type="number"
+        <input type="text"
+               inputmode="numeric"
                id="tradeA"
-               value="0"
-               min="0"
-               step="100">
+               value="0">
 
       </div>
 
@@ -1137,11 +1135,10 @@ footer{
 
         <span class="prefix">$</span>
 
-        <input type="number"
+        <input type="text"
+               inputmode="numeric"
                id="payoffA"
-               value="0"
-               min="0"
-               step="100">
+               value="0">
 
       </div>
 
@@ -1408,11 +1405,10 @@ footer{
 
         <span class="prefix">$</span>
 
-        <input type="number"
+        <input type="text"
+               inputmode="numeric"
                id="priceB"
-               value="25000"
-               min="0"
-               step="100">
+               value="25,000">
 
       </div>
 
@@ -1427,11 +1423,10 @@ footer{
 
         <span class="prefix">$</span>
 
-        <input type="number"
+        <input type="text"
+               inputmode="numeric"
                id="feesB"
-               value="1307"
-               min="0"
-               step="1">
+               value="1,307">
 
       </div>
 
@@ -1452,11 +1447,10 @@ footer{
 
         <span class="prefix">$</span>
 
-        <input type="number"
+        <input type="text"
+               inputmode="numeric"
                id="tradeB"
-               value="0"
-               min="0"
-               step="100">
+               value="0">
 
       </div>
 
@@ -1471,11 +1465,10 @@ footer{
 
         <span class="prefix">$</span>
 
-        <input type="number"
+        <input type="text"
+               inputmode="numeric"
                id="payoffB"
-               value="0"
-               min="0"
-               step="100">
+               value="0">
 
       </div>
 
@@ -1752,6 +1745,17 @@ footer{
 <script>
 
 const $=id=>document.getElementById(id);
+
+const numVal=id=>
+  parseFloat(
+    ($(id).value||'').replace(/,/g,'')
+  )||0;
+
+const fmtThousands=n=>
+  (parseFloat(n)||0).toLocaleString(
+    'en-US',
+    {maximumFractionDigits:0}
+  );
 
 const money=n =>
   '$'+n.toLocaleString(
@@ -2507,36 +2511,28 @@ function calcOption(K){
   const price=
     Math.max(
       0,
-      parseFloat(
-        $('price'+K).value
-      )||0
+      numVal('price'+K)
     );
 
 
   const trade=
     Math.max(
       0,
-      parseFloat(
-        $('trade'+K).value
-      )||0
+      numVal('trade'+K)
     );
 
 
   const payoff=
     Math.max(
       0,
-      parseFloat(
-        $('payoff'+K).value
-      )||0
+      numVal('payoff'+K)
     );
 
 
   const fees=
     Math.max(
       0,
-      parseFloat(
-        $('fees'+K).value
-      )||0
+      numVal('fees'+K)
     );
 
 
@@ -2921,6 +2917,14 @@ document.querySelectorAll('.tax-touch')
 
       delete this.dataset.cleared;
 
+      const n=
+        parseFloat(
+          this.value.replace(/,/g,'')
+        )||0;
+
+      this.value=
+        fmtThousands(n);
+
     }
   );
 
@@ -2977,19 +2981,19 @@ function applyStateToDOM(){
 
 
     $('price'+K).value=
-      s.price;
+      fmtThousands(s.price);
 
 
     $('trade'+K).value=
-      s.trade;
+      fmtThousands(s.trade);
 
 
     $('payoff'+K).value=
-      s.payoff;
+      fmtThousands(s.payoff);
 
 
     $('fees'+K).value=
-      s.fees;
+      fmtThousands(s.fees);
 
 
     $('down'+K+'-val')
