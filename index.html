@@ -589,10 +589,19 @@ html.light .masthead .byline strong{
 
 .ruler-lens .lcd-value{
   position:relative;
+  width:100%;
+  border:0;
+  background:transparent;
+  outline:0;
+  -webkit-appearance:none;
+  -moz-appearance:textfield;
+  pointer-events:auto;
+  cursor:text;
   font-family:var(--mono);
   font-size:17px;
   letter-spacing:-.01em;
   color:#151515;
+  text-align:center;
   text-shadow:0 1px 0 rgba(255,255,255,.5);
   font-variant-numeric:tabular-nums;
 }
@@ -1085,7 +1094,7 @@ footer{
         <span class="prefix">$</span>
 
         <input type="text"
-               inputmode="numeric"
+               inputmode="decimal"
                id="priceA"
                value="25,000">
 
@@ -1103,7 +1112,7 @@ footer{
         <span class="prefix">$</span>
 
         <input type="text"
-               inputmode="numeric"
+               inputmode="decimal"
                id="feesA"
                value="1,307">
 
@@ -1127,7 +1136,7 @@ footer{
         <span class="prefix">$</span>
 
         <input type="text"
-               inputmode="numeric"
+               inputmode="decimal"
                id="tradeA"
                value="0">
 
@@ -1145,7 +1154,7 @@ footer{
         <span class="prefix">$</span>
 
         <input type="text"
-               inputmode="numeric"
+               inputmode="decimal"
                id="payoffA"
                value="0">
 
@@ -1176,10 +1185,11 @@ footer{
 
       <div class="ruler-lens">
 
-        <span class="lcd-value"
-              id="downA-val">
-          $0
-        </span>
+        <input type="text"
+               inputmode="decimal"
+               class="lcd-value"
+               id="downA-val"
+               value="$0">
 
       </div>
 
@@ -1208,10 +1218,11 @@ footer{
 
       <div class="ruler-lens">
 
-        <span class="lcd-value"
-              id="aprA-val">
-          8.90%
-        </span>
+        <input type="text"
+               inputmode="decimal"
+               class="lcd-value"
+               id="aprA-val"
+               value="8.90%">
 
       </div>
 
@@ -1415,7 +1426,7 @@ footer{
         <span class="prefix">$</span>
 
         <input type="text"
-               inputmode="numeric"
+               inputmode="decimal"
                id="priceB"
                value="25,000">
 
@@ -1433,7 +1444,7 @@ footer{
         <span class="prefix">$</span>
 
         <input type="text"
-               inputmode="numeric"
+               inputmode="decimal"
                id="feesB"
                value="1,307">
 
@@ -1457,7 +1468,7 @@ footer{
         <span class="prefix">$</span>
 
         <input type="text"
-               inputmode="numeric"
+               inputmode="decimal"
                id="tradeB"
                value="0">
 
@@ -1475,7 +1486,7 @@ footer{
         <span class="prefix">$</span>
 
         <input type="text"
-               inputmode="numeric"
+               inputmode="decimal"
                id="payoffB"
                value="0">
 
@@ -1506,10 +1517,11 @@ footer{
 
       <div class="ruler-lens">
 
-        <span class="lcd-value"
-              id="downB-val">
-          $0
-        </span>
+        <input type="text"
+               inputmode="decimal"
+               class="lcd-value"
+               id="downB-val"
+               value="$0">
 
       </div>
 
@@ -1538,10 +1550,11 @@ footer{
 
       <div class="ruler-lens">
 
-        <span class="lcd-value"
-              id="aprB-val">
-          8.90%
-        </span>
+        <input type="text"
+               inputmode="decimal"
+               class="lcd-value"
+               id="aprB-val"
+               value="8.90%">
 
       </div>
 
@@ -1763,13 +1776,19 @@ const numVal=id=>
 const fmtThousands=n=>
   (parseFloat(n)||0).toLocaleString(
     'en-US',
-    {maximumFractionDigits:0}
+    {maximumFractionDigits:2}
   );
 
 const money=n =>
   '$'+n.toLocaleString(
     'en-US',
     {maximumFractionDigits:0}
+  );
+
+const moneyFlex=n =>
+  '$'+(parseFloat(n)||0).toLocaleString(
+    'en-US',
+    {maximumFractionDigits:2}
   );
 
 const moneyC=n =>
@@ -2344,8 +2363,8 @@ function updateDown(K,v){
   state[key].down=v;
 
   $('down'+K+'-val')
-    .textContent=
-    money(v);
+    .value=
+    moneyFlex(v);
 
   calcAll();
 
@@ -2360,7 +2379,7 @@ function updateApr(K,v){
   state[key].apr=v;
 
   $('apr'+K+'-val')
-    .textContent=
+    .value=
     v.toFixed(2)+'%';
 
   calcAll();
@@ -2664,12 +2683,12 @@ function calcOption(K){
 
 
   $('down'+K+'-val')
-    .textContent=
-    money(down);
+    .value=
+    moneyFlex(down);
 
 
   $('apr'+K+'-val')
-    .textContent=
+    .value=
     state[key].apr
       .toFixed(2)+'%';
 
@@ -2825,6 +2844,77 @@ function calcAll(){
   }catch(e){}
 
 }
+
+
+/* =====================================================
+   EDITABLE LCD WINDOWS (type a value OR drag the ruler)
+   ===================================================== */
+
+['A','B'].forEach(K=>{
+
+  const downInp=$('down'+K+'-val');
+  const key=K.toLowerCase();
+
+  downInp.addEventListener(
+    'focus',
+    function(){ this.select(); }
+  );
+
+  downInp.addEventListener(
+    'keydown',
+    function(e){
+      if(e.key==='Enter'){ this.blur(); }
+    }
+  );
+
+  downInp.addEventListener(
+    'blur',
+    function(){
+      const n=
+        parseFloat(
+          this.value.replace(/[^0-9.\-]/g,'')
+        );
+      if(!isNaN(n)){
+        const clamped=Math.max(0,Math.min(100000,n));
+        if(rulers['down'+K]) rulers['down'+K].set(clamped,false);
+      } else {
+        this.value=moneyFlex(state[key].down);
+      }
+    }
+  );
+
+
+  const aprInp=$('apr'+K+'-val');
+
+  aprInp.addEventListener(
+    'focus',
+    function(){ this.select(); }
+  );
+
+  aprInp.addEventListener(
+    'keydown',
+    function(e){
+      if(e.key==='Enter'){ this.blur(); }
+    }
+  );
+
+  aprInp.addEventListener(
+    'blur',
+    function(){
+      const n=
+        parseFloat(
+          this.value.replace(/[^0-9.\-]/g,'')
+        );
+      if(!isNaN(n)){
+        const clamped=Math.max(0,Math.min(24,n));
+        if(rulers['apr'+K]) rulers['apr'+K].set(clamped,false);
+      } else {
+        this.value=state[key].apr.toFixed(2)+'%';
+      }
+    }
+  );
+
+});
 
 
 /* =====================================================
@@ -3006,12 +3096,12 @@ function applyStateToDOM(){
 
 
     $('down'+K+'-val')
-      .textContent=
-      money(s.down);
+      .value=
+      moneyFlex(s.down);
 
 
     $('apr'+K+'-val')
-      .textContent=
+      .value=
       s.apr.toFixed(2)+'%';
 
 
@@ -3137,4 +3227,4 @@ $('themeBtn')
 </script>
 
 </body>
-</html>
+          </html>
