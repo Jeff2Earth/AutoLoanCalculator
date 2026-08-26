@@ -1233,21 +1233,31 @@ footer{
 
   <!-- TERM -->
 
-  <div class="term-field">
+  <div class="ruler-block">
 
-    <div class="term-label">
-      Loan Term
+    <div class="ruler-label">
+      <span class="name">Loan Term</span>
     </div>
 
-    <div class="termrow"
-         data-group="A">
+    <div class="ruler-shell">
 
-      <div class="termbtn" data-term="24">24 mo</div>
-      <div class="termbtn" data-term="36">36 mo</div>
-      <div class="termbtn" data-term="48">48 mo</div>
-      <div class="termbtn active" data-term="60">60 mo</div>
-      <div class="termbtn" data-term="72">72 mo</div>
-      <div class="termbtn" data-term="84">84 mo</div>
+      <div class="ruler-scroll">
+
+        <div class="ruler-track"
+             id="termA-track">
+        </div>
+
+      </div>
+
+      <div class="ruler-lens">
+
+        <input type="text"
+               inputmode="numeric"
+               class="lcd-value"
+               id="termA-val"
+               value="60 mo">
+
+      </div>
 
     </div>
 
@@ -1565,21 +1575,31 @@ footer{
 
   <!-- TERM -->
 
-  <div class="term-field">
+  <div class="ruler-block">
 
-    <div class="term-label">
-      Loan Term
+    <div class="ruler-label">
+      <span class="name">Loan Term</span>
     </div>
 
-    <div class="termrow"
-         data-group="B">
+    <div class="ruler-shell">
 
-      <div class="termbtn" data-term="24">24 mo</div>
-      <div class="termbtn" data-term="36">36 mo</div>
-      <div class="termbtn" data-term="48">48 mo</div>
-      <div class="termbtn active" data-term="60">60 mo</div>
-      <div class="termbtn" data-term="72">72 mo</div>
-      <div class="termbtn" data-term="84">84 mo</div>
+      <div class="ruler-scroll">
+
+        <div class="ruler-track"
+             id="termB-track">
+        </div>
+
+      </div>
+
+      <div class="ruler-lens">
+
+        <input type="text"
+               inputmode="numeric"
+               class="lcd-value"
+               id="termB-val"
+               value="60 mo">
+
+      </div>
 
     </div>
 
@@ -2487,72 +2507,145 @@ function updateApr(K,v){
    TERMS
    ===================================================== */
 
-function setActiveTerm(
-  key,
-  term
-){
+const TERM_STOPS=[24,36,48,60,66,72,75,78,84];
 
-  const row=
-    document.querySelector(
-      `.termrow[data-group="${key.toUpperCase()}"]`
-    );
+function buildTermRuler({key,trackId,values,tickPx,initial,onChange}){
 
-  row.querySelectorAll(
-    '.termbtn'
-  ).forEach(b=>{
+  const track=$(trackId);
+  const scroll=track.parentElement;
+  const shell=scroll.parentElement;
+  const tickWidth=tickPx||52;
+  const count=values.length;
 
-    b.classList.toggle(
-      'active',
-      +b.dataset.term===term
-    );
+  track.innerHTML='';
+  track.style.position='relative';
+
+  const startSpacer=document.createElement('div');
+  startSpacer.style.cssText='flex:0 0 auto;align-self:stretch';
+  track.appendChild(startSpacer);
+
+  values.forEach(val=>{
+
+    const d=document.createElement('div');
+    d.className='tick major';
+    d.style.width=tickWidth+'px';
+
+    const bar=document.createElement('div');
+    bar.className='bar';
+    bar.style.height='20px';
+    d.appendChild(bar);
+
+    const num=document.createElement('div');
+    num.className='num';
+    num.textContent=val;
+    d.appendChild(num);
+
+    track.appendChild(d);
 
   });
+
+  const endSpacer=document.createElement('div');
+  endSpacer.style.cssText='flex:0 0 auto;align-self:stretch';
+  track.appendChild(endSpacer);
+
+  let current=initial;
+
+  function updateSpacers(){
+    const w=shell.clientWidth;
+    const spacerWidth=Math.max(0,w/2-tickWidth/2);
+    startSpacer.style.width=spacerWidth+'px';
+    endSpacer.style.width=spacerWidth+'px';
+  }
+
+  function nearestIndex(val){
+    let best=0,bestDiff=Infinity;
+    values.forEach((v,i)=>{
+      const diff=Math.abs(v-val);
+      if(diff<bestDiff){ bestDiff=diff; best=i; }
+    });
+    return best;
+  }
+
+  function pos(idx){ return idx*tickWidth; }
+
+  let suppressScroll=false;
+
+  function jump(val){
+    suppressScroll=true;
+    scroll.scrollLeft=pos(nearestIndex(val));
+    requestAnimationFrame(
+      ()=>requestAnimationFrame(
+        ()=>{ suppressScroll=false; }
+      )
+    );
+  }
+
+  function set(val,silent){
+    const idx=nearestIndex(val);
+    current=values[idx];
+    jump(current);
+    if(!silent) onChange(current);
+    return current;
+  }
+
+  function readValue(){
+    const trueMax=scroll.scrollWidth-scroll.clientWidth;
+    if(trueMax<=0) return values[0];
+    const proportion=Math.min(1,Math.max(0,scroll.scrollLeft/trueMax));
+    const idx=Math.round(proportion*(count-1));
+    return values[Math.min(count-1,Math.max(0,idx))];
+  }
+
+  let raf=null;
+
+  scroll.addEventListener(
+    'scroll',
+    ()=>{
+      if(suppressScroll){ suppressScroll=false; return; }
+      if(raf) return;
+      raf=requestAnimationFrame(()=>{
+        raf=null;
+        current=readValue();
+        onChange(current);
+      });
+    },
+    {passive:true}
+  );
+
+  if(window.ResizeObserver){
+    const ro=new ResizeObserver(()=>{ updateSpacers(); jump(current); });
+    ro.observe(shell);
+  } else {
+    window.addEventListener('resize',()=>{ updateSpacers(); jump(current); });
+  }
+
+  updateSpacers();
+
+  requestAnimationFrame(
+    ()=>requestAnimationFrame(
+      ()=>{ updateSpacers(); set(current,false); }
+    )
+  );
+
+  rulers[key]={set};
 
 }
 
+function updateTerm(K,v){
+  const key=K.toLowerCase();
+  state[key].term=v;
+  $('term'+K+'-val').value=v+' mo';
+  calcAll();
+}
 
-document.querySelectorAll(
-  '.termrow'
-).forEach(row=>{
-
-  const key=
-    row.dataset.group
-      .toLowerCase();
-
-
-  row.querySelectorAll(
-    '.termbtn'
-  ).forEach(btn=>{
-
-    btn.addEventListener(
-      'click',
-      ()=>{
-
-        row.querySelectorAll(
-          '.termbtn'
-        ).forEach(b=>
-          b.classList.remove(
-            'active'
-          )
-        );
-
-
-        btn.classList.add(
-          'active'
-        );
-
-
-        state[key].term=
-          +btn.dataset.term;
-
-
-        calcAll();
-
-      }
-    );
-
+['A','B'].forEach(K=>{
+  buildTermRuler({
+    key:'term'+K,
+    trackId:'term'+K+'-track',
+    values:TERM_STOPS,
+    initial:state[K.toLowerCase()].term,
+    onChange:v=>updateTerm(K,v)
   });
-
 });
 
 
@@ -2951,6 +3044,32 @@ function calcAll(){
     }
   );
 
+
+  const termInp=$('term'+K+'-val');
+
+  termInp.addEventListener(
+    'focus',
+    function(){ this.value=''; }
+  );
+
+  termInp.addEventListener(
+    'keydown',
+    function(e){
+      if(e.key==='Enter'){ this.blur(); }
+    }
+  );
+
+  termInp.addEventListener(
+    'blur',
+    function(){
+      const n=
+        parseFloat(
+          this.value.replace(/[^0-9]/g,'')
+        )||0;
+      if(rulers['term'+K]) rulers['term'+K].set(n,false);
+    }
+  );
+
 });
 
 
@@ -3124,12 +3243,6 @@ function applyStateToDOM(){
       s.apr.toFixed(2)+'%';
 
 
-    setActiveTerm(
-      K.toLowerCase(),
-      s.term
-    );
-
-
     if(rulers['down'+K])
       rulers['down'+K].set(
         s.down,
@@ -3142,6 +3255,18 @@ function applyStateToDOM(){
         s.apr,
         true
       );
+
+
+    if(rulers['term'+K]){
+      const snappedTerm=
+        rulers['term'+K].set(
+          s.term,
+          true
+        );
+      s.term=snappedTerm;
+      $('term'+K+'-val').value=
+        snappedTerm+' mo';
+    }
 
   });
 
