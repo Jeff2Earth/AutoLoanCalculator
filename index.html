@@ -1095,6 +1095,7 @@ footer{
 
         <input type="text"
                inputmode="decimal"
+               enterkeyhint="done"
                id="priceA"
                value="25,000">
 
@@ -1113,6 +1114,7 @@ footer{
 
         <input type="text"
                inputmode="decimal"
+               enterkeyhint="done"
                id="feesA"
                value="1,307">
 
@@ -1137,6 +1139,7 @@ footer{
 
         <input type="text"
                inputmode="decimal"
+               enterkeyhint="done"
                id="tradeA"
                value="0">
 
@@ -1155,6 +1158,7 @@ footer{
 
         <input type="text"
                inputmode="decimal"
+               enterkeyhint="done"
                id="payoffA"
                value="0">
 
@@ -1187,6 +1191,7 @@ footer{
 
         <input type="text"
                inputmode="decimal"
+               enterkeyhint="done"
                class="lcd-value"
                id="downA-val"
                value="$0">
@@ -1220,6 +1225,7 @@ footer{
 
         <input type="text"
                inputmode="decimal"
+               enterkeyhint="done"
                class="lcd-value"
                id="aprA-val"
                value="8.99%">
@@ -1253,6 +1259,7 @@ footer{
 
         <input type="text"
                inputmode="numeric"
+               enterkeyhint="done"
                class="lcd-value"
                id="termA-val"
                value="60 mo">
@@ -1314,6 +1321,7 @@ footer{
 
         <input type="number"
                class="tax-touch"
+               enterkeyhint="done"
                id="taxTouchA"
                data-key="A"
                step="0.25"
@@ -1437,6 +1445,7 @@ footer{
 
         <input type="text"
                inputmode="decimal"
+               enterkeyhint="done"
                id="priceB"
                value="25,000">
 
@@ -1455,6 +1464,7 @@ footer{
 
         <input type="text"
                inputmode="decimal"
+               enterkeyhint="done"
                id="feesB"
                value="1,307">
 
@@ -1479,6 +1489,7 @@ footer{
 
         <input type="text"
                inputmode="decimal"
+               enterkeyhint="done"
                id="tradeB"
                value="0">
 
@@ -1497,6 +1508,7 @@ footer{
 
         <input type="text"
                inputmode="decimal"
+               enterkeyhint="done"
                id="payoffB"
                value="0">
 
@@ -1529,6 +1541,7 @@ footer{
 
         <input type="text"
                inputmode="decimal"
+               enterkeyhint="done"
                class="lcd-value"
                id="downB-val"
                value="$0">
@@ -1562,6 +1575,7 @@ footer{
 
         <input type="text"
                inputmode="decimal"
+               enterkeyhint="done"
                class="lcd-value"
                id="aprB-val"
                value="8.99%">
@@ -1595,6 +1609,7 @@ footer{
 
         <input type="text"
                inputmode="numeric"
+               enterkeyhint="done"
                class="lcd-value"
                id="termB-val"
                value="60 mo">
@@ -1656,6 +1671,7 @@ footer{
 
         <input type="number"
                class="tax-touch"
+               enterkeyhint="done"
                id="taxTouchB"
                data-key="B"
                step="0.25"
@@ -3143,6 +3159,14 @@ document.querySelectorAll('.tax-touch')
 
 
   input.addEventListener(
+    'keydown',
+    function(e){
+      if(e.key==='Enter'){ this.blur(); }
+    }
+  );
+
+
+  input.addEventListener(
     'input',
     ()=>{
       calcAll();
@@ -3371,4 +3395,4 @@ $('themeBtn')
 </script>
 
 </body>
-</html>
+      </html>
