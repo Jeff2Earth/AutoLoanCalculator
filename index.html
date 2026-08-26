@@ -1222,7 +1222,7 @@ footer{
                inputmode="decimal"
                class="lcd-value"
                id="aprA-val"
-               value="8.90%">
+               value="8.99%">
 
       </div>
 
@@ -1554,7 +1554,7 @@ footer{
                inputmode="decimal"
                class="lcd-value"
                id="aprB-val"
-               value="8.90%">
+               value="8.99%">
 
       </div>
 
@@ -1791,6 +1791,21 @@ const moneyFlex=n =>
     {maximumFractionDigits:2}
   );
 
+const floatingDecimal=raw=>{
+  const digits=
+    (raw||'').replace(/[^0-9]/g,'');
+  return (digits===''?0:parseInt(digits,10))/100;
+};
+
+const setCaretEnd=el=>{
+  try{
+    el.setSelectionRange(
+      el.value.length,
+      el.value.length
+    );
+  }catch(e){}
+};
+
 const moneyC=n =>
   '$'+n.toLocaleString(
     'en-US',
@@ -1816,7 +1831,7 @@ const DEFAULTS={
     payoff:0,
     fees:1307,
     down:0,
-    apr:8.9,
+    apr:8.99,
     term:60,
     taxRate:7
   },
@@ -1827,7 +1842,7 @@ const DEFAULTS={
     payoff:0,
     fees:1307,
     down:0,
-    apr:8.9,
+    apr:8.99,
     term:60,
     taxRate:7
   }
@@ -2194,10 +2209,20 @@ function buildRuler({
   }
 
 
+  let suppressScroll=false;
+
   function jump(val){
+
+    suppressScroll=true;
 
     scroll.scrollLeft=
       pos(val);
+
+    requestAnimationFrame(
+      ()=>requestAnimationFrame(
+        ()=>{ suppressScroll=false; }
+      )
+    );
 
   }
 
@@ -2272,6 +2297,11 @@ function buildRuler({
   scroll.addEventListener(
     'scroll',
     ()=>{
+
+      if(suppressScroll){
+        suppressScroll=false;
+        return;
+      }
 
       if(raf)
         return;
@@ -2857,7 +2887,7 @@ function calcAll(){
 
   downInp.addEventListener(
     'focus',
-    function(){ this.select(); }
+    function(){ this.value=''; }
   );
 
   downInp.addEventListener(
@@ -2873,13 +2903,9 @@ function calcAll(){
       const n=
         parseFloat(
           this.value.replace(/[^0-9.\-]/g,'')
-        );
-      if(!isNaN(n)){
-        const clamped=Math.max(0,Math.min(100000,n));
-        if(rulers['down'+K]) rulers['down'+K].set(clamped,false);
-      } else {
-        this.value=moneyFlex(state[key].down);
-      }
+        )||0;
+      const clamped=Math.max(0,Math.min(100000,n));
+      if(rulers['down'+K]) rulers['down'+K].set(clamped,false);
     }
   );
 
@@ -2888,7 +2914,24 @@ function calcAll(){
 
   aprInp.addEventListener(
     'focus',
-    function(){ this.select(); }
+    function(){ this.value=''; }
+  );
+
+  aprInp.addEventListener(
+    'input',
+    function(){
+      const n=
+        floatingDecimal(this.value);
+      this.value=
+        n.toLocaleString(
+          'en-US',
+          {
+            minimumFractionDigits:2,
+            maximumFractionDigits:2
+          }
+        )+'%';
+      setCaretEnd(this);
+    }
   );
 
   aprInp.addEventListener(
@@ -2902,15 +2945,9 @@ function calcAll(){
     'blur',
     function(){
       const n=
-        parseFloat(
-          this.value.replace(/[^0-9.\-]/g,'')
-        );
-      if(!isNaN(n)){
-        const clamped=Math.max(0,Math.min(24,n));
-        if(rulers['apr'+K]) rulers['apr'+K].set(clamped,false);
-      } else {
-        this.value=state[key].apr.toFixed(2)+'%';
-      }
+        floatingDecimal(this.value);
+      const clamped=Math.max(0,Math.min(24,n));
+      if(rulers['apr'+K]) rulers['apr'+K].set(clamped,false);
     }
   );
 
@@ -2980,23 +3017,7 @@ document.querySelectorAll('.tax-touch')
     'focus',
     function(){
 
-      if(!this.dataset.cleared){
-
-        this.dataset.cleared='1';
-
-        this.select();
-
-      }
-
-    }
-  );
-
-
-  input.addEventListener(
-    'click',
-    function(){
-
-      this.select();
+      this.value='';
 
     }
   );
@@ -3013,8 +3034,6 @@ document.querySelectorAll('.tax-touch')
   input.addEventListener(
     'blur',
     function(){
-
-      delete this.dataset.cleared;
 
       const n=
         parseFloat(
@@ -3227,4 +3246,4 @@ $('themeBtn')
 </script>
 
 </body>
-          </html>
+</html>
