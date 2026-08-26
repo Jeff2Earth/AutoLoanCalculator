@@ -1257,12 +1257,10 @@ footer{
 
       <div class="ruler-lens">
 
-        <input type="text"
-               inputmode="numeric"
-               enterkeyhint="done"
-               class="lcd-value"
-               id="termA-val"
-               value="60 mo">
+        <span class="lcd-value"
+              id="termA-val">
+          60 mo
+        </span>
 
       </div>
 
@@ -1607,12 +1605,10 @@ footer{
 
       <div class="ruler-lens">
 
-        <input type="text"
-               inputmode="numeric"
-               enterkeyhint="done"
-               class="lcd-value"
-               id="termB-val"
-               value="60 mo">
+        <span class="lcd-value"
+              id="termB-val">
+          60 mo
+        </span>
 
       </div>
 
@@ -2650,7 +2646,7 @@ function buildTermRuler({key,trackId,values,tickPx,initial,onChange}){
 function updateTerm(K,v){
   const key=K.toLowerCase();
   state[key].term=v;
-  $('term'+K+'-val').value=v+' mo';
+  $('term'+K+'-val').textContent=v+' mo';
   calcAll();
 }
 
@@ -3061,31 +3057,6 @@ function calcAll(){
   );
 
 
-  const termInp=$('term'+K+'-val');
-
-  termInp.addEventListener(
-    'focus',
-    function(){ this.value=''; }
-  );
-
-  termInp.addEventListener(
-    'keydown',
-    function(e){
-      if(e.key==='Enter'){ this.blur(); }
-    }
-  );
-
-  termInp.addEventListener(
-    'blur',
-    function(){
-      const n=
-        parseFloat(
-          this.value.replace(/[^0-9]/g,'')
-        )||0;
-      if(rulers['term'+K]) rulers['term'+K].set(n,false);
-    }
-  );
-
 });
 
 
@@ -3288,7 +3259,7 @@ function applyStateToDOM(){
           true
         );
       s.term=snappedTerm;
-      $('term'+K+'-val').value=
+      $('term'+K+'-val').textContent=
         snappedTerm+' mo';
     }
 
@@ -3395,4 +3366,4 @@ $('themeBtn')
 </script>
 
 </body>
-      </html>
+</html>
