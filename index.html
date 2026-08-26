@@ -1806,6 +1806,31 @@ footer{
 
 const $=id=>document.getElementById(id);
 
+function closeKeyboard(el){
+  el.blur();
+  setTimeout(()=>{
+    const sink=document.getElementById('focusSink');
+    if(sink) sink.focus({preventScroll:true});
+  }, 60);
+}
+
+document.addEventListener(
+  'touchstart',
+  function(e){
+    const active=document.activeElement;
+    if(
+      active &&
+      active.tagName==='INPUT' &&
+      active.id!=='focusSink' &&
+      e.target &&
+      e.target.tagName!=='INPUT'
+    ){
+      closeKeyboard(active);
+    }
+  },
+  { capture:true, passive:true }
+);
+
 const numVal=id=>
   parseFloat(
     ($(id).value||'').replace(/,/g,'')
@@ -3004,7 +3029,7 @@ function calcAll(){
   downInp.addEventListener(
     'keydown',
     function(e){
-      if(e.key==='Enter'){ e.preventDefault(); const sink=document.getElementById('focusSink'); if(sink) sink.focus({preventScroll:true}); else this.blur(); }
+      if(e.key==='Enter'){ e.preventDefault(); closeKeyboard(this); }
     }
   );
 
@@ -3048,7 +3073,7 @@ function calcAll(){
   aprInp.addEventListener(
     'keydown',
     function(e){
-      if(e.key==='Enter'){ e.preventDefault(); const sink=document.getElementById('focusSink'); if(sink) sink.focus({preventScroll:true}); else this.blur(); }
+      if(e.key==='Enter'){ e.preventDefault(); closeKeyboard(this); }
     }
   );
 
@@ -3088,9 +3113,7 @@ document.querySelectorAll('.tax-touch')
     function(e){
       if(e.key==='Enter'){
         e.preventDefault();
-        const sink=document.getElementById('focusSink');
-        if(sink) sink.focus({preventScroll:true});
-        else this.blur();
+        closeKeyboard(this);
       }
     }
   );
@@ -3141,7 +3164,7 @@ document.querySelectorAll('.tax-touch')
   input.addEventListener(
     'keydown',
     function(e){
-      if(e.key==='Enter'){ e.preventDefault(); const sink=document.getElementById('focusSink'); if(sink) sink.focus({preventScroll:true}); else this.blur(); }
+      if(e.key==='Enter'){ e.preventDefault(); closeKeyboard(this); }
     }
   );
 
